@@ -1,0 +1,1027 @@
+<!doctype html>
+<html lang="eu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zaintzak eta itzaltzeak</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="config.js" onerror="void 0"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#F2F4F0;--surface:#FFFFFF;--sunk:#E8ECE8;--ink:#18241E;--muted:#56665D;--line:#D2DAD3;
+  --pine:#2E6A57;--pine-soft:#D8E8E0;--ember:#C2421B;--ember-soft:#F7DED4;--ochre:#8C7726;--ochre-soft:#EFE8CA;
+  --warn:#8F5A00;--warn-soft:#FBECCB;--focus:#1F5FBF;--on-bar:#FFFFFF;
+  --sans:"Barlow",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --cond:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#111915;--surface:#18221D;--sunk:#1F2B25;--ink:#E3EBE5;--muted:#9AAAA1;--line:#2C3A33;
+  --pine:#62B597;--pine-soft:#1E3A30;--ember:#F07445;--ember-soft:#43241A;--ochre:#D2BA5C;--ochre-soft:#3A3419;
+  --warn:#E6A841;--warn-soft:#3B2D12;--focus:#7FB0FF;--on-bar:#0D1411;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#111915;--surface:#18221D;--sunk:#1F2B25;--ink:#E3EBE5;--muted:#9AAAA1;--line:#2C3A33;
+  --pine:#62B597;--pine-soft:#1E3A30;--ember:#F07445;--ember-soft:#43241A;--ochre:#D2BA5C;--ochre-soft:#3A3419;
+  --warn:#E6A841;--warn-soft:#3B2D12;--focus:#7FB0FF;--on-bar:#0D1411;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 var(--sans);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+img{max-width:100%}
+.top{display:flex;align-items:flex-end;gap:8px 18px;flex-wrap:wrap;padding:18px 20px 10px;max-width:1280px;margin:0 auto}
+.top h1{font:700 32px/1 var(--cond);margin:0}
+.top p{margin:0;color:var(--muted);font-size:14px}
+.status{margin-left:auto;display:flex;gap:10px;align-items:center;font-size:13px;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block;margin-right:5px}
+.dot.ok{background:var(--pine)}
+.warnbtn{font:600 14px var(--cond);border:1px solid var(--warn);color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:3px 10px;cursor:pointer}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--paper);border-bottom:1px solid var(--line)}
+nav .inner{display:flex;gap:2px;overflow-x:auto;max-width:1280px;margin:0 auto;padding:0 12px;scrollbar-width:none}
+nav button{font:600 17px var(--cond);padding:11px 10px 9px;border:0;background:none;color:var(--muted);border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--ember)}
+main{max-width:1280px;margin:0 auto;padding:18px 20px 70px}
+h2{font:700 24px/1.1 var(--cond);margin:0 0 4px}
+h3{font:700 19px/1.15 var(--cond);margin:0}
+.lead{color:var(--muted);margin:0 0 14px;max-width:70ch}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin:0 0 14px}
+.tools .grow{flex:1}
+.btn{font:600 16px/1 var(--cond);padding:9px 14px;border-radius:4px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;min-height:38px}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.btn.danger{color:var(--ember);border-color:var(--ember);background:transparent}
+.btn.small{font-size:14px;padding:5px 9px;min-height:30px}
+.btn:disabled{opacity:.5;cursor:default}
+label.f{display:flex;flex-direction:column;gap:3px;font-size:13px;color:var(--muted)}
+label.chk{display:flex;gap:8px;align-items:center;font-size:15px;color:var(--ink)}
+input,select,textarea{font:inherit;font-size:15px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:6px 8px;min-height:38px}
+input[type=checkbox],input[type=radio]{min-height:auto;width:18px;height:18px;accent-color:var(--pine)}
+textarea{min-height:64px;resize:vertical}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.seg button{font:600 15px var(--cond);border:0;background:var(--surface);color:var(--muted);padding:8px 12px;cursor:pointer;min-height:38px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{font:600 14px var(--cond);text-align:left;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--sunk)}
+td{padding:7px 10px;border-bottom:1px solid var(--line);white-space:nowrap;vertical-align:top}
+tr:last-child td{border-bottom:0}
+.num{text-align:right}
+td.wrap{white-space:normal;min-width:200px;max-width:380px;color:var(--muted)}
+tr.click{cursor:pointer}
+tr.click:hover td{background:var(--sunk)}
+tr.total td{font-weight:600;background:var(--sunk)}
+.chip{display:inline-block;font:600 13px/1 var(--cond);padding:4px 7px;border-radius:3px}
+.chip.zaintza{background:var(--pine-soft);color:var(--pine)}
+.chip.praktika{background:var(--ochre-soft);color:var(--ochre)}
+.chip.itzaltze{background:var(--ember-soft);color:var(--ember)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.chip.mute{background:var(--sunk);color:var(--muted)}
+.wtext{color:var(--warn);font-size:13px;white-space:normal}
+.muted{color:var(--muted)}
+.empty{padding:28px 20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:6px}
+.sumline{display:flex;gap:6px 22px;flex-wrap:wrap;margin:0 0 12px;font-size:14px;color:var(--muted)}
+.sumline b{color:var(--ink);font:700 20px var(--cond);margin-right:4px}
+/* timeline */
+.tlwrap{overflow-x:auto;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.tl{min-width:860px}
+.tl-row{display:grid;grid-template-columns:132px 1fr}
+.tl-days{display:grid;grid-template-columns:repeat(7,1fr)}
+.tl-days div{font:600 14px var(--cond);color:var(--muted);padding:7px 6px;border-left:1px solid var(--line);background:var(--sunk)}
+.tl-days div.today{color:var(--ember)}
+.tl-corner{background:var(--sunk)}
+.tl-name{padding:0 10px;display:flex;align-items:center;gap:6px;font-weight:600;font-size:14px;border-top:1px solid var(--line);min-height:38px}
+.tl-name small{font-weight:500;color:var(--muted)}
+.tl-track{position:relative;height:38px;border-top:1px solid var(--line);background-image:linear-gradient(to right,var(--line) 1px,transparent 1px);background-size:calc(100% / 7) 100%}
+.tl-sep .tl-name,.tl-sep .tl-track{border-top:2px solid var(--muted)}
+.bar{position:absolute;top:7px;height:24px;border-radius:3px;font:600 12px/24px var(--cond);color:var(--on-bar);overflow:hidden;white-space:nowrap;padding:0 5px;cursor:pointer;border:0;text-align:left}
+.bar.zaintza{background:var(--pine)}
+.bar.praktika{background:var(--ochre)}
+.bar.itzaltze{background:var(--ember);z-index:2;top:11px;height:16px;line-height:16px}
+.bar.falta{background:repeating-linear-gradient(135deg,var(--ember) 0 5px,var(--ember-soft) 5px 10px);color:var(--ink)}
+.bar.alert{box-shadow:0 0 0 2px var(--warn)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin:10px 0 0}
+.legend i{display:inline-block;width:18px;height:10px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.warns{margin-top:22px}
+.warn-item{display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap;padding:9px 12px;border-bottom:1px solid var(--line)}
+.warn-item:last-child{border-bottom:0}
+.warn-item .w-main{flex:1;min-width:220px}
+.warn-item .w-when{font-size:13px;color:var(--muted)}
+.bar.plan{background:repeating-linear-gradient(135deg,var(--pine) 0 5px,var(--pine-soft) 5px 10px);color:var(--ink)}
+.bar.praktika.plan{background:repeating-linear-gradient(135deg,var(--ochre) 0 5px,var(--ochre-soft) 5px 10px)}
+.lg-plan{background:repeating-linear-gradient(135deg,var(--pine) 0 4px,var(--pine-soft) 4px 8px)}
+.now{margin:0 0 24px}.now h3{margin-bottom:8px}
+.cert dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:10px 0 14px}.cert dt{color:var(--muted)}.cert dd{margin:0;font-weight:600}
+/* fires */
+.fire{background:var(--surface);border:1px solid var(--line);border-radius:6px;margin:0 0 14px;overflow:hidden}
+.fire-head{display:flex;gap:6px 14px;align-items:baseline;flex-wrap:wrap;padding:10px 12px;border-bottom:1px solid var(--line)}
+.fire-head .place{color:var(--muted)}
+.fire-head .acts{margin-left:auto;display:flex;gap:6px}
+.fire .tbl{border:0;border-radius:0}
+/* availability grid */
+.av td,.av th{text-align:center}
+.av td:first-child,.av th:first-child{text-align:left}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px}
+.panel h3{margin-bottom:10px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px 14px}
+.span2{grid-column:1/-1}
+.okbad.ok{color:var(--pine);font-weight:600}
+.okbad.bad{color:var(--ember);font-weight:600}
+.moved{font-size:12px;color:var(--ochre);font-weight:600;margin-left:4px}
+/* dialog */
+dialog{border:1px solid var(--line);border-radius:8px;padding:0;background:var(--surface);color:var(--ink);width:min(680px,calc(100vw - 20px));max-height:calc(100dvh - 32px)}
+dialog::backdrop{background:rgba(8,16,12,.5)}
+dialog form{display:flex;flex-direction:column;max-height:calc(100dvh - 34px)}
+.dlg-head{padding:14px 18px;border-bottom:1px solid var(--line)}
+.dlg-body{padding:14px 18px;overflow:auto;flex:1}
+.dlg-foot{padding:12px 18px;border-top:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap}
+.dlg-foot .sp{flex:1}
+.calc{margin-top:14px;background:var(--sunk);border-radius:6px;padding:10px 12px;font-size:14px}
+.calc .row{display:flex;justify-content:space-between;gap:10px;padding:2px 0}
+.calc .row b{font-weight:600}
+fieldset{border:1px solid var(--line);border-radius:6px;padding:10px 12px;margin:12px 0 0}
+legend{font:600 15px var(--cond);padding:0 4px}
+.radios{display:flex;gap:18px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(18px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:6px;font-size:14px;z-index:50;max-width:calc(100vw - 30px);opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.show{opacity:1}
+@media (max-width:640px){
+  .top{padding:14px 14px 8px}.top h1{font-size:27px}
+  main{padding:14px 12px 60px}
+  .status{margin-left:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.toast{transition:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div>
+    <h1>Zaintzak eta itzaltzeak</h1>
+    <p>Retenen eta uraska-zisternen zaintza- eta itzaltze-orduak</p>
+  </div>
+  <div class="status" id="status"></div>
+</header>
+<nav class="tabs" aria-label="Atalak"><div class="inner" id="tabs" role="tablist"></div></nav>
+<main id="main"><div class="empty">Kargatzen…</div></main>
+<dialog id="dlg"></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+/* ===================== Konfigurazioa eta laguntzaileak ===================== */
+const MONTHS=['Urtarrila','Otsaila','Martxoa','Apirila','Maiatza','Ekaina','Uztaila','Abuztua','Iraila','Urria','Azaroa','Abendua'];
+const WD=['Ig','Al','Ar','Az','Og','Ol','Lr'];
+const H=36e5, DAY=864e5;
+const DEFAULT_CFG={taldeHasiera:'17:00',taldeAmaiera:'00:00',zistHasiera:'17:00',zistAmaiera:'08:00',taldeAtseden:24,zistAtseden:9,
+  eremuak:[true,true,true,true],lehentasunak:{'1':[2,3,4],'2':[1,3,4],'3':[4,2,1],'4':[3,1,2]},profKontrola:true,
+  tarifak:{taldeZaintza:0,taldeItzaltze:0,zistZaintza:0,zistItzaltze:0}};
+const DEFAULT_RES=[['U1','U-1','zisterna',null,false],['U2','U-2','zisterna',null,false],['U3','U-3','zisterna',null,false],['U4','U-4','zisterna',null,false],['U5','U-5','zisterna',null,false],
+ ['arno','Arno','taldea',1,false],['eperra','Eperra','taldea',1,false],['talaia','Talaia','taldea',1,true],['agina','Agiña','taldea',2,false],['pikua','Pikua','taldea',2,true],
+ ['zuhaitz','Zuhaitz','taldea',3,false],['belea','Belea','taldea',3,false],['harkaitz','Harkaitz','taldea',3,true],['erroia','Erroia','taldea',3,true],
+ ['kia','Kia','taldea',4,false],['sustrai','Sustrai','taldea',4,false],['lanperna','Lanperna','taldea',4,false]];
+
+const S={baliabideak:{},zaintzak:{},suteak:{},eskuhartzeak:{},ziurtagiriak:{},config:null};
+const COLLS=['baliabideak','zaintzak','suteak','eskuhartzeak','ziurtagiriak'];
+
+function P(s){if(!s)return null;const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s);return m?Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5]):null}
+function F(ms){return new Date(ms).toISOString().slice(0,16)}
+function D(ms){return new Date(ms).toISOString().slice(0,10)}
+function PD(d){return Date.UTC(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10))}
+function addDays(d,n){return D(PD(d)+n*DAY)}
+function monday(d){const t=PD(d);return D(t-((new Date(t).getUTCDay()+6)%7)*DAY)}
+function nowMs(){const n=new Date();return Date.UTC(n.getFullYear(),n.getMonth(),n.getDate(),n.getHours(),n.getMinutes())}
+function todayStr(){const n=new Date();return D(Date.UTC(n.getFullYear(),n.getMonth(),n.getDate()))}
+function showDT(s){return s?s.slice(0,10).replace(/-/g,'/')+' '+s.slice(11,16):'—'}
+function showMs(ms){return ms==null?'—':showDT(F(ms))}
+function showT(ms){return ms==null?'—':F(ms).slice(11,16)}
+function n2(x){x=Math.round((x||0)*100)/100;try{return x.toLocaleString('eu-ES',{maximumFractionDigits:2})}catch(e){return String(x)}}
+function eur(x){x=Math.round((x||0)*100)/100;try{return x.toLocaleString('eu-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}catch(e){return x.toFixed(2)+' €'}}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function clone(o){return JSON.parse(JSON.stringify(o||{}))}
+function maxNum(arr){let m=0;for(const v of arr){const n=parseInt(String(v||'').replace(/\D/g,''),10);if(n>m&&n<1e9)m=n}return m}
+function nextGuardZk(){return maxNum(Object.values(S.zaintzak).map(g=>g.zk))+1}
+function nextFireZk(){return maxNum([...Object.values(S.suteak).map(f=>f.zk),...Object.values(S.eskuhartzeak).map(i=>i.sutea)])+1}
+function newId(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+function cfg(st){const c=(st||S).config||{};return {...DEFAULT_CFG,...c,tarifak:{...DEFAULT_CFG.tarifak,...(c.tarifak||{})},lehentasunak:{...DEFAULT_CFG.lehentasunak,...(c.lehentasunak||{})},eremuak:c.eremuak||DEFAULT_CFG.eremuak}}
+function resList(st){st=st||S;return Object.entries(st.baliabideak).map(([id,r])=>({id,...r})).sort((a,b)=>((a.ordena??99)-(b.ordena??99))||String(a.izena).localeCompare(b.izena))}
+function resName(id){return S.baliabideak[id]?.izena||id}
+function isZist(id){return S.baliabideak[id]?.mota==='zisterna'}
+function rate(res,type){const t=cfg().tarifak;const z=isZist(res);return type==='itzaltze'?(z?t.zistItzaltze:t.taldeItzaltze):(z?t.zistZaintza:t.taldeZaintza)}
+function slot(date,mota,c){c=c||cfg();const hs=mota==='zisterna'?c.zistHasiera:c.taldeHasiera,am=mota==='zisterna'?c.zistAmaiera:c.taldeAmaiera;
+  const s=P(date+'T'+hs);let e=P(date+'T'+am);if(e<=s)e+=DAY;return [s,e]}
+
+/* ===================== Kalkulu-motorra ===================== */
+function compute(st){
+  st=st||S;const G={},I={},warns=[],byRes={},NOW=nowMs();
+  const bucket=r=>(byRes[r]||(byRes[r]={g:[],i:[]}));
+  for(const [id,g] of Object.entries(st.zaintzak)){
+    const s=P(g.hasiera),e=P(g.amaiera),k=+g.kideak||0;
+    const o={id,rec:g,s,e,k,warn:[],plan:g.egoera==='planifikatua'};o.h=(s!=null&&e!=null&&e>s)?(e-s)/H:0;o.hp=o.h*k;G[id]=o;
+    if(s==null||e==null)o.warn.push({t:'Hasiera edo amaiera falta'});else if(e<=s)o.warn.push({t:'Amaiera hasiera baino lehenagokoa da'});
+    if(o.plan&&e!=null&&e<=NOW)o.warn.push({t:'Planifikatutako zaintza: bete benetako orduak eta kideak eta markatu egiaztatuta'});
+    bucket(g.baliabidea).g.push(o);
+  }
+  const ints=Object.entries(st.eskuhartzeak).map(([id,r])=>({id,rec:r,deia:P(r.deia),buk:P(r.bukatu),etx:P(r.etxeratu),itz:P(r.itzuli),er:P(r.erantzuna),k:+r.kideak||0,warn:[]}))
+    .sort((a,b)=>(a.deia||0)-(b.deia||0));
+  for(const o of ints){bucket(o.rec.baliabidea).i.push(o);I[o.id]=o}
+  for(const o of ints){ // sute-kateak: bukatu ondoren, etxera iritsi aurretik beste sute batera
+    if(o.deia==null)continue;const lo=o.buk??o.deia,hi=o.etx??(o.buk!=null?o.buk+3*H:null);if(hi==null)continue;
+    const n=byRes[o.rec.baliabidea].i.find(x=>x!==o&&x.deia!=null&&x.deia>o.deia&&x.deia>=lo&&x.deia<=hi);
+    if(n){o.next=n;n.chained=true}
+  }
+  for(const o of ints){
+    const r=o.rec;
+    if(o.deia==null){o.warn.push({t:'DEIA falta'});o.h=0;o.hp=0;o.start=null;o.end=null;continue}
+    const gs=byRes[r.baliabidea].g;
+    o.guard=gs.find(g=>g.s!=null&&g.e!=null&&g.s<o.deia&&g.e>=o.deia)||null;
+    o.og=r.zaintzan==='bai'?true:r.zaintzan==='ez'?false:(!!o.guard||!!o.chained);
+    if(o.og){o.start=o.deia;o.startRule=(o.chained&&!o.guard)?'DEIA (aurreko sutetik)':'DEIA (zaintzan)'}
+    else if(o.er!=null){o.start=o.er;o.startRule='ERANTZUNA'}
+    else{o.start=o.deia;o.startRule='DEIA';o.warn.push({t:'ERANTZUNA falta: DEIA erabili da',info:true})}
+    const c=[];if(o.itz!=null)c.push([o.itz,'Zaintzara itzuli']);if(o.next)c.push([o.next.deia,'Hurrengo sutea ('+o.next.rec.sutea+')']);if(o.etx!=null)c.push([o.etx,'ETXERATU']);
+    c.sort((a,b)=>a[0]-b[0]);
+    if(c.length){o.end=c[0][0];o.endRule=c[0][1]}else{o.end=null;o.endRule='—';if(o.deia>=NOW-72*H&&o.deia<=NOW+H){o.ongoing=true;o.endRule='abian';o.warn.push({t:'Itzaltzea abian',info:true})}else o.warn.push({t:'Amaiera falta: bete ETXERATU edo zaintzara itzultzeko ordua'})}
+    if(o.end!=null&&o.end<=o.start)o.warn.push({t:'Amaiera hasiera baino lehenagokoa da'});
+    o.h=(o.end!=null&&o.end>o.start)?(o.end-o.start)/H:0;o.hp=o.h*o.k;
+  }
+  for(const b of Object.values(byRes)){
+    for(const g of b.g){
+      if(g.s==null||g.e==null)continue;
+      for(const o of b.i){
+        if(o.start==null||o.end==null)continue;
+        const ov=Math.min(g.e,o.end)-Math.max(g.s,o.start);
+        if(ov>0){const w={t:`Itzaltzearekin gainjarrita ${Math.round(ov/6e4)} min (sutea ${o.rec.sutea})`};
+          if(g.s<o.start&&g.e>o.start)w.fix={label:'Zaintza itzaltzearen hasieran moztu',guard:g.id,amaiera:F(o.start)};
+          g.warn.push(w);o.warn.push({t:`Zaintzarekin gainjarrita ${Math.round(ov/6e4)} min`})}
+      }
+      if(g.rec.suterik&&!b.i.some(o=>o.deia===g.e))g.warn.push({t:'Sutera joan zela markatuta dago, baina ez dago esku-hartzerik zaintzaren amaiera-orduan'});
+      if(st.baliabideak[g.rec.baliabidea]?.mota==='zisterna')for(const g2 of b.g){if(g2===g||g2.s==null||g2.e==null||g2.id<g.id)continue;const ov=Math.min(g.e,g2.e)-Math.max(g.s,g2.s);
+        if(ov>0)g.warn.push({t:`Beste zaintza batekin gainjarrita ${Math.round(ov/6e4)} min`})}
+    }
+  }
+  for(const g of Object.values(G))for(const w of g.warn)if(!w.info)warns.push({kind:'g',id:g.id,res:g.rec.baliabidea,when:g.s,...w});
+  for(const o of ints)for(const w of o.warn)if(!w.info)warns.push({kind:'i',id:o.id,res:o.rec.baliabidea,when:o.deia,...w});
+  warns.sort((a,b)=>(b.when||0)-(a.when||0));
+  return {G,I,ints,warns,byRes};
+}
+
+/* Likidazioa: hasiera-dataren arabera esleitzen da */
+function aggregate(M,from,to){
+  const rows={};const row=id=>(rows[id]||(rows[id]={zh:0,ph:0,ih:0,zp:0,pp:0,ip:0,eur:0}));
+  for(const g of Object.values(M.G)){if(g.plan||g.s==null||g.s<from||g.s>=to)continue;const r=row(g.rec.baliabidea);
+    if(g.rec.mota==='praktika'){r.ph+=g.h;r.pp+=g.hp}else{r.zh+=g.h;r.zp+=g.hp}r.eur+=g.hp*rate(g.rec.baliabidea,'zaintza')}
+  for(const o of M.ints){if(o.start==null||o.start<from||o.start>=to)continue;const r=row(o.rec.baliabidea);r.ih+=o.h;r.ip+=o.hp;r.eur+=o.hp*rate(o.rec.baliabidea,'itzaltze')}
+  return rows;
+}
+
+/* Proposamen automatikoa (Excel-eko algoritmoa) */
+function propose(startDate,nDays,avail,st){
+  st=st||S;const c=cfg(st);const active=resList(st).filter(r=>r.aktibo!==false);
+  const taldeak=active.filter(r=>r.mota==='taldea'),zist=active.filter(r=>r.mota==='zisterna');
+  const year=startDate.slice(0,4);const counts={},prev={},busy={};
+  for(const r of active){counts[r.id]=0;busy[r.id]=[]}
+  for(const g of Object.values(st.zaintzak)){const s=P(g.hasiera),e=P(g.amaiera);if(!(g.baliabidea in counts))continue;
+    if(s!=null&&e!=null)busy[g.baliabidea].push([s,e]);if(g.mota!=='praktika'&&g.hasiera&&g.hasiera.slice(0,4)===year)counts[g.baliabidea]++}
+  for(const k in counts)prev[k]=counts[k];
+  const restOk=(id,s,e,rh)=>busy[id].every(([bs,be])=>!(s<be+rh*H&&e+rh*H>bs));
+  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
+  const pen=(z,h)=>{if(h===z)return 0;const i=(c.lehentasunak[String(z)]||[]).indexOf(h);return i<0?40:(i+1)*10};
+  const days=[];
+  for(let d=0;d<nDays;d++){
+    const date=addDays(startDate,d);const row={date,zones:{},zist:null,moves:[]};const assigned=[];
+    const [ts,te]=slot(date,'taldea',c);
+    zones.forEach((z,k)=>{
+      const last=k===zones.length-1,hasPro=assigned.some(r=>r.profesionala);
+      const cand=taldeak.filter(r=>avail?.[r.id]?.[d]!==false&&!assigned.includes(r)&&restOk(r.id,ts,te,+c.taldeAtseden)&&!(last&&c.profKontrola&&!hasPro&&!r.profesionala));
+      let best=null,bs=Infinity;for(const r of cand){const sc=counts[r.id]*100+pen(z,r.eremua)+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
+      row.zones[z]=best;if(best){assigned.push(best);counts[best.id]++;busy[best.id].push([ts,te]);if(best.eremua!==z)row.moves.push(`${best.izena} Z${best.eremua}→Z${z}`)}
+    });
+    const [zs,ze]=slot(date,'zisterna',c);
+    let best=null,bs=Infinity;for(const r of zist){if(avail?.[r.id]?.[d]===false||!restOk(r.id,zs,ze,+c.zistAtseden))continue;const sc=counts[r.id]*100+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
+    row.zist=best;if(best){counts[best.id]++;busy[best.id].push([zs,ze])}
+    row.pros=assigned.filter(r=>r.profesionala).length;row.covered=zones.every(z=>row.zones[z]);
+    days.push(row);
+  }
+  return {days,zones,counts,prev};
+}
+
+/* ===================== Datu-biltegia ===================== */
+const UI={tab:'denbora',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
+let DB=null,DL=null,MODEL=null,renderQueued=false;
+const LS_KEY='zaintzak-itzaltzeak-v1';
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+async function put(coll,id,data){
+  if(UI.mode==='supa'){const {error}=await SB.from('docs').upsert({coll,id,data,updated_at:new Date().toISOString()});if(error)throw error;if(coll==='config')S.config=clone(data);else S[coll][id]=clone(data);queueRender();return}
+  if(UI.mode==='db'){const ref=coll==='config'?DB.doc('config/'+id):DB.collection(coll).doc(id);await ref.set(data)}
+  else{if(coll==='config')S.config=clone(data);else S[coll][id]=clone(data);saveLocal();queueRender()}
+}
+async function del(coll,id){
+  if(UI.mode==='supa'){const {error}=await SB.from('docs').delete().match({coll,id});if(error)throw error;delete S[coll][id];queueRender();return}
+  if(UI.mode==='db'){await DB.collection(coll).doc(id).delete()}
+  else{delete S[coll][id];saveLocal();queueRender()}
+}
+function saveLocal(){lsSet(LS_KEY,JSON.stringify(S))}
+async function safe(fn,okMsg){try{await fn();if(okMsg)toast(okMsg);return true}catch(e){toast('Ezin izan da gorde: '+(e&&e.code==='invalid_argument'?'ez duzu idazteko baimenik':(e&&e.message)||e));return false}}
+
+async function initStore(){
+  let db=null;
+  try{db=(window.claude&&window.claude.use)?await window.claude.use('db'):null}catch(e){db=null}
+  try{DL=(window.claude&&window.claude.use)?await window.claude.use('downloads'):null}catch(e){DL=null}
+  if(db){
+    DB=db;UI.mode='db';const got=new Set();
+    const done=()=>{if(got.size>=COLLS.length+1&&!UI.loaded){UI.loaded=true;initDefaults()}queueRender()};
+    for(const c of COLLS){db.collection(c).onSnapshot(snap=>{const o={};snap.docs.forEach(d=>{o[d.id]=d.data()});S[c]=o;got.add(c);done()},
+      err=>{got.add(c);done();toast('Datuak ezin izan dira kargatu ('+c+')')})}
+    db.doc('config/arauak').onSnapshot(s=>{S.config=s.exists?s.data():null;got.add('config');done()},()=>{got.add('config');done()});
+    setTimeout(()=>{if(!UI.loaded){UI.loaded=true;initDefaults();queueRender()}},12000);
+    try{const user=await window.claude.use('user');if(user){const w=await user.can('data.write');if(w===false)UI.canWrite=false;queueRender()}}catch(e){}
+  }else if(window.ZI_CONFIG&&window.ZI_CONFIG.supabaseUrl&&window.ZI_CONFIG.supabaseKey&&await supaInit(window.ZI_CONFIG)){
+    /* Supabase */
+  }else{
+    UI.mode='local';const raw=lsGet(LS_KEY);
+    if(raw){try{loadInto(JSON.parse(raw))}catch(e){}}
+    else{try{const r=await fetch('data.json',{cache:'no-store'});if(r.ok){loadInto(await r.json());saveLocal()}}catch(e){}}
+    UI.loaded=true;initDefaults();queueRender();
+  }
+}
+function loadInto(o){for(const c of COLLS)S[c]=(o&&o[c])||{};S.config=(o&&o.config)||null}
+function initDefaults(){
+  if(!UI.tlStart){let last=null;for(const g of Object.values(S.zaintzak))if(!last||g.hasiera>last)last=g.hasiera;
+    for(const i of Object.values(S.eskuhartzeak))if(!last||i.deia>last)last=i.deia;
+    const t=todayStr();UI.tlStart=monday(last&&last.slice(0,10)<t?last.slice(0,10):t)}
+  if(!UI.lYear){UI.lYear=(UI.tlStart||todayStr()).slice(0,4)}
+}
+
+/* ===================== Errendatzea ===================== */
+const TABS=[['denbora','Denbora-lerroa'],['zaintzak','Zaintzak'],['suteak','Suteak'],['proposamena','Proposamena'],['likidazioa','Likidazioa eta ziurtagiriak'],['kontsultak','Kontsultak'],['baliabideak','Baliabideak'],['arauak','Arauak']];
+function queueRender(){if(renderQueued)return;renderQueued=true;requestAnimationFrame(()=>{renderQueued=false;render()})}
+function render(){
+  MODEL=compute();
+  document.getElementById('tabs').innerHTML=TABS.map(([k,l])=>`<button role="tab" aria-selected="${UI.tab===k}" data-act="tab" data-k="${k}">${l}</button>`).join('');
+  const nW=MODEL.warns.length;
+  document.getElementById('status').innerHTML=(nW?`<button class="warnbtn" data-act="go-warns">${nW} abisu</button>`:'')+
+    `<span><span class="dot ${UI.mode==='db'||(UI.mode==='supa'&&UI.session)?'ok':''}"></span>${UI.mode==='db'?(UI.canWrite?'Datu partekatuak':'Irakurtzeko soilik'):UI.mode==='supa'?(UI.session?'Datu-base zentrala, '+esc(UI.session.user?.email||''):'Saioa hasi gabe'):UI.mode==='local'?'Gailu honetan gordeta':'Konektatzen…'}</span>${UI.mode==='supa'&&UI.session?'<button class="btn small" data-act="logout">Irten</button>':''}`;
+  const m=document.getElementById('main');
+  if(UI.mode==='supa'&&!UI.session){m.innerHTML=vLogin();return}
+  if(!UI.loaded){m.innerHTML='<div class="empty">Datuak kargatzen…</div>';return}
+  const f={denbora:vTimeline,zaintzak:vGuards,suteak:vFires,proposamena:vProposal,likidazioa:vLiq,kontsultak:vQuery,baliabideak:vRes,arauak:vRules}[UI.tab];
+  m.innerHTML=(!Object.keys(S.baliabideak).length&&UI.tab!=='arauak'?`<div class="empty" style="margin-bottom:16px">Ez dago daturik oraindik.<br><br>${UI.mode==='supa'?'<button class="btn primary" data-act="seed-supa">Hasierako datuak kargatu (data.json)</button> ':''}<button class="btn" data-act="seed-res">Sortu 12 talde eta 5 zisterna</button></div>`:'')+f();
+}
+
+function chip(t){return `<span class="chip ${t}">${t==='zaintza'?'Zaintza':t==='praktika'?'Praktika':'Itzaltzea'}</span>`}
+function resOptions(sel,all){return (all?`<option value="">Baliabide guztiak</option>`:'')+resList().map(r=>`<option value="${esc(r.id)}" ${r.id===sel?'selected':''}>${esc(r.izena)}${r.aktibo===false?' (ez aktibo)':''}</option>`).join('')}
+
+function vWarns(){
+  const W=MODEL.warns;
+  if(!W.length)return `<section class="warns" id="warns"><h3>Abisuak</h3><p class="muted">Ez dago abisurik: ez dago gainjartzerik ezta daturik falta ere.</p></section>`;
+  return `<section class="warns" id="warns"><h3>Abisuak (${W.length})</h3><p class="lead">Gainjartzeak eta falta diren datuak. Konpondu arte, orduak ez dira ondo kalkulatzen.</p><div class="tbl">${W.map(w=>{
+    const label=w.kind==='g'?(S.zaintzak[w.id]?.mota==='praktika'?'Praktika':'Zaintza'):'Itzaltzea, sutea '+esc(S.eskuhartzeak[w.id]?.sutea);
+    return `<div class="warn-item"><div class="w-main"><b>${esc(resName(w.res))}</b> · ${label}<div class="w-when">${showMs(w.when)}</div><div class="wtext">${esc(w.t)}</div></div>
+    ${w.fix?`<button class="btn small primary" data-act="fix" data-id="${esc(w.fix.guard)}" data-v="${esc(w.fix.amaiera)}">${esc(w.fix.label)}</button>`:''}
+    <button class="btn small" data-act="${w.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(w.id)}">Ireki</button></div>`}).join('')}</div></section>`;
+}
+
+/* ---- Zaintzak ---- */
+function monthOpts(sel){return `<option value="">Hilabete guztiak</option>`+MONTHS.map((m,i)=>`<option value="${i+1}" ${String(i+1)===String(sel)?'selected':''}>${m}</option>`).join('')}
+function vGuards(){
+  const list=Object.values(MODEL.G).filter(g=>(!UI.gRes||g.rec.baliabidea===UI.gRes)&&(!UI.gMota||g.rec.mota===UI.gMota)&&(!UI.gMonth||(g.rec.hasiera||'').slice(5,7)===String(UI.gMonth).padStart(2,'0')))
+    .sort((a,b)=>(b.s||0)-(a.s||0));
+  let th=0,tp=0;list.forEach(g=>{th+=g.h;tp+=g.hp});
+  return `<h2>Zaintzak</h2><p class="lead">Zaintza eta praktika tarte guztiak. Retenen zaintza 00:00etan amaitzen da (7 ordu); orduak hasieratik eta amaieratik kalkulatzen dira beti. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>
+  <div class="tools"><label class="f">Baliabidea<select data-filter="gRes">${resOptions(UI.gRes,true)}</select></label>
+  <label class="f">Hilabetea<select data-filter="gMonth">${monthOpts(UI.gMonth)}</select></label>
+  <label class="f">Mota<select data-filter="gMota"><option value="">Guztiak</option><option value="zaintza" ${UI.gMota==='zaintza'?'selected':''}>Zaintza</option><option value="praktika" ${UI.gMota==='praktika'?'selected':''}>Praktika</option></select></label>
+  <span class="grow"></span><button class="btn primary" data-act="new-guard">Zaintza berria</button></div>
+  <div class="sumline"><span><b>${list.length}</b>tarte</span><span><b>${n2(th)}</b>ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Gertakari-zk.</th><th>Oharrak</th></tr></thead><tbody>
+  ${list.map(g=>`<tr class="click" data-act="edit-guard" data-id="${esc(g.id)}"><td><b>${esc(resName(g.rec.baliabidea))}</b></td><td>${chip(g.rec.mota==='praktika'?'praktika':'zaintza')}${g.rec.suterik?' <span class="chip itzaltze">Sutera</span>':''}${g.plan?' <span class="chip mute">Planifikatua</span>':''}</td><td>${showDT(g.rec.hasiera)}</td><td>${showDT(g.rec.amaiera)}</td><td class="num">${n2(g.h)}</td><td class="num">${g.k}</td><td class="num">${n2(g.hp)}</td><td>${esc(g.rec.zk||'')}</td><td class="wrap">${esc(g.rec.oharrak||'')}${g.warn.filter(w=>!w.info).map(w=>`<div class="wtext">${esc(w.t)}</div>`).join('')}</td></tr>`).join('')}
+  </tbody></table></div>`:'<div class="empty">Ez dago zaintzarik iragazki hauekin.</div>'}`;
+}
+
+/* ---- Suteak ---- */
+function vFires(){
+  const fires={};for(const [id,f] of Object.entries(S.suteak))fires[f.zk||id.replace(/^s/,'')]={id,f,ints:[]};
+  for(const o of MODEL.ints){const k=o.rec.sutea;if(!fires[k])fires[k]={id:'s'+k,f:{zk:k,herria:'',lekua:''},ints:[],orphan:true};fires[k].ints.push(o)}
+  let arr=Object.entries(fires).map(([k,v])=>({k,...v,last:Math.max(0,...v.ints.map(o=>o.deia||0))}));
+  if(UI.fRes)arr=arr.filter(x=>x.ints.some(o=>o.rec.baliabidea===UI.fRes));
+  arr.sort((a,b)=>b.last-a.last||String(b.k).localeCompare(String(a.k)));
+  let th=0,tp=0;arr.forEach(x=>x.ints.forEach(o=>{if(!UI.fRes||o.rec.baliabidea===UI.fRes){th+=o.h;tp+=o.hp}}));
+  return `<h2>Suteak</h2><p class="lead">Sute bakoitza eta bertara joan diren baliabideak. Zaintzan zeudenean itzaltzea DEIAtik hasten da; zaintzarik gabe, ERANTZUNAtik. Amaiera ETXERATU da, edo zaintzara itzultzeko ordua lehenago bada, hori.</p>
+  <div class="tools"><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label><span class="grow"></span>
+  <button class="btn" data-act="new-fire">Sute berria</button><button class="btn primary" data-act="new-int">Esku-hartze berria</button></div>
+  <div class="sumline"><span><b>${arr.length}</b>sute</span><span><b>${n2(th)}</b>itzaltze ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
+  ${arr.length?arr.map(x=>`<article class="fire"><div class="fire-head"><h3>Sutea ${esc(x.k)}</h3><span class="place">${esc([x.f.herria,x.f.lekua].filter(Boolean).join(', '))||'Kokapenik gabe'}</span>
+  <span class="acts"><button class="btn small" data-act="edit-fire" data-id="${esc(x.id)}">Editatu</button><button class="btn small" data-act="new-int" data-sute="${esc(x.k)}">Baliabidea gehitu</button></span></div>
+  ${x.ints.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Deia</th><th>Egoera</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Abisuak</th></tr></thead><tbody>
+  ${x.ints.filter(o=>!UI.fRes||o.rec.baliabidea===UI.fRes).map(o=>`<tr class="click" data-act="edit-int" data-id="${esc(o.id)}"><td><b>${esc(resName(o.rec.baliabidea))}</b></td><td>${showMs(o.deia)}</td>
+  <td>${o.og?'<span class="chip zaintza">Zaintzan</span>':'<span class="chip mute">Zaintzarik gabe</span>'}</td>
+  <td>${showMs(o.start)}<div class="muted" style="font-size:12px">${esc(o.startRule||'')}</div></td><td>${showMs(o.end)}<div class="muted" style="font-size:12px">${esc(o.endRule||'')}</div></td>
+  <td class="num">${n2(o.h)}</td><td class="num">${o.k}</td><td class="num">${n2(o.hp)}</td><td class="wrap">${o.warn.map(w=>`<div class="wtext"${w.info?' style="color:var(--muted)"':''}>${esc(w.t)}</div>`).join('')}</td></tr>`).join('')}
+  </tbody></table></div>`:'<p class="muted" style="padding:10px 12px;margin:0">Ez du esku-hartzerik oraindik.</p>'}</article>`).join(''):'<div class="empty">Ez dago suterik erregistratuta.</div>'}`;
+}
+
+function ensureProp(){
+  if(!UI.prop){const t=todayStr();UI.prop={start:addDays(monday(t),7),days:7,avail:{},result:null}}
+  const p=UI.prop;for(const r of resList())if(!p.avail[r.id]||p.avail[r.id].length!==p.days)p.avail[r.id]=Array(p.days).fill(true);return p;
+}
+/* ---- Likidazioa ---- */
+function liqRange(){const y=+UI.lYear;if(UI.lMonth){const m=+UI.lMonth;return [Date.UTC(y,m-1,1),Date.UTC(y,m,1)]}return [Date.UTC(y,0,1),Date.UTC(y+1,0,1)]}
+function vLiqSummary(){
+  const [from,to]=liqRange();const rows=aggregate(MODEL,from,to);const res=resList();
+  const years=new Set([UI.lYear,todayStr().slice(0,4)]);Object.values(S.zaintzak).forEach(g=>g.hasiera&&years.add(g.hasiera.slice(0,4)));Object.values(S.eskuhartzeak).forEach(i=>i.deia&&years.add(i.deia.slice(0,4)));
+  const T={zh:0,ph:0,ih:0,zp:0,pp:0,ip:0,eur:0};
+  const body=res.filter(r=>rows[r.id]).map(r=>{const x=rows[r.id];for(const k in T)T[k]+=x[k];
+    return `<tr><td><b>${esc(r.izena)}</b></td><td>${r.mota==='zisterna'?'Zisterna':'Taldea'}</td><td class="num">${n2(x.zh)}</td><td class="num">${n2(x.zp)}</td><td class="num">${n2(x.ph)}</td><td class="num">${n2(x.pp)}</td><td class="num">${n2(x.ih)}</td><td class="num">${n2(x.ip)}</td><td class="num"><b>${n2(x.zp+x.pp+x.ip)}</b></td><td class="num">${eur(x.eur)}</td></tr>`}).join('');
+  let monthly='';
+  if(!UI.lMonth){const y=+UI.lYear;monthly=`<h3 style="margin:22px 0 8px">Hilabeteka</h3><div class="tbl"><table><thead><tr><th>Hilabetea</th><th class="num">Zaintza o-p</th><th class="num">Praktika o-p</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Likidazioa</th></tr></thead><tbody>${MONTHS.map((mn,i)=>{
+    const R=aggregate(MODEL,Date.UTC(y,i,1),Date.UTC(y,i+1,1));const s={zp:0,pp:0,ip:0,eur:0};Object.values(R).forEach(x=>{s.zp+=x.zp;s.pp+=x.pp;s.ip+=x.ip;s.eur+=x.eur});
+    if(!s.zp&&!s.pp&&!s.ip)return '';return `<tr class="click" data-act="liq-month" data-k="${i+1}"><td>${mn}</td><td class="num">${n2(s.zp)}</td><td class="num">${n2(s.pp)}</td><td class="num">${n2(s.ip)}</td><td class="num"><b>${n2(s.zp+s.pp+s.ip)}</b></td><td class="num">${eur(s.eur)}</td></tr>`}).join('')}</tbody></table></div>`}
+  const t=cfg().tarifak;
+  return `<p class="lead">Ordu-pertsonak (orduak × kideak) baliabide eta mota bakoitzeko. Tarte bakoitza hasiera-dataren hilabetean kontatzen da. Planifikatutako zaintzak ez dira kontatzen, egiaztatu arte. Tarifak Arauak atalean aldatzen dira (taldeak: ${eur(t.taldeZaintza)} / ${eur(t.taldeItzaltze)}; zisternak: ${eur(t.zistZaintza)} / ${eur(t.zistItzaltze)} zaintza/itzaltze orduko).</p>
+  <div class="tools"><label class="f">Urtea<select data-filter="lYear">${[...years].sort().map(y=>`<option ${y===UI.lYear?'selected':''}>${y}</option>`).join('')}</select></label>
+  <label class="f">Epea<select data-filter="lMonth"><option value="">Urte osoa</option>${MONTHS.map((m,i)=>`<option value="${i+1}" ${String(i+1)===String(UI.lMonth)?'selected':''}>${m}</option>`).join('')}</select></label>
+  <span class="grow"></span><button class="btn" data-act="export-liq">Likidazioa CSV</button><button class="btn" data-act="export-all">Erregistro guztiak CSV</button></div>
+  ${body?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th class="num">Zaintza h</th><th class="num">Zaintza o-p</th><th class="num">Praktika h</th><th class="num">Praktika o-p</th><th class="num">Itzaltze h</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Likidazioa</th></tr></thead>
+  <tbody>${body}<tr class="total"><td>Guztira</td><td></td><td class="num">${n2(T.zh)}</td><td class="num">${n2(T.zp)}</td><td class="num">${n2(T.ph)}</td><td class="num">${n2(T.pp)}</td><td class="num">${n2(T.ih)}</td><td class="num">${n2(T.ip)}</td><td class="num">${n2(T.zp+T.pp+T.ip)}</td><td class="num">${eur(T.eur)}</td></tr></tbody></table></div>`:'<div class="empty">Ez dago ordurik epe honetan.</div>'}
+  ${monthly}`;
+}
+
+function liqFilters(){const years=new Set([UI.lYear,todayStr().slice(0,4)]);Object.values(S.zaintzak).forEach(g=>g.hasiera&&years.add(g.hasiera.slice(0,4)));Object.values(S.eskuhartzeak).forEach(i=>i.deia&&years.add(i.deia.slice(0,4)));
+  return `<label class="f">Urtea<select data-filter="lYear">${[...years].sort().map(y=>`<option ${y===UI.lYear?'selected':''}>${y}</option>`).join('')}</select></label>
+  <label class="f">Epea<select data-filter="lMonth"><option value="">Urte osoa</option>${MONTHS.map((m,i)=>`<option value="${i+1}" ${String(i+1)===String(UI.lMonth)?'selected':''}>${m}</option>`).join('')}</select></label>`}
+function vLiq(){const sb=(k,l)=>`<button aria-pressed="${UI.lView===k}" data-act="liq-view" data-k="${k}">${l}</button>`;
+  const head=`<h2>Likidazioa eta ziurtagiriak</h2><div class="tools"><span class="seg">${sb('lab','Laburpena')}${sb('zt','Ziurtagiriak')}${sb('em','Emandakoak')}</span></div>`;
+  if(UI.lView==='em')return head+`<p class="lead">Deskargatutako ziurtagiri eta likidazio-agiri guztien erregistroa. PDFa uneko datuekin sortzen da berriro.</p>`+vIssued();
+  if(UI.lView==='zt')return head+`<p class="lead">Zerbitzu bakoitzak bere ziurtagiria du: zaintza hutsa, zaintza eta itzaltzea, edo zaintzarik gabeko itzaltzea. Elkarren segidan dauden tarteak zerbitzu bakarrean biltzen dira. Planifikatutako zaintzak ez dira sartzen egiaztatu arte.</p><div class="tools">${liqFilters()}</div>`+vCerts();
+  return head+vLiqSummary()}
+/* ---- Baliabideak ---- */
+function vRes(){
+  const y=todayStr().slice(0,4);const cnt={};Object.values(S.zaintzak).forEach(g=>{if(g.mota!=='praktika'&&(g.hasiera||'').startsWith(y))cnt[g.baliabidea]=(cnt[g.baliabidea]||0)+1});
+  const list=resList();
+  return `<h2>Baliabideak</h2><p class="lead">Taldeak (retenak) eta zisternak. Jatorrizko eremua eta profesional izaera proposamenean erabiltzen dira; kide lehenetsiak zaintza berrietan.</p>
+  <div class="tools"><span class="grow"></span><button class="btn primary" data-act="new-res">Baliabide berria</button></div>
+  <div class="tbl"><table><thead><tr><th>Izena</th><th>Mota</th><th>Jatorrizko eremua</th><th>Profesionala</th><th>Aktibo</th><th class="num">Kide lehenetsiak</th><th class="num">Zaintzak ${y}</th></tr></thead><tbody>
+  ${list.map(r=>`<tr class="click" data-act="edit-res" data-id="${esc(r.id)}"><td><b>${esc(r.izena)}</b></td><td>${r.mota==='zisterna'?'Zisterna':'Taldea'}</td><td>${r.mota==='taldea'?(r.eremua?r.eremua+'. eremua':'—'):'Lurralde osoa'}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td><td>${r.aktibo===false?'Ez':'Bai'}</td><td class="num">${r.kideak||1}</td><td class="num">${cnt[r.id]||0}</td></tr>`).join('')}
+  </tbody></table></div>`;
+}
+
+/* ---- Arauak ---- */
+function vRules(){
+  const c=cfg();const zsel=(z,i)=>`<select name="lh_${z}_${i}">${[1,2,3,4].filter(x=>x!==z).map(x=>`<option value="${x}" ${c.lehentasunak[String(z)][i]===x?'selected':''}>${x}. eremua</option>`).join('')}</select>`;
+  return `<h2>Arauak</h2><p class="lead">Ordutegi estandarrak, atsedenak, eremuak eta tarifak. Aldaketak proposamen eta kalkulu berrietan aplikatzen dira.</p>
+  <form id="rulesForm"><div class="cards">
+  <div class="panel"><h3>Ordutegiak</h3><div class="grid"><label class="f">Taldeen hasiera<input type="time" name="taldeHasiera" value="${c.taldeHasiera}"></label><label class="f">Taldeen amaiera<input type="time" name="taldeAmaiera" value="${c.taldeAmaiera}"></label>
+  <label class="f">Zisternen hasiera<input type="time" name="zistHasiera" value="${c.zistHasiera}"></label><label class="f">Zisternen amaiera<input type="time" name="zistAmaiera" value="${c.zistAmaiera}"></label>
+  <label class="f">Taldeen gutxieneko atsedena (h)<input type="number" min="0" step="1" name="taldeAtseden" value="${c.taldeAtseden}"></label><label class="f">Zisternen gutxieneko atsedena (h)<input type="number" min="0" step="1" name="zistAtseden" value="${c.zistAtseden}"></label></div></div>
+  <div class="panel"><h3>Eremuak</h3><div class="grid">${[1,2,3,4].map(z=>`<label class="chk"><input type="checkbox" name="eremua${z}" ${c.eremuak[z-1]?'checked':''}> ${z}. eremua aktibo</label>`).join('')}
+  <label class="chk span2"><input type="checkbox" name="profKontrola" ${c.profKontrola?'checked':''}> Egunero gutxienez talde profesional bat</label></div></div>
+  <div class="panel"><h3>Laguntza-lehentasunak</h3><div class="tbl"><table><thead><tr><th>Bete beharreko eremua</th><th>1. aukera</th><th>2. aukera</th><th>3. aukera</th></tr></thead><tbody>
+  ${[1,2,3,4].map(z=>`<tr><td>${z}. eremua</td>${[0,1,2].map(i=>`<td>${zsel(z,i)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
+  <div class="panel"><h3>Tarifak (€ orduko, pertsonako)</h3><div class="grid"><label class="f">Taldeak, zaintza<input type="number" min="0" step="0.01" name="taldeZaintza" value="${c.tarifak.taldeZaintza}"></label><label class="f">Taldeak, itzaltzea<input type="number" min="0" step="0.01" name="taldeItzaltze" value="${c.tarifak.taldeItzaltze}"></label>
+  <label class="f">Zisternak, zaintza<input type="number" min="0" step="0.01" name="zistZaintza" value="${c.tarifak.zistZaintza}"></label><label class="f">Zisternak, itzaltzea<input type="number" min="0" step="0.01" name="zistItzaltze" value="${c.tarifak.zistItzaltze}"></label></div>
+  <p class="muted" style="font-size:13px;margin:8px 0 0">Praktikak zaintza-tarifarekin ordaintzen dira.</p></div>
+  </div><div class="tools" style="margin-top:16px"><button type="button" class="btn primary" data-act="save-cfg">Arauak gorde</button></div></form>
+  <div class="panel" style="margin-top:20px"><h3>Babeskopia</h3><p class="muted" style="margin:0 0 10px;max-width:70ch">Datu guztiak (baliabideak, zaintzak, suteak, esku-hartzeak eta arauak) JSON fitxategi batean gorde edo berreskuratu. Inportatzean, uneko datuak fitxategikoekin ordezkatzen dira.</p>
+  <div class="tools" style="margin:0"><button type="button" class="btn" data-act="backup-export">Datuak esportatu (JSON)</button><label class="btn" style="display:inline-flex;align-items:center">Datuak inportatu<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>`;
+}
+
+/* ---- Denbora-lerroa ---- */
+function vNow(){
+  const now=nowMs(),M=MODEL;
+  const act=Object.values(M.G).filter(g=>g.s!=null&&g.e!=null&&g.s<=now&&g.e>now).sort((a,b)=>a.s-b.s);
+  const ong=M.ints.filter(o=>o.ongoing);
+  const pend=Object.values(M.G).filter(g=>g.plan&&g.e!=null&&g.e<=now).sort((a,b)=>b.s-a.s);
+  if(!act.length&&!ong.length&&!pend.length)return '';
+  let h='<section class="now"><h3>Orain</h3><div class="tbl">';
+  for(const o of ong)h+=`<div class="warn-item"><div class="w-main"><span class="chip itzaltze">Itzaltzen</span> <b>${esc(resName(o.rec.baliabidea))}</b>, sutea ${esc(o.rec.sutea)}<div class="w-when">${showMs(o.start)}etik, ${o.k} kide</div></div><button class="btn small primary" data-act="finish-int" data-id="${esc(o.id)}">Itzaltzea amaitu</button><button class="btn small" data-act="edit-int" data-id="${esc(o.id)}">Ireki</button></div>`;
+  for(const g of act)h+=`<div class="warn-item"><div class="w-main"><span class="chip zaintza">Zaintzan</span> <b>${esc(resName(g.rec.baliabidea))}</b>${g.plan?' <span class="chip mute">Planifikatua</span>':''}<div class="w-when">${showT(g.s)}–${showT(g.e)}, ${g.k} kide</div></div><button class="btn small primary" data-act="fire-from-guard" data-id="${esc(g.id)}">Suterik izan da</button><button class="btn small" data-act="edit-guard" data-id="${esc(g.id)}">Editatu</button></div>`;
+  if(pend.length)h+=`<div class="warn-item"><div class="w-main"><span class="chip warn">Berretsi gabe</span> <b>${pend.length} zaintza planifikatu</b><div class="w-when">Bete benetako orduak eta kideak likidatu ahal izateko.</div></div>${pend.slice(0,6).map(g=>`<button class="btn small" data-act="edit-guard" data-id="${esc(g.id)}">${esc(resName(g.rec.baliabidea))} ${F(g.s).slice(5,10).split('-').reverse().join('/')}</button>`).join('')}</div>`;
+  return h+'</div></section>';
+}
+function vTimeline(){
+  const t0=PD(UI.tlStart),t1=t0+7*DAY,span=7*DAY,today=todayStr();
+  const res=resList().filter(r=>r.aktibo!==false&&(UI.tlFilter==='all'||r.mota===UI.tlFilter));
+  let sumZ=0,sumP=0,sumI=0;
+  const seg=(s,e,cls,label,act,id,title,alert)=>{if(e<=t0||s>=t1)return '';const a=Math.max(s,t0),b=Math.min(e,t1);
+    return `<button class="bar ${cls}${alert?' alert':''}" style="left:${((a-t0)/span*100).toFixed(3)}%;width:${Math.max(.35,(b-a)/span*100).toFixed(3)}%" data-act="${act}" data-id="${esc(id)}" title="${esc(title)}">${esc(label)}</button>`};
+  let rows='',prevMota=null;
+  for(const r of res){
+    const b=MODEL.byRes[r.id]||{g:[],i:[]};let bars='';
+    for(const g of b.g){if(g.s==null||g.e==null)continue;const cls=(g.rec.mota==='praktika'?'praktika':'zaintza')+(g.plan?' plan':'');
+      if(g.s>=t0&&g.s<t1&&!g.plan){if(g.rec.mota==='praktika')sumP+=g.hp;else sumZ+=g.hp}
+      bars+=seg(g.s,g.e,cls,`${showT(g.s)}–${showT(g.e)}`,'edit-guard',g.id,`${r.izena}: ${g.rec.mota==='praktika'?'praktika':'zaintza'}${g.plan?' (planifikatua)':''} ${showMs(g.s)} – ${showMs(g.e)} (${n2(g.h)} h × ${g.k})${g.rec.oharrak?'\n'+g.rec.oharrak:''}`,g.warn.some(w=>!w.info))}
+    for(const o of b.i){if(o.start==null)continue;const e=o.end??(o.ongoing?Math.max(nowMs(),o.start+H/2):(o.buk??o.start+H));
+      if(o.start>=t0&&o.start<t1)sumI+=o.hp;
+      bars+=seg(o.start,e,o.end==null?'itzaltze falta':'itzaltze',`Sutea ${o.rec.sutea}`,o.ongoing?'finish-int':'edit-int',o.id,`${r.izena}: itzaltzea, sutea ${o.rec.sutea}\n${showMs(o.start)} – ${o.end==null?(o.ongoing?'abian':'amaiera falta'):showMs(o.end)} (${n2(o.h)} h × ${o.k})`,o.warn.some(w=>!w.info))}
+    rows+=`<div class="tl-row${prevMota&&prevMota!==r.mota?' tl-sep':''}"><div class="tl-name">${esc(r.izena)} ${r.profesionala?'<small>prof.</small>':''}</div><div class="tl-track">${bars}</div></div>`;prevMota=r.mota;
+  }
+  const days=[...Array(7)].map((_,i)=>{const d=addDays(UI.tlStart,i);const wd=new Date(PD(d)).getUTCDay();return `<div class="${d===today?'today':''}">${WD[wd]} ${d.slice(8,10)}/${d.slice(5,7)}</div>`}).join('');
+  const fb=(k,l)=>`<button aria-pressed="${UI.tlFilter===k}" data-act="tl-filter" data-k="${k}">${l}</button>`;
+  return `${vNow()}<h2>Denbora-lerroa</h2><p class="lead">Baliabide bakoitzaren zaintza eta itzaltze tarteak, astez aste. Sakatu tarte bat editatzeko.</p>
+  <div class="tools"><button class="btn" data-act="tl-move" data-n="-7">‹ Aurreko astea</button>
+  <label class="f">Astearen hasiera<input type="date" id="tlDate" value="${UI.tlStart}"></label>
+  <button class="btn" data-act="tl-move" data-n="7">Hurrengo astea ›</button><button class="btn" data-act="tl-today">Gaur</button>
+  <span class="seg">${fb('all','Guztiak')}${fb('zisterna','Zisternak')}${fb('taldea','Taldeak')}</span><span class="grow"></span>
+  <button class="btn" data-act="new-guard">Zaintza berria</button><button class="btn primary" data-act="new-int">Zaintzarik gabeko irteera</button></div>
+  <div class="sumline"><span><b>${n2(sumZ)}</b>zaintza ordu-pertsona</span><span><b>${n2(sumI)}</b>itzaltze ordu-pertsona</span>${sumP?`<span><b>${n2(sumP)}</b>praktika ordu-pertsona</span>`:''}</div>
+  <div class="tlwrap"><div class="tl"><div class="tl-row"><div class="tl-corner"></div><div class="tl-days">${days}</div></div>${rows||'<div class="empty">Ez dago baliabide aktiborik.</div>'}</div></div>
+  <div class="legend"><span><i style="background:var(--pine)"></i>Zaintza</span><span><i class="lg-plan"></i>Planifikatua</span><span><i style="background:var(--ember)"></i>Itzaltzea</span><span><i style="background:var(--ochre)"></i>Praktika</span><span><i style="background:repeating-linear-gradient(135deg,var(--ember) 0 4px,var(--ember-soft) 4px 8px)"></i>Itzaltzea, amaierarik gabe</span><span><i style="box-shadow:0 0 0 2px var(--warn);background:transparent"></i>Abisua du</span></div>
+  ${vWarns()}`;
+}
+
+/* ---- Formulario laguntzaileak ---- */
+function fireOptions(sel){return Object.values(S.suteak).sort((a,b)=>String(b.zk).localeCompare(String(a.zk),undefined,{numeric:true})).map(f=>`<option value="${esc(f.zk)}" ${String(f.zk)===String(sel)?'selected':''}>${esc(f.zk)} ${esc(f.herria||'')}</option>`).join('')}
+function intIdFor(rec){const base='i'+String(rec.sutea).replace(/[^\w-]/g,'')+'-'+rec.baliabidea+'-'+rec.deia.slice(0,10).replace(/-/g,'');return S.eskuhartzeak[base]?base+'-'+Date.now().toString(36):base}
+function defEnd(startStr,mota){if(!startStr)return '';const st=P(startStr);for(const d of [0,-1]){const [s,e]=slot(addDays(startStr.slice(0,10),d),mota);if(e>st&&s<=st+12*H)return F(e)}const [,e]=slot(startStr.slice(0,10),mota);return F(e>st?e:e+DAY)}
+
+function guardForm(id,preset){
+  const g=id?clone(S.zaintzak[id]):{baliabidea:preset?.res||resList()[0]?.id||'',mota:'zaintza',hasiera:'',amaiera:'',kideak:'',zk:'',oharrak:''};
+  if(!id&&!g.kideak)g.kideak=S.baliabideak[g.baliabidea]?.kideak||1;
+  if(!id&&!g.zk)g.zk=String(nextGuardZk());
+  const linked=id&&g.suterik?Object.entries(S.eskuhartzeak).find(([k,i])=>i.baliabidea===g.baliabidea&&i.deia===g.amaiera):null;
+  const fireBlock=linked?`<p style="margin:0 0 8px">Zaintza sutera joateko amaitu zen: sutea ${esc(linked[1].sutea)}, deia ${showDT(linked[1].deia)}.</p>
+    <button type="button" class="btn small" data-act="edit-int" data-id="${esc(linked[0])}">Esku-hartzea ireki</button>`
+   :`<label class="chk"><input type="checkbox" name="suterik" ${preset?.fire?'checked':''}> Suterik izan da</label>
+    <div id="fireBox" style="margin-top:10px"><p class="muted" style="font-size:13px;margin:0 0 10px">Zaintza DEIAren orduan amaitzen da eta hortik aurrera itzaltze-orduak kontatzen dira. Bukatu eta etxeratu orduak orain edo geroago bete daitezke.</p>
+    <div class="grid"><label class="f">Sutea<select name="sutea"><option value="__new">Sute berria…</option>${fireOptions('')}</select></label>
+    <label class="f nf">Sute-zk.<input name="fzk" value="${nextFireZk()}"></label><label class="f nf">Herria<input name="fherria"></label><label class="f nf">Lekua<input name="flekua"></label>
+    <label class="f">Deia<input type="datetime-local" name="deia"></label><label class="f">Suterako kideak<input type="number" name="fkideak" min="1" max="40" value="${esc(g.kideak)}"></label>
+    <label class="f">Iritsi<input type="datetime-local" name="iritsi"></label><label class="f">Bukatu<input type="datetime-local" name="bukatu"></label><label class="f">Etxeratu<input type="datetime-local" name="etxeratu"></label></div>
+    <label class="chk" style="margin-top:12px"><input type="checkbox" name="jarraitu"> Itzaltzearen ostean zaintzan jarraitu</label>
+    <div class="grid" id="contBox" style="margin-top:8px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli"></label><label class="f">Zaintzaren amaiera<input type="datetime-local" name="contEnd"></label></div></div>`;
+  const body=`<div class="grid"><label class="f">Baliabidea<select name="baliabidea">${resOptions(g.baliabidea)}</select></label>
+  <label class="f">Mota<select name="mota"><option value="zaintza" ${g.mota!=='praktika'?'selected':''}>Zaintza</option><option value="praktika" ${g.mota==='praktika'?'selected':''}>Praktika</option></select></label>
+  <label class="f">Kideak (efektiboak)<input type="number" name="kideak" min="1" max="40" value="${esc(g.kideak)}"></label>
+  <label class="f">Sarrera<input type="datetime-local" name="hasiera" value="${esc(g.hasiera)}"></label>
+  <label class="f">Irteera<input type="datetime-local" name="amaiera" value="${esc(g.amaiera)}"></label>
+  <label class="f">Gertakari-zk.<input name="zk" value="${esc(g.zk)}"></label>
+  <label class="chk span2"><input type="checkbox" name="egiaztatua" ${g.egoera!=='planifikatua'?'checked':''}> Benetako orduak eta kideak egiaztatuta (likidatzeko prest)</label>
+  <label class="f span2">Oharrak<textarea name="oharrak">${esc(g.oharrak)}</textarea></label></div>
+  <div class="tools" style="margin:10px 0 0"><button type="button" class="btn small" data-act="std-slot">Ordutegi estandarra sarrera-datarako</button></div>
+  <fieldset><legend>Sutea</legend>${fireBlock}</fieldset>
+  <div class="calc" id="calc"></div>`;
+  const foot=`${id?`<button type="button" class="btn danger" data-act="del-guard" data-id="${esc(id)}">Ezabatu</button>`:''}<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-guard" data-id="${esc(id||'')}">Gorde</button>`;
+  openDlg(id?'Zaintza':'Zaintza berria',body,foot,f=>{
+    const fire=!!f.elements.suterik&&f.elements.suterik.checked;const fb=document.getElementById('fireBox');
+    if(fb){fb.style.display=fire?'':'none';
+      const isNew=f.elements.sutea.value==='__new';f.querySelectorAll('.nf').forEach(x=>x.style.display=isNew?'':'none');
+      const cont=f.elements.jarraitu.checked;document.getElementById('contBox').style.display=cont?'':'none';
+      if(fire&&!f.elements.deia.value){const s=P(fv(f,'hasiera')),e=P(fv(f,'amaiera')),n=nowMs();f.elements.deia.value=F(s!=null&&e!=null&&n>s&&n<e?n:(e??n))}
+      if(cont&&!f.elements.itzuli.value&&f.elements.bukatu.value)f.elements.itzuli.value=f.elements.bukatu.value;
+      if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value){const am=fv(f,'amaiera');f.elements.contEnd.value=am&&P(am)>P(f.elements.itzuli.value)?am:defEnd(f.elements.itzuli.value,S.baliabideak[fv(f,'baliabidea')]?.mota)}}
+    const s=P(fv(f,'hasiera')),k=+fv(f,'kideak')||0;let e=P(fv(f,'amaiera'));if(fire&&P(fv(f,'deia'))!=null)e=P(fv(f,'deia'));
+    const h=(s!=null&&e!=null&&e>s)?(e-s)/H:0;
+    let x=`<div class="row"><span>Zaintza-orduak</span><b>${n2(h)}</b></div><div class="row"><span>Zaintza ordu-pertsonak</span><b>${n2(h*k)}</b></div>`;
+    if(fire){const ds=P(fv(f,'deia')),fk=+fv(f,'fkideak')||0;const cands=[f.elements.jarraitu.checked?P(fv(f,'itzuli')):null,P(fv(f,'etxeratu'))].filter(v=>v!=null);const ee=cands.length?Math.min(...cands):null;
+      x+=ee!=null&&ds!=null&&ee>ds?`<div class="row"><span>Itzaltze-orduak</span><b>${n2((ee-ds)/H)}</b></div><div class="row"><span>Itzaltze ordu-pertsonak</span><b>${n2((ee-ds)/H*fk)}</b></div>`:`<div class="row"><span>Itzaltzea</span><b>Abian (amaitzean kalkulatuko da)</b></div>`}
+    if(s!=null&&e!=null&&e<=s)x+='<div class="wtext">Irteerak sarrera baino geroago izan behar du</div>';
+    document.getElementById('calc').innerHTML=x;
+  });
+}
+function finishForm(id){
+  const r=clone(S.eskuhartzeak[id]);if(!r)return;const o=MODEL.I[id];const now=F(nowMs());
+  const body=`<p style="margin:0 0 12px"><b>${esc(resName(r.baliabidea))}</b>, sutea ${esc(r.sutea)}. Itzaltzea ${showMs(o?.start)}etik kontatzen da (${esc(o?.startRule||'')}), ${esc(r.kideak)} kide.</p>
+  <div class="grid"><label class="f">Bukatu<input type="datetime-local" name="bukatu" value="${esc(r.bukatu||now)}"></label><label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
+  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" checked> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu"> Zaintzan jarraitu</label></div>
+  <div class="grid" id="homeBox" style="margin-top:10px"><label class="f">Etxeratu<input type="datetime-local" name="etxeratu" value="${esc(r.etxeratu)}"></label></div>
+  <div class="grid" id="contBox" style="margin-top:10px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli"></label><label class="f">Zaintzaren amaiera<input type="datetime-local" name="contEnd"></label></div></fieldset>
+  <div class="calc" id="calc"></div>`;
+  openDlg('Itzaltzea amaitu',body,`<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-finish" data-id="${esc(id)}">Gorde</button>`,f=>{
+    const cont=f.querySelector('input[name=ondoren]:checked').value==='jarraitu';
+    document.getElementById('contBox').style.display=cont?'':'none';document.getElementById('homeBox').style.display=cont?'none':'';
+    if(cont&&!f.elements.itzuli.value)f.elements.itzuli.value=fv(f,'bukatu');
+    if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value)f.elements.contEnd.value=defEnd(f.elements.itzuli.value,S.baliabideak[r.baliabidea]?.mota);
+    const end=P(cont?fv(f,'itzuli'):fv(f,'etxeratu')),k=+fv(f,'kideak')||0;
+    document.getElementById('calc').innerHTML=o&&end!=null&&end>o.start?`<div class="row"><span>Itzaltze-orduak</span><b>${n2((end-o.start)/H)}</b></div><div class="row"><span>Ordu-pertsonak</span><b>${n2((end-o.start)/H*k)}</b></div>`:'<div class="row"><span>Itzaltze-orduak</span><b>—</b></div>';
+  });
+}
+
+/* ---- Proposamena ---- */
+function vProposal(){
+  const p=ensureProp();const c=cfg();const res=resList().filter(r=>r.aktibo!==false);
+  const taldeak=res.filter(r=>r.mota==='taldea'),zist=res.filter(r=>r.mota==='zisterna');
+  const dayHead=[...Array(p.days)].map((_,i)=>{const d=addDays(p.start,i);return `<th>${WD[new Date(PD(d)).getUTCDay()]} ${d.slice(8,10)}</th>`}).join('');
+  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
+  let out=`<h2>Proposamena</h2><p class="lead">Aplikazioak zaintzak proposatzen ditu: eremu aktibo bakoitzeko talde bat eta lurralde osorako zisterna bat, guardia gutxien dituena aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Gelaxka bakoitzean beste talde bat aukera dezakezu gorde aurretik.</p>
+  <div class="tools"><label class="f">Hasiera-data<input type="date" id="pStart" value="${p.start}"></label>
+  <label class="f">Egunak<input type="number" id="pDays" min="1" max="31" value="${p.days}" style="width:80px"></label>
+  <button class="btn primary" data-act="propose">Proposamena sortu</button></div>`;
+  if(p.result){
+    const R=p.result;const cnt={...R.prev};
+    const sel=(d,z,list,cur)=>`<select data-pz="${d}|${z}" aria-label="${z==='Z'?'Zisterna':z+'. eremua'}"><option value="">—</option>${list.map(r=>`<option value="${esc(r.id)}" ${cur&&cur.id===r.id?'selected':''}>${esc(r.izena)}${r.mota==='taldea'&&z!=='Z'&&r.eremua!==+z?` (Z${r.eremua??'?'})`:''}</option>`).join('')}</select>`;
+    out+=`<div class="tbl" style="margin-bottom:12px"><table><thead><tr><th>Eguna</th>${zones.map(z=>`<th>${z}. eremua</th>`).join('')}<th>Zisterna</th><th>Profesionalak</th><th>Oharrak</th></tr></thead><tbody>
+    ${R.days.map((d,di)=>{const wd=WD[new Date(PD(d.date)).getUTCDay()];const ids=[...Object.values(d.zones),d.zist].filter(Boolean).map(r=>r.id);
+      ids.forEach(i=>cnt[i]=(cnt[i]||0)+1);const dup=ids.filter((x,i)=>ids.indexOf(x)!==i);const pros=Object.values(d.zones).filter(r=>r&&r.profesionala).length;
+      const notes=[];if(dup.length)notes.push('Errepikatuta: '+dup.map(resName).join(', '));
+      ids.forEach(i=>{if(p.avail[i]&&p.avail[i][di]===false)notes.push(resName(i)+' ez dago erabilgarri')});
+      zones.forEach(z=>{if(!d.zones[z])notes.push(z+'. eremua estali gabe')});if(!d.zist)notes.push('Zisternarik ez');
+      return `<tr><td><b>${wd}</b> ${d.date.slice(8,10)}/${d.date.slice(5,7)}</td>${zones.map(z=>`<td>${sel(di,z,taldeak,d.zones[z])}</td>`).join('')}<td>${sel(di,'Z',zist,d.zist)}</td>
+      <td><span class="okbad ${pros>=1||!c.profKontrola?'ok':'bad'}">${pros}</span></td><td class="wrap">${notes.length?`<span class="wtext">${esc(notes.join('. '))}</span>`:''}</td></tr>`}).join('')}</tbody></table></div>
+    <div class="tools"><button class="btn primary" data-act="save-prop">Zaintzak gorde</button><span class="muted" style="align-self:center;max-width:70ch">Planifikatu gisa gordetzen dira (taldeak ${c.taldeHasiera}–${c.taldeAmaiera}, zisternak ${c.zistHasiera}–${c.zistAmaiera}). Zaintza egin ondoren, sartu benetako sarrera, irteera eta kide kopurua eta markatu egiaztatuta.</span></div>
+    <h3 style="margin:18px 0 8px">Kargaren laburpena (${p.start.slice(0,4)})</h3><div class="tbl" style="margin-bottom:20px"><table><thead><tr><th>Baliabidea</th><th class="num">Aurreko zaintzak</th><th class="num">Proposamen berria</th><th class="num">Guztira</th><th>Profesionala</th></tr></thead><tbody>
+    ${res.map(r=>`<tr><td>${esc(r.izena)}</td><td class="num">${R.prev[r.id]||0}</td><td class="num">${(cnt[r.id]||0)-(R.prev[r.id]||0)}</td><td class="num">${cnt[r.id]||0}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  out+=`<h3 style="margin:8px 0 8px">Erabilgarritasuna</h3><p class="lead">Kendu marka baliabide bat egun horretan erabilgarri ez badago, eta sortu proposamena berriro.</p>
+  <div class="tbl av"><table><thead><tr><th>Baliabidea</th>${dayHead}</tr></thead><tbody>${res.map(r=>`<tr><td>${esc(r.izena)}${r.mota==='taldea'?` <span class="muted">Z${r.eremua??'?'}</span>`:''}</td>${p.avail[r.id].map((v,i)=>`<td><input type="checkbox" data-av="${esc(r.id)}|${i}" ${v?'checked':''} aria-label="${esc(r.izena)} ${addDays(p.start,i)}"></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return out;
+}
+
+/* ---- Zerbitzuak eta ziurtagiriak ---- */
+function services(M,resId){
+  const b=M.byRes[resId];if(!b)return [];const items=[];
+  for(const g of b.g){if(g.plan||g.s==null||g.e==null||g.e<=g.s)continue;items.push({k:g.rec.mota==='praktika'?'praktika':'zaintza',s:g.s,e:g.e,h:g.h,kid:g.k,hp:g.hp,rate:rate(resId,'zaintza'),ref:g})}
+  for(const o of b.i){if(o.start==null)continue;items.push({k:'itzaltze',s:o.start,e:o.end??o.start,h:o.h,kid:o.k,hp:o.hp,rate:rate(resId,'itzaltze'),ref:o,open:o.end==null})}
+  items.sort((a,b)=>a.s-b.s||a.e-b.e);const out=[];let cur=null;
+  for(const it of items){if(cur&&it.s<=cur.e+30*6e4){cur.items.push(it);cur.e=Math.max(cur.e,it.e)}else{cur={res:resId,s:it.s,e:it.e,items:[it]};out.push(cur)}}
+  for(const v of out){v.key=resId+'|'+v.s;v.zp=0;v.pp=0;v.ip=0;v.zh=0;v.ih=0;v.eur=0;v.open=false;
+    for(const it of v.items){if(it.k==='itzaltze'){v.ip+=it.hp;v.ih+=it.h}else if(it.k==='praktika')v.pp+=it.hp;else{v.zp+=it.hp;v.zh+=it.h}v.eur+=it.hp*it.rate;if(it.open)v.open=true}
+    const hasG=v.items.some(i=>i.k!=='itzaltze'),hasI=v.items.some(i=>i.k==='itzaltze');
+    v.type=hasG&&hasI?'mixed':hasI?'itzaltze':v.items.every(i=>i.k==='praktika')?'praktika':'zaintza';
+    v.no=`${F(v.s).slice(0,4)}-${(S.baliabideak[resId]?.izena||resId).toUpperCase().replace(/[^A-Z0-9Ñ]/g,'')}-${F(v.s).slice(5,16).replace(/[-T:]/g,'')}`}
+  return out;
+}
+function allServices(from,to,resF){const out=[];for(const r of resList()){if(resF&&r.id!==resF)continue;for(const v of services(MODEL,r.id))if(v.s>=from&&v.s<to)out.push(v)}return out.sort((a,b)=>b.s-a.s)}
+function findService(key){const [r,s]=key.split('|');return services(MODEL,r).find(v=>String(v.s)===s)}
+function vCerts(){
+  const [from,to]=liqRange();const list=allServices(from,to,UI.cRes);
+  const T={zp:0,pp:0,ip:0,eur:0};list.forEach(v=>{T.zp+=v.zp;T.pp+=v.pp;T.ip+=v.ip;T.eur+=v.eur});
+  const tl={zaintza:'Zaintza',praktika:'Praktika',itzaltze:'Itzaltzea (zaintzarik gabe)',mixed:'Zaintza + itzaltzea'};
+  return `<div class="tools"><label class="f">Baliabidea<select data-filter="cRes">${resOptions(UI.cRes,true)}</select></label><span class="grow"></span>
+  ${UI.cRes?`<button class="btn primary" data-act="liq-pdf">Likidazio-agiria PDF (${UI.lMonth?MONTHS[UI.lMonth-1]:'urte osoa'})</button>`:'<span class="muted" style="align-self:center">Aukeratu baliabide bat likidazio-agiria sortzeko.</span>'}</div>
+  <div class="sumline"><span><b>${list.length}</b>zerbitzu</span><span><b>${n2(T.zp)}</b>zaintza o-p</span><span><b>${n2(T.ip)}</b>itzaltze o-p</span><span><b>${eur(T.eur)}</b></span></div>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Data</th><th>Baliabidea</th><th>Zerbitzua</th><th class="num">Zaintza o-p</th><th class="num">Itzaltze o-p</th><th class="num">Zenbatekoa</th><th>Ziurtagiria</th></tr></thead><tbody>
+  ${list.map(v=>`<tr><td>${showMs(v.s)}</td><td><b>${esc(resName(v.res))}</b></td><td>${tl[v.type]}${v.open?` <span class="chip warn">${v.items.some(i=>i.open&&i.ref.ongoing)?'Abian':'Amaiera falta'}</span>`:''}</td><td class="num">${n2(v.zp+v.pp)}</td><td class="num">${n2(v.ip)}</td><td class="num">${eur(v.eur)}</td>
+  <td><button class="btn small" data-act="cert-view" data-k="${esc(v.key)}">Ikusi</button> <button class="btn small" data-act="cert-pdf" data-k="${esc(v.key)}">PDF</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Ez dago zerbitzurik epe honetan.</div>'}`;
+}
+
+const CERT_TITLE={zaintza:'Zaintza-ziurtagiria / Certificado de guardia',praktika:'Praktika-ziurtagiria / Certificado de prácticas',itzaltze:'Itzaltze-ziurtagiria / Certificado de extinción',mixed:'Zaintza eta itzaltze ziurtagiria / Certificado de guardia y extinción'};
+const RULE_ES={'DEIA (zaintzan)':'llamada (de guardia)','DEIA (aurreko sutetik)':'llamada (desde incendio anterior)','ERANTZUNA':'confirmación de salida','DEIA':'llamada','Zaintzara itzuli':'vuelta a guardia','ETXERATU':'regreso a base','abian':'en curso','—':'—'};
+function ruleBi(r){if(!r)return '—';const m=/^Hurrengo sutea \((.*)\)$/.exec(r);if(m)return `${r} / siguiente incendio (${m[1]})`;return RULE_ES[r]&&r!=='—'?`${r} / ${RULE_ES[r]}`:r}
+function mResBi(R){return R.mota==='zisterna'?'zisterna / cisterna':'taldea / retén'}
+function endTxt(it){return it.open?(it.ref.ongoing?'abian / en curso':'amaiera falta / sin hora de fin'):showMs(it.e)}
+function itemLabel(it){return it.k==='itzaltze'?'Itzaltzea / Extinción':it.k==='praktika'?'Praktika / Prácticas':'Zaintza / Guardia'}
+function fireLine(o){const r=o.rec,f=S.suteak['s'+r.sutea]||{};const t=x=>x?showDT(x).slice(11):'—';
+  return `Sutea / Incendio ${r.sutea}${f.herria?', '+f.herria:''}${f.lekua?' ('+f.lekua+')':''}. Deia / Llamada ${t(r.deia)}; Erantzuna / Confirmación ${t(r.erantzuna)}; Iritsi / Llegada ${t(r.iritsi)}; Bukatu / Fin ${t(r.bukatu)}; Etxeratu / Regreso ${t(r.etxeratu)}. Hasiera / Inicio: ${ruleBi(o.startRule)}. Amaiera / Fin: ${ruleBi(o.endRule)}.`}
+function openMsg(v){return v.items.some(i=>i.open&&i.ref.ongoing)?'Itzaltzea oraindik abian dago: ziurtagiria ez da behin betikoa. / La extinción sigue en curso: el certificado no es definitivo.':'Itzaltzearen amaiera falta da. / Falta la hora de fin de la extinción.'}
+function introBi(R,v){const n=R.izena||v.res;return [`Honen bidez ziurtatzen da ${n} baliabideak ondoren zehazten den zerbitzua egin duela, adierazitako ordu eta kide kopuruarekin.`,`Por la presente se certifica que el recurso ${n} ha realizado el servicio que se detalla a continuación, con las horas y el número de efectivos indicados.`]}
+function totalsBi(v){return [`Zaintza: ${n2(v.zh)} h, ${n2(v.zp)} ordu-pertsona${v.pp?`; praktika: ${n2(v.pp)} ordu-pertsona`:''}. Itzaltzea: ${n2(v.ih)} h, ${n2(v.ip)} ordu-pertsona.`,`Guardia: ${n2(v.zh)} h, ${n2(v.zp)} horas-persona${v.pp?`; prácticas: ${n2(v.pp)} horas-persona`:''}. Extinción: ${n2(v.ih)} h, ${n2(v.ip)} horas-persona.`]}
+function certHTML(v){
+  const R=S.baliabideak[v.res]||{};const [i1,i2]=introBi(R,v),[t1,t2]=totalsBi(v);
+  return `<div class="cert"><h3>${esc(CERT_TITLE[v.type])}</h3><dl><dt>Ziurtagiri-zk. / Nº certificado</dt><dd>${esc(v.no)}</dd><dt>Baliabidea / Recurso</dt><dd>${esc(R.izena||v.res)} (${mResBi(R)})</dd><dt>Zerbitzua / Servicio</dt><dd>${showMs(v.s)} – ${v.open?endTxt(v.items.find(i=>i.open)):showMs(v.e)}</dd></dl>
+  <p style="margin:0 0 4px">${esc(i1)}</p><p class="muted" style="margin:0 0 12px">${esc(i2)}</p>
+  <div class="tbl"><table><thead><tr><th>Mota / Tipo</th><th>Hasiera / Inicio</th><th>Amaiera / Fin</th><th class="num">Orduak / Horas</th><th class="num">Kideak / Efectivos</th><th class="num">Ordu-pertsonak / Horas-persona</th><th class="num">€/h</th><th class="num">Zenbatekoa / Importe</th></tr></thead><tbody>
+  ${v.items.map(it=>`<tr><td>${esc(itemLabel(it))}</td><td>${showMs(it.s)}</td><td>${endTxt(it)}</td><td class="num">${n2(it.h)}</td><td class="num">${it.kid}</td><td class="num">${n2(it.hp)}</td><td class="num">${eur(it.rate)}</td><td class="num">${eur(it.hp*it.rate)}</td></tr>${it.k==='itzaltze'?`<tr><td colspan="8" class="wrap" style="font-size:13px">${esc(fireLine(it.ref))}</td></tr>`:''}`).join('')}
+  <tr class="total"><td colspan="5">Guztira / Total</td><td class="num">${n2(v.zp+v.pp+v.ip)}</td><td></td><td class="num">${eur(v.eur)}</td></tr></tbody></table></div>
+  <p style="margin:10px 0 2px">${esc(t1)}</p><p class="muted" style="margin:0">${esc(t2)}</p>
+  ${v.open?`<p class="wtext">${esc(openMsg(v))}</p>`:''}</div>`;
+}
+function pdfSign(d,y){if(y>232){d.addPage();y=30}y=Math.max(y+16,226);d.setFontSize(9);d.text(pdfT('Egina / Fecha: '+todayStr().split('-').reverse().join('/')),18,y-8);
+  d.setDrawColor(120);d.rect(18,y,80,34);d.rect(112,y,80,34);d.text('Taldeburua / Jefe de retén',20,y+5);d.text('Arduraduna / Responsable',114,y+5);
+  d.setFontSize(7);d.setTextColor(110);d.text('Izena eta sinadura / Nombre y firma',20,y+9);d.text('Izena eta sinadura / Nombre y firma',114,y+9);d.setTextColor(0)}
+const CERT_COLS=[{t:'Mota',t2:'Tipo',x:18,w:22},{t:'Hasiera',t2:'Inicio',x:42,w:27},{t:'Amaiera',t2:'Fin',x:71,w:27},{t:'Orduak',t2:'Horas',x:98,w:13,align:'r'},{t:'Kideak',t2:'Efectivos',x:113,w:14,align:'r'},{t:'Ordu-pert.',t2:'Horas-pers.',x:129,w:18,align:'r'},{t:'EUR/h',t2:'',x:149,w:13,align:'r'},{t:'Zenbatekoa',t2:'Importe',x:164,w:28,align:'r'}];
+function certPage(d,v){
+  const R=S.baliabideak[v.res]||{};
+  let y=pdfHead(d,CERT_TITLE[v.type],[['Ziurtagiri-zk. / Nº',v.no],['Baliabidea / Recurso',`${R.izena||v.res} (${mResBi(R)})`],['Zerbitzua / Servicio',`${showMs(v.s)} - ${v.open?endTxt(v.items.find(i=>i.open)):showMs(v.e)}`]]);
+  d.setFontSize(10);for(const [i,p] of introBi(R,v).entries()){if(i)d.setTextColor(90,100,95);const ls=d.splitTextToSize(pdfT(p),174);d.text(ls,18,y);y+=ls.length*4.6+2;d.setTextColor(0)}y+=6;
+  const rows=[];for(const it of v.items){rows.push({cells:[itemLabel(it).split(' / '),showMs(it.s),it.open?endTxt(it).split(' / '):endTxt(it),n2(it.h),String(it.kid),n2(it.hp),n2(it.rate),eur(it.hp*it.rate)],sub:it.k!=='itzaltze'?null:'Extinción'});if(it.k==='itzaltze')rows.push({note:fireLine(it.ref)})}
+  rows.push({bold:true,cells:[['Guztira','Total'],'','','','',n2(v.zp+v.pp+v.ip),'',eur(v.eur)]});
+  y=pdfTable(d,y,CERT_COLS,rows);
+  d.setFontSize(9);for(const [i,t] of totalsBi(v).entries()){if(i)d.setTextColor(90,100,95);const ls=d.splitTextToSize(pdfT(t),174);d.text(ls,18,y+4);y+=ls.length*4.4;d.setTextColor(0)}
+  if(v.open){d.setTextColor(150,90,0);const ls=d.splitTextToSize(pdfT(openMsg(v)),174);d.text(ls,18,y+8);y+=ls.length*4.4+4;d.setTextColor(0)}
+  pdfSign(d,y+10);
+}
+function liqPdf(){
+  const [from,to]=liqRange();const list=allServices(from,to,UI.cRes).sort((a,b)=>a.s-b.s);const R=S.baliabideak[UI.cRes]||{};const d=pdfDoc();
+  const MES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  if(d){const epea=UI.lMonth?`${MONTHS[UI.lMonth-1]} / ${MES[UI.lMonth-1]} ${UI.lYear}`:`${UI.lYear} (urte osoa / año completo)`;
+    let y=pdfHead(d,'Likidazio-agiria / Documento de liquidación',[['Baliabidea / Recurso',`${R.izena||UI.cRes} (${mResBi(R)})`],['Epea / Periodo',epea],['Zerbitzuak / Servicios',String(list.length)]]);
+    const cols=[{t:'Data',t2:'Fecha',x:18,w:28},{t:'Zerbitzua',t2:'Servicio',x:48,w:40},{t:'Zaintza o-p',t2:'Guardia h-p',x:90,w:22,align:'r'},{t:'Praktika o-p',t2:'Prácticas h-p',x:114,w:22,align:'r'},{t:'Itzaltze o-p',t2:'Extinción h-p',x:138,w:22,align:'r'},{t:'Zenbatekoa',t2:'Importe',x:162,w:30,align:'r'}];
+    const tl={zaintza:'Zaintza / Guardia',praktika:'Praktika / Prácticas',itzaltze:'Itzaltzea / Extinción',mixed:'Zaintza + itzaltzea / Guardia + extinción'};const T={zp:0,pp:0,ip:0,eur:0};
+    const rows=list.map(v=>{T.zp+=v.zp;T.pp+=v.pp;T.ip+=v.ip;T.eur+=v.eur;const lb=tl[v.type].split(' / ');if(v.open)lb[0]+=' *';return {cells:[showMs(v.s),lb,n2(v.zp),n2(v.pp),n2(v.ip),eur(v.eur)]}});
+    rows.push({bold:true,cells:[['Guztira','Total'],'',n2(T.zp),n2(T.pp),n2(T.ip),eur(T.eur)]});
+    y=pdfTable(d,y+2,cols,rows);logCert(`L-${UI.lYear}${UI.lMonth?String(UI.lMonth).padStart(2,'0'):''}-${UI.cRes}`,{no:`L-${UI.lYear}${UI.lMonth?'-'+String(UI.lMonth).padStart(2,'0'):''}-${(R.izena||UI.cRes).toUpperCase()}`,tituloa:'Likidazio-agiria',mota:'liq',baliabidea:UI.cRes,epea:epea,lYear:UI.lYear,lMonth:UI.lMonth,op:T.zp+T.pp+T.ip,zp:T.zp,pp:T.pp,ip:T.ip,eur:T.eur});
+    if(list.some(v=>v.open)){d.setFontSize(8);d.text(pdfT('* Itzaltzea abian edo amaiera-ordurik gabe. / * Extinción en curso o sin hora de fin.'),18,y+3);y+=6}
+    pdfSign(d,y)}
+  savePdf(d,`likidazioa_${(R.izena||UI.cRes).toLowerCase()}_${UI.lYear}${UI.lMonth?'_'+String(UI.lMonth).padStart(2,'0'):''}.pdf`);
+}
+/* ---- PDF ---- */
+function pdfLib(){return window.jspdf&&window.jspdf.jsPDF?window.jspdf.jsPDF:null}
+function pdfT(s){return String(s??'').replace(/[–—]/g,'-').replace(/€/g,'EUR').replace(/[→]/g,'>')}
+function pdfDoc(){const J=pdfLib();if(!J)return null;const d=new J({unit:'mm',format:'a4'});d.setFont('helvetica','normal');return d}
+function pdfHead(d,title,lines){d.setFont('helvetica','bold');d.setFontSize(title.length>40?13:16);d.text(pdfT(title),18,22);d.setDrawColor(46,106,87);d.setLineWidth(.6);d.line(18,26,192,26);
+  d.setFontSize(10);let y=34;for(const [k,v] of lines){d.setFont('helvetica','bold');d.text(pdfT(k),18,y);d.setFont('helvetica','normal');d.text(pdfT(v),66,y);y+=6}return y+2}
+function pdfTable(d,y,cols,rows,opt){ // cols:[{t,x,w,align}]
+  const head=()=>{const two=cols.some(c=>c.t2);d.setFillColor(232,236,232);d.rect(18,y-5,174,two?10:7,'F');d.setFont('helvetica','bold');d.setFontSize(8.5);for(const c of cols){const x=c.align==='r'?c.x+c.w:c.x,o={align:c.align==='r'?'right':'left'};d.text(pdfT(c.t),x,y,o);if(c.t2){d.setFont('helvetica','normal');d.setTextColor(90,100,95);d.text(pdfT(c.t2),x,y+3.6,o);d.setTextColor(0);d.setFont('helvetica','bold')}}d.setFont('helvetica','normal');y+=two?10:7};
+  head();
+  for(const r of rows){
+    if(y>262){d.addPage();y=22;head()}
+    if(r.note){d.setFontSize(8);d.setTextColor(90,100,95);const ls=d.splitTextToSize(pdfT(r.note),168);d.text(ls,22,y-1.5);y+=ls.length*3.6+1.5;d.setTextColor(0);continue}
+    d.setFontSize(9);d.setFont('helvetica',r.bold?'bold':'normal');
+    const two=r.cells.some(v=>Array.isArray(v));
+    r.cells.forEach((v,i)=>{const c=cols[i],x=c.align==='r'?c.x+c.w:c.x,o={align:c.align==='r'?'right':'left'};if(Array.isArray(v)){d.text(pdfT(v[0]),x,y,o);d.setTextColor(90,100,95);d.setFontSize(7.5);d.text(pdfT(v[1]),x,y+3.4,o);d.setFontSize(9);d.setTextColor(0)}else d.text(pdfT(v),x,y,o)});
+    d.setDrawColor(210,218,211);d.setLineWidth(.2);d.line(18,y+(two?5.4:2),192,y+(two?5.4:2));y+=two?9.5:6.5;
+  }
+  d.setFont('helvetica','normal');return y;
+}
+async function savePdf(d,name){if(!d){toast('PDF liburutegia ez da kargatu. Saiatu berriro sarean zaudela.');return}
+  if(!DL){dlFile(name,d.output('blob'));return}
+  try{await DL.save({filename:name,data:d.output('arraybuffer')})}catch(e){if(e?.code!=='declined')toast('Ezin izan da PDFa deskargatu')}}
+function certPdf(v){const d=pdfDoc();if(d){certPage(d,v);logCert(v.no,{no:v.no,tituloa:CERT_TITLE[v.type].split(' / ')[0],mota:v.type,baliabidea:v.res,key:v.key,hasiera:F(v.s),amaiera:v.open?'':F(v.e),op:v.zp+v.pp+v.ip,zp:v.zp,pp:v.pp,ip:v.ip,eur:v.eur})}savePdf(d,`ziurtagiria_${v.no}.pdf`)}
+/* ===================== Supabase (GitHub bertsioa) ===================== */
+let SB=null;
+function loadScript(src){return new Promise((ok,ko)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=ko;document.head.appendChild(s)})}
+async function supaInit(cfgx){
+  try{await loadScript('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js')}catch(e){toast('Ezin izan da Supabase kargatu');UI.mode='local';return false}
+  SB=window.supabase.createClient(cfgx.supabaseUrl,cfgx.supabaseKey,{auth:{persistSession:true}});UI.mode='supa';
+  const {data}=await SB.auth.getSession();UI.session=data.session||null;
+  SB.auth.onAuthStateChange((ev,s)=>{UI.session=s||null;if(ev==='SIGNED_OUT'){location.reload()}});
+  if(UI.session)await supaStart();else{UI.loaded=true;queueRender()}
+  return true;
+}
+async function supaLoadAll(){
+  const all=[];for(let from=0;;from+=1000){const {data,error}=await SB.from('docs').select('coll,id,data').order('coll').order('id').range(from,from+999);if(error)throw error;all.push(...data);if(data.length<1000)break}
+  const o={config:null};for(const c of COLLS)o[c]={};
+  for(const r of all){if(r.coll==='config'){if(r.id==='arauak')o.config=r.data}else if(o[r.coll])o[r.coll][r.id]=r.data}
+  loadInto(o);
+}
+async function supaStart(){
+  try{await supaLoadAll()}catch(e){toast('Datuak ezin izan dira kargatu: '+(e.message||e))}
+  SB.channel('docs-aldaketak').on('postgres_changes',{event:'*',schema:'public',table:'docs'},p=>{
+    if(p.eventType==='DELETE'){const r=p.old||{};if(r.coll&&S[r.coll]&&r.id)delete S[r.coll][r.id]}
+    else{const r=p.new;if(r.coll==='config'){if(r.id==='arauak')S.config=r.data}else if(S[r.coll])S[r.coll][r.id]=r.data}
+    queueRender()}).subscribe();
+  UI.loaded=true;initDefaults();queueRender();
+}
+async function supaBulk(rows){for(let i=0;i<rows.length;i+=400){const {error}=await SB.from('docs').upsert(rows.slice(i,i+400));if(error)throw error}}
+function vLogin(){return `<div class="panel" style="max-width:420px;margin:30px auto"><h3>Saioa hasi</h3><p class="muted" style="margin:0 0 12px">Sartu zure erabiltzailearekin datu-base zentralera konektatzeko.</p>
+  <form id="loginForm" onsubmit="return false"><div class="grid" style="grid-template-columns:1fr"><label class="f">Helbide elektronikoa<input type="email" name="email" autocomplete="username" required></label>
+  <label class="f">Pasahitza<input type="password" name="pass" autocomplete="current-password" required></label></div>
+  <div class="tools" style="margin:14px 0 0"><button type="button" class="btn primary" data-act="login">Sartu</button></div></form></div>`}
+async function seedFromJson(){const r=await fetch('data.json',{cache:'no-store'});if(!r.ok)throw new Error('data.json ez da aurkitu');const o=await r.json();
+  const rows=[];for(const c of COLLS)for(const [id,d] of Object.entries(o[c]||{}))rows.push({coll:c,id,data:d});if(o.config)rows.push({coll:'config',id:'arauak',data:o.config});
+  await supaBulk(rows);await supaLoadAll();render()}
+
+/* ---- Kontsultak ---- */
+function qRows(){
+  const Q=UI.q;const from=Q.from?PD(Q.from):-Infinity,to=Q.to?PD(Q.to)+DAY:Infinity;const rows=[];
+  for(const g of Object.values(MODEL.G)){if(g.s==null)continue;const mota=g.rec.mota==='praktika'?'praktika':'zaintza';
+    rows.push({kind:'g',id:g.id,res:g.rec.baliabidea,mota,s:g.s,e:g.e,h:g.h,k:g.k,hp:g.hp,eur:g.hp*rate(g.rec.baliabidea,'zaintza'),sutea:'',zk:g.rec.zk||'',ohar:g.rec.oharrak||'',plan:g.plan})}
+  for(const o of MODEL.ints){if(o.start==null)continue;rows.push({kind:'i',id:o.id,res:o.rec.baliabidea,mota:'itzaltze',s:o.start,e:o.end,h:o.h,k:o.k,hp:o.hp,eur:o.hp*rate(o.rec.baliabidea,'itzaltze'),sutea:o.rec.sutea,zk:'',ohar:o.rec.oharrak||'',open:o.end==null})}
+  return rows.filter(r=>(!Q.res||r.res===Q.res)&&(!Q.mota||r.mota===Q.mota)&&r.s>=from&&r.s<to&&(!Q.sute||String(r.sutea)===Q.sute.trim())&&(!Q.mt||(r.res&&S.baliabideak[r.res]?.mota===Q.mt))&&(Q.plan||!r.plan)).sort((a,b)=>b.s-a.s);
+}
+function vQuery(){
+  const Q=UI.q;const rows=qRows();const T={zaintza:[0,0,0],praktika:[0,0,0],itzaltze:[0,0,0]};const byRes={};
+  for(const r of rows){T[r.mota][0]+=r.h;T[r.mota][1]+=r.hp;T[r.mota][2]+=r.eur;const b=byRes[r.res]||(byRes[r.res]={zp:0,pp:0,ip:0,eur:0,n:0});b.n++;b.eur+=r.eur;if(r.mota==='itzaltze')b.ip+=r.hp;else if(r.mota==='praktika')b.pp+=r.hp;else b.zp+=r.hp}
+  const shown=rows.slice(0,500);
+  return `<h2>Kontsultak</h2><p class="lead">Bilatu zaintzak, praktikak eta itzaltzeak baliabidearen, dataren, motaren edo sutearen arabera. Emaitzak CSVra esporta daitezke.</p>
+  <div class="tools"><label class="f">Baliabidea<select data-q="res">${resOptions(Q.res,true)}</select></label>
+  <label class="f">Baliabide mota<select data-q="mt"><option value="">Guztiak</option><option value="taldea" ${Q.mt==='taldea'?'selected':''}>Taldeak</option><option value="zisterna" ${Q.mt==='zisterna'?'selected':''}>Zisternak</option></select></label>
+  <label class="f">Mota<select data-q="mota"><option value="">Guztiak</option><option value="zaintza" ${Q.mota==='zaintza'?'selected':''}>Zaintza</option><option value="praktika" ${Q.mota==='praktika'?'selected':''}>Praktika</option><option value="itzaltze" ${Q.mota==='itzaltze'?'selected':''}>Itzaltzea</option></select></label>
+  <label class="f">Noiztik<input type="date" data-q="from" value="${esc(Q.from)}"></label><label class="f">Noiz arte<input type="date" data-q="to" value="${esc(Q.to)}"></label>
+  <label class="f">Sute-zk.<input data-q="sute" value="${esc(Q.sute)}" style="width:90px"></label>
+  <label class="chk" style="align-self:center"><input type="checkbox" data-q="plan" ${Q.plan?'checked':''}> Planifikatuak barne</label>
+  <span class="grow"></span><button class="btn" data-act="q-clear">Garbitu</button><button class="btn primary" data-act="q-export">CSV esportatu</button></div>
+  <div class="sumline"><span><b>${rows.length}</b>erregistro</span><span><b>${n2(T.zaintza[1])}</b>zaintza o-p</span><span><b>${n2(T.praktika[1])}</b>praktika o-p</span><span><b>${n2(T.itzaltze[1])}</b>itzaltze o-p</span><span><b>${eur(T.zaintza[2]+T.praktika[2]+T.itzaltze[2])}</b></span></div>
+  ${rows.length?`<details style="margin:0 0 14px"><summary style="cursor:pointer;font-weight:600">Laburpena baliabideka</summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Baliabidea</th><th class="num">Erregistroak</th><th class="num">Zaintza o-p</th><th class="num">Praktika o-p</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Zenbatekoa</th></tr></thead><tbody>
+  ${resList().filter(r=>byRes[r.id]).map(r=>{const b=byRes[r.id];return `<tr><td><b>${esc(r.izena)}</b></td><td class="num">${b.n}</td><td class="num">${n2(b.zp)}</td><td class="num">${n2(b.pp)}</td><td class="num">${n2(b.ip)}</td><td class="num">${n2(b.zp+b.pp+b.ip)}</td><td class="num">${eur(b.eur)}</td></tr>`}).join('')}</tbody></table></div></details>
+  <div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Sutea / zk.</th><th>Oharrak</th></tr></thead><tbody>
+  ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}</td><td>${showMs(r.s)}</td><td>${showMs(r.e)}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
+  </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; CSVan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
+}
+function exportQuery(){const rows=qRows();const out=[['Baliabidea','Mota','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak']];
+  for(const r of rows)out.push([resName(r.res),r.mota,F(r.s),r.e!=null?F(r.e):'',r.h,r.k,r.hp,r.eur,r.sutea,r.zk,r.plan?'bai':'',r.ohar]);
+  save(`kontsulta_${todayStr()}.csv`,csv(out))}
+
+/* ---- Emandako ziurtagiriak ---- */
+async function logCert(id,data){try{await put('ziurtagiriak',id.replace(/[^\w-]/g,''),{...data,emanda:F(nowMs())})}catch(e){}}
+function vIssued(){
+  const list=Object.entries(S.ziurtagiriak||{}).map(([id,c])=>({id,...c})).filter(c=>(!UI.cRes||c.baliabidea===UI.cRes)).sort((a,b)=>String(b.emanda).localeCompare(String(a.emanda)));
+  return `<div class="tools"><label class="f">Baliabidea<select data-filter="cRes">${resOptions(UI.cRes,true)}</select></label></div>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Zk.</th><th>Mota</th><th>Baliabidea</th><th>Zerbitzua / epea</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Emanda</th><th></th></tr></thead><tbody>
+  ${list.map(c=>`<tr><td>${esc(c.no)}</td><td>${esc(c.tituloa||'')}</td><td><b>${esc(resName(c.baliabidea))}</b></td><td>${c.hasiera?showDT(c.hasiera)+(c.amaiera?' – '+showDT(c.amaiera):''):esc(c.epea||'')}</td><td class="num">${n2(c.op)}</td><td class="num">${eur(c.eur)}</td><td>${showDT(c.emanda)}</td>
+  <td><button class="btn small" data-act="cert-regen" data-id="${esc(c.id)}">PDF</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Oraindik ez da ziurtagiririk eman. PDF bat deskargatzean hemen erregistratzen da.</div>'}`;
+}
+
+/* ===================== Formularioak ===================== */
+const dlg=document.getElementById('dlg');
+function openDlg(title,body,foot,onInput){
+  dlg.innerHTML=`<form method="dialog" id="dlgForm" novalidate><div class="dlg-head"><h3>${title}</h3></div><div class="dlg-body">${body}</div><div class="dlg-foot">${foot}</div></form>`;
+  dlg.showModal();const f=document.getElementById('dlgForm');
+  if(onInput){f.addEventListener('input',()=>onInput(f));f.addEventListener('change',()=>onInput(f));onInput(f)}
+  return f;
+}
+function closeDlg(){dlg.close()}
+function fv(f,n){const el=f.elements[n];if(!el)return '';if(el.type==='checkbox')return el.checked;return (el.value||'').trim()}
+
+function intForm(id,preset){
+  const r=id?clone(S.eskuhartzeak[id]):{sutea:preset?.sute||'',baliabidea:resList()[0]?.id||'',deia:'',erantzuna:'',iritsi:'',bukatu:'',etxeratu:'',itzuli:'',kideak:'',zaintzan:'auto',oharrak:''};
+  if(!id)r.kideak=S.baliabideak[r.baliabidea]?.kideak||1;
+  const fireOpts=Object.values(S.suteak).sort((a,b)=>String(b.zk).localeCompare(String(a.zk),undefined,{numeric:true})).map(f=>`<option value="${esc(f.zk)}" ${String(f.zk)===String(r.sutea)?'selected':''}>${esc(f.zk)} ${esc(f.herria||'')}</option>`).join('');
+  const body=`<div class="grid">
+  <label class="f">Sutea<select name="sutea"><option value="__new" ${!r.sutea?'selected':''}>Sute berria…</option>${fireOpts}</select></label>
+  <label class="f">Baliabidea<select name="baliabidea">${resOptions(r.baliabidea)}</select></label>
+  <label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
+  <div class="grid" id="newFire" style="margin-top:10px"><label class="f">Sute-zk.<input name="fzk" value="${nextFireZk()}"></label><label class="f">Herria<input name="fherria"></label><label class="f">Lekua<input name="flekua"></label></div>
+  <fieldset><legend>Orduak</legend><div class="grid">
+  <label class="f">Deia<input type="datetime-local" name="deia" value="${esc(r.deia)}"></label>
+  <label class="f">Erantzuna (irteera baieztatua)<input type="datetime-local" name="erantzuna" value="${esc(r.erantzuna)}"></label>
+  <label class="f">Iritsi<input type="datetime-local" name="iritsi" value="${esc(r.iritsi)}"></label>
+  <label class="f">Bukatu<input type="datetime-local" name="bukatu" value="${esc(r.bukatu)}"></label>
+  <label class="f">Etxeratu<input type="datetime-local" name="etxeratu" value="${esc(r.etxeratu)}"></label></div></fieldset>
+  <fieldset><legend>Deia jaso zuenean zaintzan zegoen?</legend><div class="radios">
+  ${[['auto','Automatikoki'],['bai','Bai'],['ez','Ez']].map(([v,l])=>`<label class="chk"><input type="radio" name="zaintzan" value="${v}" ${r.zaintzan===v||(!r.zaintzan&&v==='auto')?'checked':''}> ${l}</label>`).join('')}</div>
+  <div id="cutBox" style="margin-top:8px"></div></fieldset>
+  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" ${r.itzuli?'':'checked'}> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu" ${r.itzuli?'checked':''}> Zaintzan jarraitu</label></div>
+  <div class="grid" id="contBox" style="margin-top:10px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli" value="${esc(r.itzuli)}"></label><label class="f">Zaintza honen amaiera<input type="datetime-local" name="contEnd"></label>
+  <p class="muted span2" style="font-size:13px;margin:0">Itzaltzea zaintzara itzultzean amaitzen da. Ordu horretan zaintzarik ez badago, tarte berria sortzen da amaiera honekin.</p></div></fieldset>
+  <label class="f" style="margin-top:12px">Oharrak<textarea name="oharrak">${esc(r.oharrak)}</textarea></label>
+  <div class="calc" id="calc"></div>`;
+  const foot=`${id?`<button type="button" class="btn danger" data-act="del-int" data-id="${esc(id)}">Ezabatu</button>`:''}<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-int" data-id="${esc(id||'')}">Gorde</button>`;
+  let lastRes=r.baliabidea;
+  openDlg(id?'Esku-hartzea editatu':'Esku-hartze berria',body,foot,f=>{
+    const isNew=fv(f,'sutea')==='__new';document.getElementById('newFire').style.display=isNew?'':'none';
+    const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';document.getElementById('contBox').style.display=cont?'':'none';
+    if(fv(f,'baliabidea')!==lastRes){lastRes=fv(f,'baliabidea');if(!id)f.elements.kideak.value=S.baliabideak[lastRes]?.kideak||1}
+    const tmpId=id||'__tmp';const rec=readInt(f);const st={...S,eskuhartzeak:{...S.eskuhartzeak,[tmpId]:rec}};const M=compute(st);const o=M.I[tmpId];
+    const cb=document.getElementById('cutBox');
+    if(o&&o.guard&&o.guard.e>o.deia&&o.og){const was=cb.dataset.g===o.guard.id?f.elements.cut?.checked:true;cb.dataset.g=o.guard.id;
+      cb.innerHTML=`<label class="chk"><input type="checkbox" name="cut" ${was?'checked':''}> Zaintza (${showMs(o.guard.s)}–${showT(o.guard.e)}) DEIAren orduan moztu</label>`;
+      if(cont&&!f.elements.contEnd.value)f.elements.contEnd.value=F(o.guard.e)}
+    else{cb.innerHTML=o&&o.guard?`<p class="muted" style="margin:0;font-size:13px">Zaintza aurkitu da: ${showMs(o.guard.s)}–${showT(o.guard.e)}</p>`:'';cb.dataset.g=''}
+    if(cont&&!f.elements.contEnd.value&&rec.itzuli){const [,e]=slot(rec.itzuli.slice(0,10),S.baliabideak[rec.baliabidea]?.mota,cfg());let ee=e;if(ee<=P(rec.itzuli))ee+=DAY;f.elements.contEnd.value=F(ee)}
+    document.getElementById('calc').innerHTML=o?`<div class="row"><span>Egoera</span><b>${o.og?'Zaintzan zegoen':'Zaintzarik gabe'}</b></div>
+    <div class="row"><span>Itzaltzearen hasiera</span><b>${showMs(o.start)} <span class="muted">(${esc(o.startRule||'')})</span></b></div>
+    <div class="row"><span>Itzaltzearen amaiera</span><b>${showMs(o.end)} <span class="muted">(${esc(o.endRule||'')})</span></b></div>
+    <div class="row"><span>Orduak</span><b>${n2(o.h)}</b></div><div class="row"><span>Ordu-pertsonak</span><b>${n2(o.hp)}</b></div>
+    ${o.warn.map(w=>`<div class="wtext">${esc(w.t)}</div>`).join('')}`:'';
+  });
+}
+function readInt(f){
+  const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';
+  const s=fv(f,'sutea');
+  return {sutea:s==='__new'?fv(f,'fzk'):s,baliabidea:fv(f,'baliabidea'),deia:fv(f,'deia'),erantzuna:fv(f,'erantzuna'),iritsi:fv(f,'iritsi'),bukatu:fv(f,'bukatu'),etxeratu:fv(f,'etxeratu'),
+    itzuli:cont?fv(f,'itzuli'):'',kideak:+fv(f,'kideak')||1,zaintzan:f.querySelector('input[name=zaintzan]:checked')?.value||'auto',oharrak:fv(f,'oharrak')};
+}
+function fireForm(id){
+  const f0=id?clone(S.suteak[id]||{zk:id.replace(/^s/,'')}):{zk:String(nextFireZk()),herria:'',lekua:'',oharrak:''};
+  const used=id?Object.values(S.eskuhartzeak).some(i=>String(i.sutea)===String(f0.zk)):false;
+  openDlg(id?'Sutea editatu':'Sute berria',`<div class="grid"><label class="f">Sute-zk.<input name="zk" value="${esc(f0.zk)}" ${id?'readonly':''}></label><label class="f">Herria<input name="herria" value="${esc(f0.herria)}"></label><label class="f span2">Lekua<input name="lekua" value="${esc(f0.lekua)}"></label><label class="f span2">Oharrak<textarea name="oharrak">${esc(f0.oharrak)}</textarea></label></div>`,
+  `${id&&!used?`<button type="button" class="btn danger" data-act="del-fire" data-id="${esc(id)}">Ezabatu</button>`:''}<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-fire" data-id="${esc(id||'')}">Gorde</button>`);
+}
+function resForm(id){
+  const r=id?clone(S.baliabideak[id]):{izena:'',mota:'taldea',eremua:1,profesionala:false,aktibo:true,kideak:5,ordena:Object.keys(S.baliabideak).length};
+  openDlg(id?'Baliabidea editatu':'Baliabide berria',`<div class="grid"><label class="f">Izena<input name="izena" value="${esc(r.izena)}"></label>
+  <label class="f">Mota<select name="mota"><option value="taldea" ${r.mota==='taldea'?'selected':''}>Taldea (retena)</option><option value="zisterna" ${r.mota==='zisterna'?'selected':''}>Zisterna (uraska)</option></select></label>
+  <label class="f">Jatorrizko eremua<select name="eremua">${[1,2,3,4].map(z=>`<option value="${z}" ${r.eremua===z?'selected':''}>${z}. eremua</option>`).join('')}</select></label>
+  <label class="f">Kide lehenetsiak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak||1)}"></label>
+  <label class="chk"><input type="checkbox" name="profesionala" ${r.profesionala?'checked':''}> Profesionala</label>
+  <label class="chk"><input type="checkbox" name="aktibo" ${r.aktibo!==false?'checked':''}> Aktibo</label></div>`,
+  `<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-res" data-id="${esc(id||'')}">Gorde</button>`);
+}
+
+/* ===================== Ekintzak ===================== */
+async function act(a,el){
+  const id=el.dataset.id;const f=document.getElementById('dlgForm');
+  switch(a){
+    case 'tab':UI.tab=el.dataset.k;lsSet('zi-tab',UI.tab);render();window.scrollTo(0,0);break;
+    case 'go-warns':UI.tab='denbora';render();setTimeout(()=>document.getElementById('warns')?.scrollIntoView({behavior:'smooth'}),30);break;
+    case 'tl-move':UI.tlStart=addDays(UI.tlStart,+el.dataset.n);render();break;
+    case 'tl-today':UI.tlStart=monday(todayStr());render();break;
+    case 'tl-filter':UI.tlFilter=el.dataset.k;render();break;
+    case 'liq-month':UI.lMonth=el.dataset.k;render();break;
+    case 'close':closeDlg();break;
+    case 'new-guard':guardForm(null);break;
+    case 'edit-guard':if(S.zaintzak[id])guardForm(id);break;
+    case 'new-int':intForm(null,{sute:el.dataset.sute});break;
+    case 'edit-int':if(S.eskuhartzeak[id])intForm(id);break;
+    case 'new-fire':fireForm(null);break;
+    case 'edit-fire':fireForm(id);break;
+    case 'new-res':resForm(null);break;
+    case 'edit-res':resForm(id);break;
+    case 'std-slot':{const h=fv(f,'hasiera');if(!h){toast('Jarri lehenik hasiera-data');break}const [s,e]=slot(h.slice(0,10),S.baliabideak[fv(f,'baliabidea')]?.mota);
+      f.elements.hasiera.value=F(s);f.elements.amaiera.value=F(e);f.dispatchEvent(new Event('input'));break}
+    case 'save-guard':{const base=id?clone(S.zaintzak[id]):{};const g={...base,baliabidea:fv(f,'baliabidea'),mota:fv(f,'mota'),hasiera:fv(f,'hasiera'),amaiera:fv(f,'amaiera'),kideak:+fv(f,'kideak')||1,zk:fv(f,'zk'),oharrak:fv(f,'oharrak')};
+      if(fv(f,'egiaztatua')===true)delete g.egoera;else g.egoera='planifikatua';
+      if(!g.baliabidea||!g.hasiera||!g.amaiera){toast('Baliabidea, sarrera eta irteera behar dira');break}
+      if(P(g.amaiera)<=P(g.hasiera)){toast('Irteerak sarrera baino geroago izan behar du');break}
+      const gid=id||newId('g');const fire=!!f.elements.suterik&&f.elements.suterik.checked;
+      if(!fire){if(await safe(()=>put('zaintzak',gid,g),'Zaintza gordeta'))closeDlg();break}
+      const deia=fv(f,'deia');if(!deia){toast('Bete deiaren ordua');break}
+      if(P(deia)<=P(g.hasiera)||P(deia)>P(g.amaiera)){toast('Deiak zaintzaren sarrera eta irteera artean egon behar du');break}
+      const sv=fv(f,'sutea'),zk=sv==='__new'?fv(f,'fzk'):sv;if(!zk){toast('Bete sute-zenbakia');break}
+      const cont=f.elements.jarraitu.checked,itz=fv(f,'itzuli'),cEnd=fv(f,'contEnd');
+      if(cont&&(!itz||!cEnd||P(cEnd)<=P(itz)||P(itz)<P(deia))){toast('Bete zaintzara itzultzeko ordua eta zaintzaren amaiera');break}
+      g.amaiera=deia;g.suterik=true;delete g.egoera;
+      const rec={sutea:zk,baliabidea:g.baliabidea,deia,erantzuna:deia,iritsi:fv(f,'iritsi'),bukatu:fv(f,'bukatu'),etxeratu:fv(f,'etxeratu'),itzuli:cont?itz:'',kideak:+fv(f,'fkideak')||g.kideak,zaintzan:'bai',oharrak:''};
+      const ok=await safe(async()=>{
+        if(sv==='__new'&&!S.suteak['s'+zk])await put('suteak','s'+String(zk).replace(/[^\w-]/g,''),{zk,herria:fv(f,'fherria'),lekua:fv(f,'flekua'),oharrak:''});
+        await put('zaintzak',gid,g);await put('eskuhartzeak',intIdFor(rec),rec);
+        if(cont)await put('zaintzak',newId('g'),{baliabidea:g.baliabidea,mota:'zaintza',hasiera:itz,amaiera:cEnd,kideak:g.kideak,zk:String(nextGuardZk()),oharrak:`Itzaltzearen ostean zaintzan jarraitu (sutea ${zk})`});
+      },'Zaintza eta itzaltzea gordeta');if(ok)closeDlg();break}
+    case 'fire-from-guard':guardForm(id,{fire:true});break;
+    case 'finish-int':finishForm(id);break;
+    case 'save-finish':{const r=clone(S.eskuhartzeak[id]);if(!r)break;const cont=f.querySelector('input[name=ondoren]:checked').value==='jarraitu';
+      r.bukatu=fv(f,'bukatu');r.kideak=+fv(f,'kideak')||r.kideak;if(!r.bukatu){toast('Bete bukatu ordua');break}
+      if(cont){const itz=fv(f,'itzuli'),cEnd=fv(f,'contEnd');if(!itz||!cEnd||P(cEnd)<=P(itz)){toast('Bete zaintzara itzultzeko ordua eta zaintzaren amaiera');break}
+        r.itzuli=itz;if(await safe(async()=>{await put('eskuhartzeak',id,r);await put('zaintzak',newId('g'),{baliabidea:r.baliabidea,mota:'zaintza',hasiera:itz,amaiera:cEnd,kideak:r.kideak,zk:String(nextGuardZk()),oharrak:`Itzaltzearen ostean zaintzan jarraitu (sutea ${r.sutea})`})},'Itzaltzea amaituta, zaintzan jarraitzen du'))closeDlg()}
+      else{r.etxeratu=fv(f,'etxeratu');r.itzuli='';if(!r.etxeratu){toast('Bete etxeratu ordua');break}if(await safe(()=>put('eskuhartzeak',id,r),'Itzaltzea amaituta'))closeDlg()}
+      break}
+    case 'liq-view':UI.lView=el.dataset.k;render();break;
+    case 'cert-view':{const v=findService(el.dataset.k);if(!v)break;openDlg(CERT_TITLE[v.type],certHTML(v),`<span class="sp"></span><button type="button" class="btn" data-act="close">Itxi</button><button type="button" class="btn primary" data-act="cert-pdf" data-k="${esc(v.key)}">PDF deskargatu</button>`);break}
+    case 'cert-pdf':{const v=findService(el.dataset.k);if(v)certPdf(v);break}
+    case 'liq-pdf':liqPdf();break;
+    case 'cert-regen':{const c=S.ziurtagiriak[id];if(!c)break;if(c.mota==='liq'){const o={y:UI.lYear,m:UI.lMonth,r:UI.cRes};UI.lYear=c.lYear;UI.lMonth=c.lMonth;UI.cRes=c.baliabidea;liqPdf();UI.lYear=o.y;UI.lMonth=o.m;UI.cRes=o.r}else{const v=findService(c.key);if(v)certPdf(v);else toast('Zerbitzu hori ez da aurkitzen (datuak aldatu dira)')}break}
+    case 'login':{const fm=document.getElementById('loginForm');const {error}=await SB.auth.signInWithPassword({email:fm.elements.email.value.trim(),password:fm.elements.pass.value});
+      if(error){toast('Ezin izan da sartu: '+error.message);break}const s=await SB.auth.getSession();UI.session=s.data.session;UI.loaded=false;render();await supaStart();break}
+    case 'logout':await SB.auth.signOut();break;
+    case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
+    case 'q-export':exportQuery();break;
+    case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
+    case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
+    case 'save-int':{const rec=readInt(f);
+      if(!rec.sutea){toast('Sute-zenbakia behar da');break}if(!rec.baliabidea||!rec.deia){toast('Baliabidea eta deiaren ordua behar dira');break}
+      const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';if(cont&&!rec.itzuli){toast('Bete zaintzara itzultzeko ordua');break}
+      const iid=id||('i'+rec.sutea.replace(/[^\w-]/g,'')+'-'+rec.baliabidea+'-'+rec.deia.slice(0,10).replace(/-/g,'')+(S.eskuhartzeak['i'+rec.sutea+'-'+rec.baliabidea+'-'+rec.deia.slice(0,10).replace(/-/g,'')]?'-'+Date.now().toString(36):''));
+      const st={...S,eskuhartzeak:{...S.eskuhartzeak,[iid]:rec}};const o=compute(st).I[iid];const cut=fv(f,'cut')===true;const contEnd=fv(f,'contEnd');
+      const ok=await safe(async()=>{
+        if(fv(f,'sutea')==='__new'&&!S.suteak['s'+rec.sutea])await put('suteak','s'+rec.sutea,{zk:rec.sutea,herria:fv(f,'fherria'),lekua:fv(f,'flekua'),oharrak:''});
+        await put('eskuhartzeak',iid,rec);
+        if(cut&&o.guard&&o.guard.e>o.deia){const g=clone(S.zaintzak[o.guard.id]);g.amaiera=rec.deia;g.suterik=true;await put('zaintzak',o.guard.id,g)}
+        if(cont&&rec.itzuli&&contEnd&&P(contEnd)>P(rec.itzuli)&&!Object.values(S.zaintzak).some(g=>g.baliabidea===rec.baliabidea&&P(g.hasiera)<=P(rec.itzuli)&&P(g.amaiera)>P(rec.itzuli)&&!(o.guard&&cut&&g===S.zaintzak[o.guard.id]))){
+          await put('zaintzak',newId('g'),{baliabidea:rec.baliabidea,mota:'zaintza',hasiera:rec.itzuli,amaiera:contEnd,kideak:rec.kideak,zk:String(nextGuardZk()),oharrak:`Itzaltzearen ostean zaintzan jarraitu (sutea ${rec.sutea})`})}
+      },'Esku-hartzea gordeta');if(ok)closeDlg();break}
+    case 'del-int':if(confirm('Esku-hartze hau ezabatu? Lotutako zaintzak ez dira aldatzen.')&&await safe(()=>del('eskuhartzeak',id),'Esku-hartzea ezabatuta'))closeDlg();break;
+    case 'save-fire':{const zk=fv(f,'zk');if(!zk){toast('Sute-zenbakia behar da');break}const fid=id||'s'+zk.replace(/[^\w-]/g,'');
+      if(!id&&S.suteak[fid]){toast('Sute-zenbaki hori badago jada');break}
+      if(await safe(()=>put('suteak',fid,{zk,herria:fv(f,'herria'),lekua:fv(f,'lekua'),oharrak:fv(f,'oharrak')}),'Sutea gordeta'))closeDlg();break}
+    case 'del-fire':if(confirm('Sute hau ezabatu?')&&await safe(()=>del('suteak',id),'Sutea ezabatuta'))closeDlg();break;
+    case 'save-res':{const izena=fv(f,'izena');if(!izena){toast('Izena behar da');break}const mota=fv(f,'mota');
+      const rid=id||izena.toLowerCase().normalize('NFD').replace(/[^\w]/g,'')||newId('r');if(!id&&S.baliabideak[rid]){toast('Izen hori duen baliabidea badago');break}
+      const base=id?clone(S.baliabideak[id]):{ordena:Object.keys(S.baliabideak).length};
+      const r={...base,izena,mota,eremua:mota==='taldea'?+fv(f,'eremua'):null,profesionala:mota==='taldea'&&fv(f,'profesionala')===true,aktibo:fv(f,'aktibo')===true,kideak:+fv(f,'kideak')||1};
+      if(await safe(()=>put('baliabideak',rid,r),'Baliabidea gordeta'))closeDlg();break}
+    case 'seed-res':await safe(async()=>{for(const [i,[rid,n,m,e,p]] of DEFAULT_RES.entries())if(!S.baliabideak[rid])await put('baliabideak',rid,{izena:n,mota:m,eremua:e,profesionala:p,aktibo:true,kideak:m==='zisterna'?1:5,ordena:i})},'Baliabideak sortuta');break;
+    case 'fix':{const g=clone(S.zaintzak[id]);if(!g)break;g.amaiera=el.dataset.v;await safe(()=>put('zaintzak',id,g),'Zaintza moztuta');break}
+    case 'save-cfg':{const fm=document.getElementById('rulesForm');const g=n=>fm.elements[n];const lh={};
+      for(const z of [1,2,3,4]){const arr=[0,1,2].map(i=>+g(`lh_${z}_${i}`).value);if(new Set(arr).size<3){toast(`${z}. eremuko lehentasunak errepikatuta daude`);return}lh[String(z)]=arr}
+      const c={taldeHasiera:g('taldeHasiera').value,taldeAmaiera:g('taldeAmaiera').value,zistHasiera:g('zistHasiera').value,zistAmaiera:g('zistAmaiera').value,
+        taldeAtseden:+g('taldeAtseden').value||0,zistAtseden:+g('zistAtseden').value||0,eremuak:[1,2,3,4].map(z=>g('eremua'+z).checked),profKontrola:g('profKontrola').checked,lehentasunak:lh,
+        tarifak:{taldeZaintza:+g('taldeZaintza').value||0,taldeItzaltze:+g('taldeItzaltze').value||0,zistZaintza:+g('zistZaintza').value||0,zistItzaltze:+g('zistItzaltze').value||0}};
+      await safe(()=>put('config','arauak',c),'Arauak gordeta');break}
+    case 'propose':{const p=ensureProp();p.result=propose(p.start,p.days,p.avail);render();break}
+    case 'save-prop':{const p=UI.prop;if(!p?.result)break;const c=cfg();let n=0,skip=0,zkN=nextGuardZk();
+      const ok=await safe(async()=>{for(const d of p.result.days){const items=[...Object.values(d.zones).filter(Boolean),d.zist].filter(Boolean).filter((r,i,a)=>a.findIndex(x=>x.id===r.id)===i);
+        for(const r of items){const gid='p'+d.date.replace(/-/g,'')+'-'+r.id;
+          if(S.zaintzak[gid]||Object.values(S.zaintzak).some(g=>g.baliabidea===r.id&&(g.hasiera||'').startsWith(d.date)&&g.mota!=='praktika')){skip++;continue}
+          const [s,e]=slot(d.date,r.mota,c);const mv=r.mota==='taldea'?Object.entries(d.zones).find(([z,x])=>x&&x.id===r.id):null;
+          await put('zaintzak',gid,{baliabidea:r.id,mota:'zaintza',egoera:'planifikatua',hasiera:F(s),amaiera:F(e),kideak:r.kideak||1,zk:String(zkN++),oharrak:mv&&+mv[0]!==r.eremua?`Proposamena: Z${r.eremua}→Z${mv[0]}`:'Proposamena'});n++}}});
+      if(ok){toast(`${n} zaintza gordeta${skip?`, ${skip} lehendik zeudenak`:''}`);p.result=null;render()}break}
+    case 'backup-export':save(`zaintzak-babeskopia_${todayStr()}.json`,JSON.stringify({baliabideak:S.baliabideak,zaintzak:S.zaintzak,suteak:S.suteak,eskuhartzeak:S.eskuhartzeak,ziurtagiriak:S.ziurtagiriak,config:S.config},null,1),'application/json');break;
+    case 'export-liq':exportLiq();break;
+    case 'export-all':exportAll();break;
+  }
+}
+function csv(rows){return '\ufeff'+rows.map(r=>r.map(v=>{v=v==null?'':typeof v==='number'?String(Math.round(v*100)/100).replace('.',','):String(v);return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v}).join(';')).join('\r\n')}
+function dlFile(name,data,type){const blob=data instanceof Blob?data:new Blob([data],{type:type||'application/octet-stream'});const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(u);a.remove()},1500)}
+async function save(name,data,type){if(!DL){dlFile(name,data,type||(name.endsWith('.csv')?'text/csv;charset=utf-8':'application/json'));return}try{await DL.save({filename:name,data});}catch(e){if(e?.code!=='declined')toast('Ezin izan da deskargatu')}}
+function exportLiq(){const [from,to]=liqRange();const R=aggregate(MODEL,from,to);
+  const rows=[['Baliabidea','Mota','Zaintza h','Zaintza o-p','Praktika h','Praktika o-p','Itzaltze h','Itzaltze o-p','Guztira o-p','Likidazioa €']];
+  resList().filter(r=>R[r.id]).forEach(r=>{const x=R[r.id];rows.push([r.izena,r.mota,x.zh,x.zp,x.ph,x.pp,x.ih,x.ip,x.zp+x.pp+x.ip,x.eur])});
+  save(`likidazioa_${UI.lYear}${UI.lMonth?'_'+String(UI.lMonth).padStart(2,'0'):''}.csv`,csv(rows))}
+function exportAll(){const rows=[['Mota','Baliabidea','Sutea / Gertakaria','Hasiera','Amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Oharrak']];
+  Object.values(MODEL.G).sort((a,b)=>(a.s||0)-(b.s||0)).forEach(g=>rows.push([g.rec.mota,resName(g.rec.baliabidea),g.rec.zk,g.rec.hasiera,g.rec.amaiera,'','',g.h,g.k,g.hp,g.rec.oharrak]));
+  MODEL.ints.forEach(o=>rows.push(['itzaltzea',resName(o.rec.baliabidea),o.rec.sutea,o.start!=null?F(o.start):'',o.end!=null?F(o.end):'',o.startRule,o.endRule,o.h,o.k,o.hp,o.rec.oharrak]));
+  save(`erregistroak_${todayStr()}.csv`,csv(rows))}
+async function importBackup(file){let o;try{o=JSON.parse(await file.text())}catch(e){toast('Fitxategia ez da baliozkoa');return}
+  if(!o||!o.zaintzak||!o.baliabideak){toast('Fitxategia ez da babeskopia bat');return}
+  const n=Object.keys(o.zaintzak).length+Object.keys(o.eskuhartzeak||{}).length;
+  if(!confirm(`Uneko datuak ordezkatu ${n} erregistrorekin?`))return;
+  if(UI.mode==='local'){loadInto(o);saveLocal();render();toast('Datuak inportatuta');return}
+  if(UI.mode==='supa'){await safe(async()=>{const rows=[];for(const c of COLLS)for(const [id,d] of Object.entries(o[c]||{}))rows.push({coll:c,id,data:d});if(o.config)rows.push({coll:'config',id:'arauak',data:o.config});await supaBulk(rows);for(const c of COLLS)for(const id of Object.keys(S[c]))if(!(o[c]||{})[id])await del(c,id);await supaLoadAll();render()},'Datuak inportatuta');return}
+  await safe(async()=>{for(const c of COLLS){for(const id of Object.keys(S[c]))if(!(o[c]||{})[id])await del(c,id);for(const [id,d] of Object.entries(o[c]||{}))await put(c,id,d)}if(o.config)await put('config','arauak',o.config)},'Datuak inportatuta')}
+let toastT;function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),3200)}
+
+function boot(){
+  const t=lsGet('zi-tab');if(t&&TABS.some(x=>x[0]===t))UI.tab=t;
+  document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.tagName==='INPUT')return;e.preventDefault();act(el.dataset.act,el)});
+  document.addEventListener('change',e=>{const el=e.target;
+    if(el.dataset.filter){UI[el.dataset.filter]=el.value;render();return}
+    if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
+    if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
+    if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
+    if(el.dataset.pz){const [d,z]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(z==='Z')day.zist=r;else day.zones[z]=r;render();return}
+    if(el.dataset.av){const [rid,i]=el.dataset.av.split('|');ensureProp().avail[rid][+i]=el.checked;return}
+    if(el.id==='pStart'&&el.value){const p=ensureProp();p.start=el.value;p.result=null;render();return}
+    if(el.id==='pDays'){const p=ensureProp();p.days=Math.max(1,Math.min(31,+el.value||7));p.avail={};p.result=null;render();return}
+  });
+  document.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.closest&&e.target.closest('#loginForm')){e.preventDefault();act('login',e.target)}});
+  dlg.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.tagName==='INPUT')e.preventDefault()});
+  render();initStore();
+}
+if(typeof document!=='undefined'&&!window.__TEST__)boot();
+</script>
+</body>
+</html>

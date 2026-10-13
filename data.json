@@ -1,0 +1,4198 @@
+{
+"baliabideak": {
+"U1": {
+"aktibo": true,
+"eremua": null,
+"izena": "U-1",
+"kideak": 1,
+"mota": "zisterna",
+"ordena": 0,
+"profesionala": false
+},
+"U2": {
+"aktibo": true,
+"eremua": null,
+"izena": "U-2",
+"kideak": 1,
+"mota": "zisterna",
+"ordena": 1,
+"profesionala": false
+},
+"U3": {
+"aktibo": true,
+"eremua": null,
+"izena": "U-3",
+"kideak": 1,
+"mota": "zisterna",
+"ordena": 2,
+"profesionala": false
+},
+"U4": {
+"aktibo": true,
+"eremua": null,
+"izena": "U-4",
+"kideak": 1,
+"mota": "zisterna",
+"ordena": 3,
+"profesionala": false
+},
+"U5": {
+"aktibo": true,
+"eremua": null,
+"izena": "U-5",
+"kideak": 1,
+"mota": "zisterna",
+"ordena": 4,
+"profesionala": false
+},
+"agina": {
+"aktibo": true,
+"eremua": 2,
+"izena": "Agiña",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 8,
+"profesionala": false
+},
+"arno": {
+"aktibo": true,
+"eremua": 1,
+"izena": "Arno",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 5,
+"profesionala": false
+},
+"belea": {
+"aktibo": true,
+"eremua": 3,
+"izena": "Belea",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 11,
+"profesionala": false
+},
+"eperra": {
+"aktibo": true,
+"eremua": 1,
+"izena": "Eperra",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 6,
+"profesionala": false
+},
+"erroia": {
+"aktibo": true,
+"eremua": 3,
+"izena": "Erroia",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 13,
+"profesionala": true
+},
+"harkaitz": {
+"aktibo": true,
+"eremua": 3,
+"izena": "Harkaitz",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 12,
+"profesionala": true
+},
+"kia": {
+"aktibo": true,
+"eremua": 4,
+"izena": "Kia",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 14,
+"profesionala": false
+},
+"lanperna": {
+"aktibo": true,
+"eremua": 4,
+"izena": "Lanperna",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 16,
+"profesionala": false
+},
+"pikua": {
+"aktibo": true,
+"eremua": 2,
+"izena": "Pikua",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 9,
+"profesionala": true
+},
+"sustrai": {
+"aktibo": true,
+"eremua": 4,
+"izena": "Sustrai",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 15,
+"profesionala": false
+},
+"talaia": {
+"aktibo": true,
+"eremua": 1,
+"izena": "Talaia",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 7,
+"profesionala": true
+},
+"txantxiku": {
+"aktibo": true,
+"eremua": 2,
+"izena": "Txantxiku",
+"kideak": 4,
+"mota": "taldea",
+"ordena": 17,
+"profesionala": false
+},
+"zuhaitz": {
+"aktibo": true,
+"eremua": 3,
+"izena": "Zuhaitz",
+"kideak": 5,
+"mota": "taldea",
+"ordena": 10,
+"profesionala": false
+}
+},
+"zaintzak": {
+"g22234": {
+"amaiera": "2025-11-17T00:00",
+"baliabidea": "kia",
+"hasiera": "2025-11-16T18:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22234"
+},
+"g22235": {
+"amaiera": "2026-02-21T14:00",
+"baliabidea": "U1",
+"hasiera": "2026-02-21T07:30",
+"kideak": 1,
+"mota": "praktika",
+"oharrak": "PRAKTIKA SAIOA OIARTZUNEN",
+"zk": "22235"
+},
+"g22236": {
+"amaiera": "2026-02-21T14:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-02-21T08:00",
+"kideak": 7,
+"mota": "praktika",
+"oharrak": "PRAKTIKA SAIOA OIARTZUNEN",
+"zk": "22236"
+},
+"g22237": {
+"amaiera": "2026-02-21T14:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-02-21T08:00",
+"kideak": 6,
+"mota": "praktika",
+"oharrak": "PRAKTIKA SAIOA OIARTZUNEN",
+"zk": "22237"
+},
+"g22238": {
+"amaiera": "2026-02-21T14:00",
+"baliabidea": "kia",
+"hasiera": "2026-02-21T08:00",
+"kideak": 3,
+"mota": "praktika",
+"oharrak": "PRAKTIKA SAIOA OIARTZUNEN",
+"zk": "22238"
+},
+"g22239": {
+"amaiera": "2026-02-21T14:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-02-21T08:00",
+"kideak": 5,
+"mota": "praktika",
+"oharrak": "PRAKTIKA SAIOA OIARTZUNEN",
+"zk": "22239"
+},
+"g22240": {
+"amaiera": "2026-02-26T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-02-25T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22240"
+},
+"g22241": {
+"amaiera": "2026-02-26T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-02-25T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22241"
+},
+"g22242": {
+"amaiera": "2026-02-26T19:00",
+"baliabidea": "arno",
+"hasiera": "2026-02-26T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22242"
+},
+"g22243": {
+"amaiera": "2026-02-27T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-02-26T19:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22243"
+},
+"g22244": {
+"amaiera": "2026-02-27T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-02-26T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22244"
+},
+"g22245": {
+"amaiera": "2026-02-27T21:00",
+"baliabidea": "eperra",
+"hasiera": "2026-02-27T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22245"
+},
+"g22246": {
+"amaiera": "2026-02-27T22:00",
+"baliabidea": "pikua",
+"hasiera": "2026-02-27T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "Joseba falta da gai pertsonal bati erantzun behar izateagatik.",
+"zk": "22246"
+},
+"g22247": {
+"amaiera": "2026-02-28T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-02-27T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22247"
+},
+"g22248": {
+"amaiera": "2026-03-03T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-03-02T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "Falta direnak: Fernando Garitano, Juan Pedro Garitano eta Haritz Kortazar",
+"zk": "22248"
+},
+"g22249": {
+"amaiera": "2026-03-03T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-03-02T18:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22249"
+},
+"g22250": {
+"amaiera": "2026-03-03T07:30",
+"baliabidea": "U4",
+"hasiera": "2026-03-02T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Zaintza bukatu ondoren kamiona kargatuta utziko du.",
+"zk": "22250"
+},
+"g22251": {
+"amaiera": "2026-03-05T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-03-04T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "Bi kide falta dira: ezin izan dute zaintza egin",
+"zk": "22251"
+},
+"g22252": {
+"amaiera": "2026-03-05T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-03-04T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22252"
+},
+"g22253": {
+"amaiera": "2026-03-05T12:00",
+"baliabidea": "U1",
+"hasiera": "2026-03-04T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22253"
+},
+"g22254": {
+"amaiera": "2026-03-19T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-03-18T14:30",
+"kideak": 1,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BERASTEGIN  ETA ZAINTZA",
+"zk": "22254"
+},
+"g22255": {
+"amaiera": "2026-03-19T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-03-18T14:15",
+"kideak": 5,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BERASTEGIN ETA ZAINTZA",
+"zk": "22255"
+},
+"g22256": {
+"amaiera": "2026-03-19T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-03-18T14:15",
+"kideak": 7,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BERASTEGIN ETA ZAINTZA",
+"zk": "22256"
+},
+"g22257": {
+"amaiera": "2026-03-19T20:20",
+"baliabidea": "U2",
+"hasiera": "2026-03-19T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "ELGEAKO SUTERA JOATEKO AGINDUA",
+"suterik": true,
+"zk": "22257"
+},
+"g22258": {
+"amaiera": "2026-03-20T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-03-19T23:45",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "ELGEATIK BUELTAN ZAINTZAN JARRAITU DU",
+"zk": "22258"
+},
+"g22259": {
+"amaiera": "2026-03-19T19:38",
+"baliabidea": "agina",
+"hasiera": "2026-03-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "ELGEAKO SUTERA JOATEKO AGINDUA",
+"suterik": true,
+"zk": "22259"
+},
+"g22260": {
+"amaiera": "2026-03-19T20:04",
+"baliabidea": "belea",
+"hasiera": "2026-03-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "ELGEAKO SUTERA JOATEKO AGINDUA",
+"suterik": true,
+"zk": "22260"
+},
+"g22261": {
+"amaiera": "2026-03-21T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-03-20T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22261"
+},
+"g22262": {
+"amaiera": "2026-03-21T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-03-20T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22262"
+},
+"g22263": {
+"amaiera": "2026-03-21T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-03-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22263"
+},
+"g22264": {
+"amaiera": "2026-03-22T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-03-21T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22264"
+},
+"g22265": {
+"amaiera": "2026-03-22T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-03-21T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22265"
+},
+"g22266": {
+"amaiera": "2026-03-21T19:00",
+"baliabidea": "arno",
+"hasiera": "2026-03-21T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22266"
+},
+"g22267": {
+"amaiera": "2026-03-22T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-03-21T19:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22267"
+},
+"g22268": {
+"amaiera": "2026-03-22T23:30",
+"baliabidea": "U2",
+"hasiera": "2026-03-22T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "IRUNGO SUTERAKO DEITU ZAIO BAINA BIDEAN BUELTA.",
+"suterik": true,
+"zk": "22268"
+},
+"g22269": {
+"amaiera": "2026-03-22T23:04",
+"baliabidea": "lanperna",
+"hasiera": "2026-03-22T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"suterik": true,
+"zk": "22269"
+},
+"g22270": {
+"amaiera": "2026-03-23T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-03-22T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22270"
+},
+"g22271": {
+"amaiera": "2026-03-24T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-03-23T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22271"
+},
+"g22272": {
+"amaiera": "2026-03-24T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-03-23T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22272"
+},
+"g22273": {
+"amaiera": "2026-03-24T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-03-23T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22273"
+},
+"g22274": {
+"amaiera": "2026-03-25T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-03-24T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22274"
+},
+"g22275": {
+"amaiera": "2026-03-25T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-03-24T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22275"
+},
+"g22276": {
+"amaiera": "2026-03-25T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-03-24T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22276"
+},
+"g22277": {
+"amaiera": "2026-03-25T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-03-24T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22277"
+},
+"g22278": {
+"amaiera": "2026-03-23T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-03-23T00:30",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "IRUNGO SUTERA ATERA DA BAINA BIDEAN BUELTATZEKO ESAN ZAIO. ETXERATZE ORDUTIK, ZAINTZAN SARTZEN DA BERRIRO.",
+"zk": "22278"
+},
+"g22279": {
+"amaiera": "2026-04-07T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-04-06T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22279"
+},
+"g22280": {
+"amaiera": "2026-04-06T23:51",
+"baliabidea": "lanperna",
+"hasiera": "2026-04-06T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "OIARTZUNERA BIDERATU DITUGU BADAEZPADA BAINA BIDEAN BUELTA EMAN DUTE.",
+"suterik": true,
+"zk": "22280"
+},
+"g22281": {
+"amaiera": "2026-04-07T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-04-06T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22281"
+},
+"g22282": {
+"amaiera": "2026-04-08T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-04-07T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22282"
+},
+"g22283": {
+"amaiera": "2026-04-07T19:00",
+"baliabidea": "arno",
+"hasiera": "2026-04-07T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22283"
+},
+"g22284": {
+"amaiera": "2026-04-08T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-04-07T19:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22284"
+},
+"g22285": {
+"amaiera": "2026-04-08T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-04-07T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22285"
+},
+"g22286": {
+"amaiera": "2026-04-09T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-04-08T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22286"
+},
+"g22287": {
+"amaiera": "2026-04-09T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-04-08T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22287"
+},
+"g22288": {
+"amaiera": "2026-04-09T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-04-08T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22288"
+},
+"g22289": {
+"amaiera": "2026-04-10T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-04-09T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22289"
+},
+"g22290": {
+"amaiera": "2026-04-10T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-04-09T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22290"
+},
+"g22291": {
+"amaiera": "2026-04-10T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-04-09T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22291"
+},
+"g22292": {
+"amaiera": "2026-04-11T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-04-10T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22292"
+},
+"g22293": {
+"amaiera": "2026-04-11T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-04-10T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22293"
+},
+"g22294": {
+"amaiera": "2026-04-11T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-04-10T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22294"
+},
+"g22295": {
+"amaiera": "2026-04-24T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-04-23T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22295"
+},
+"g22296": {
+"amaiera": "2026-04-24T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-04-23T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22296"
+},
+"g22297": {
+"amaiera": "2026-04-24T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-04-23T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22297"
+},
+"g22298": {
+"amaiera": "2026-04-24T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-04-23T19:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22298"
+},
+"g22299": {
+"amaiera": "2026-04-24T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-04-23T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22299"
+},
+"g22300": {
+"amaiera": "2026-05-25T21:18",
+"baliabidea": "agina",
+"hasiera": "2026-05-25T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "Arrasateko sute batera joan ziren",
+"suterik": true,
+"zk": "22300"
+},
+"g22301": {
+"amaiera": "2026-05-25T21:18",
+"baliabidea": "agina",
+"hasiera": "2026-05-25T19:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Erreteneko beste  4 kiderekin Arrasateko sutera joan zen",
+"suterik": true,
+"zk": "22301"
+},
+"g22302": {
+"amaiera": "2026-05-26T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-05-25T22:50",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Arrasateko sutea itzali ondoren zaintzan jarraitu zuten.",
+"zk": "22302"
+},
+"g22303": {
+"amaiera": "2026-05-26T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-05-25T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22303"
+},
+"g22304": {
+"amaiera": "2026-05-26T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-05-25T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22304"
+},
+"g22305": {
+"amaiera": "2026-05-26T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-05-25T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22305"
+},
+"g22306": {
+"amaiera": "2026-05-26T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-05-25T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22306"
+},
+"g22307": {
+"amaiera": "2026-05-27T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-05-26T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22307"
+},
+"g22308": {
+"amaiera": "2026-05-27T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-05-26T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22308"
+},
+"g22309": {
+"amaiera": "2026-05-27T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-05-26T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22309"
+},
+"g22310": {
+"amaiera": "2026-05-27T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-05-26T22:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Beste bost taldeko kiderekin elkartzen da.",
+"zk": "22310"
+},
+"g22311": {
+"amaiera": "2026-05-27T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-05-26T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22311"
+},
+"g22312": {
+"amaiera": "2026-05-27T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-05-26T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22312"
+},
+"g22313": {
+"amaiera": "2026-05-28T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-05-27T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22313"
+},
+"g22314": {
+"amaiera": "2026-05-28T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-05-27T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22314"
+},
+"g22315": {
+"amaiera": "2026-05-28T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-05-27T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22315"
+},
+"g22316": {
+"amaiera": "2026-05-28T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-05-27T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22316"
+},
+"g22317": {
+"amaiera": "2026-05-28T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-05-27T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22317"
+},
+"g22318": {
+"amaiera": "2026-05-29T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-05-28T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22318"
+},
+"g22319": {
+"amaiera": "2026-05-29T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-05-28T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22319"
+},
+"g22320": {
+"amaiera": "2026-05-29T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-05-28T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22320"
+},
+"g22321": {
+"amaiera": "2026-05-29T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-05-28T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22321"
+},
+"g22322": {
+"amaiera": "2026-05-29T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-05-28T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22322"
+},
+"g22323": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-05-29T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22323"
+},
+"g22324": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-05-29T19:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Taldeko beste 2 kiderekin elkartzen da.",
+"zk": "22324"
+},
+"g22325": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-05-29T21:30",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Taldeko beste hiru kiderekin elkartzen da",
+"zk": "22325"
+},
+"g22326": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-05-29T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22326"
+},
+"g22327": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-05-29T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22327"
+},
+"g22328": {
+"amaiera": "2026-05-30T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-05-29T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22328"
+},
+"g22329": {
+"amaiera": "2026-05-30T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-05-29T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22329"
+},
+"g22330": {
+"amaiera": "2026-05-31T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-05-30T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22330"
+},
+"g22331": {
+"amaiera": "2026-05-31T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-05-30T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22331"
+},
+"g22332": {
+"amaiera": "2026-05-31T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-05-30T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22332"
+},
+"g22333": {
+"amaiera": "2026-05-31T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-05-30T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22333"
+},
+"g22334": {
+"amaiera": "2026-05-31T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-05-30T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22334"
+},
+"g22335": {
+"amaiera": "2026-06-14T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-06-13T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22335"
+},
+"g22336": {
+"amaiera": "2026-06-14T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-06-13T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22336"
+},
+"g22337": {
+"amaiera": "2026-06-15T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-06-13T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22337"
+},
+"g22338": {
+"amaiera": "2026-06-15T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-06-14T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22338"
+},
+"g22339": {
+"amaiera": "2026-06-15T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-14T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22339"
+},
+"g22340": {
+"amaiera": "2026-05-29T14:00",
+"baliabidea": "agina",
+"hasiera": "2026-05-29T07:30",
+"kideak": 5,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BATERATUA BESAIDEN",
+"zk": "22340"
+},
+"g22341": {
+"amaiera": "2026-05-29T15:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-05-29T06:30",
+"kideak": 5,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BATERATUA BESAIDEN",
+"zk": "22341"
+},
+"g22342": {
+"amaiera": "2026-05-29T14:30",
+"baliabidea": "U5",
+"hasiera": "2026-05-29T07:00",
+"kideak": 1,
+"mota": "praktika",
+"oharrak": "PRAKTIKA BATERATUA BESAIDEN",
+"zk": "22342"
+},
+"g22343": {
+"amaiera": "2026-06-18T18:50",
+"baliabidea": "eperra",
+"hasiera": "2026-06-18T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "Zaintzan daudela, Elosuko erreketara bidali dtugu (22.010)",
+"suterik": true,
+"zk": "22343"
+},
+"g22344": {
+"amaiera": "2026-06-19T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-06-18T20:19",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "Elosuko erreketaren ondoren zaintzarekin jarraitu dute",
+"zk": "22344"
+},
+"g22345": {
+"amaiera": "2026-06-19T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-06-18T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22345"
+},
+"g22346": {
+"amaiera": "2026-06-19T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-18T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22346"
+},
+"g22347": {
+"amaiera": "2026-06-19T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-06-18T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22347"
+},
+"g22348": {
+"amaiera": "2026-06-19T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-06-18T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22348"
+},
+"g22349": {
+"amaiera": "2026-06-20T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-06-19T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22349"
+},
+"g22350": {
+"amaiera": "2026-06-20T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-06-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22350"
+},
+"g22351": {
+"amaiera": "2026-06-20T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-06-19T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22351"
+},
+"g22352": {
+"amaiera": "2026-06-20T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-06-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22352"
+},
+"g22353": {
+"amaiera": "2026-06-20T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22353"
+},
+"g22354": {
+"amaiera": "2026-06-21T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-06-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22354"
+},
+"g22355": {
+"amaiera": "2026-06-20T18:22",
+"baliabidea": "eperra",
+"hasiera": "2026-06-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Galarretako sutera doaz (22.038 gertakaria)",
+"suterik": true,
+"zk": "22355"
+},
+"g22356": {
+"amaiera": "2026-06-21T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-06-20T20:50",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Zaintzan jarraitzen dute Galarretako sutearen ostean (22.038)",
+"zk": "22356"
+},
+"g22357": {
+"amaiera": "2026-06-20T18:22",
+"baliabidea": "harkaitz",
+"hasiera": "2026-06-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Galarretako sutera doaz (22.038 gertakaria)",
+"zk": "22357"
+},
+"g22358": {
+"amaiera": "2026-06-21T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-06-20T20:50",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Zaintzan jarraitzen dute Galarretako sutearen ostean (22.038)",
+"zk": "22358"
+},
+"g22359": {
+"amaiera": "2026-06-21T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-20T21:38",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Zaintzan jarraitzen dute Zeraingo sutearen eremuan (22.034)",
+"zk": "22359"
+},
+"g22360": {
+"amaiera": "2026-06-21T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-06-20T21:38",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Zaintzan jarraitzen du Zeraingo sutearen ostean (22.034)",
+"zk": "22360"
+},
+"g22361": {
+"amaiera": "2026-06-21T11:17",
+"baliabidea": "U3",
+"hasiera": "2026-06-20T19:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Zeraingo sutearen 2. fokoa berpiztu denean, itzaltze lanetara abiatu da (22.034)",
+"suterik": true,
+"zk": "22361"
+},
+"g22362": {
+"amaiera": "2026-06-22T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-06-21T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22362"
+},
+"g22363": {
+"amaiera": "2026-06-22T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-21T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22363"
+},
+"g22364": {
+"amaiera": "2026-06-22T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-06-21T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22364"
+},
+"g22365": {
+"amaiera": "2026-06-22T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-06-21T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22365"
+},
+"g22366": {
+"amaiera": "2026-06-22T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-06-21T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22366"
+},
+"g22367": {
+"amaiera": "2026-06-22T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-06-21T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22367"
+},
+"g22368": {
+"amaiera": "2026-06-23T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-06-22T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22368"
+},
+"g22369": {
+"amaiera": "2026-06-23T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-22T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22369"
+},
+"g22370": {
+"amaiera": "2026-06-23T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-06-22T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22370"
+},
+"g22371": {
+"amaiera": "2026-06-23T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-06-22T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22371"
+},
+"g22372": {
+"amaiera": "2026-06-23T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-06-22T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22372"
+},
+"g22373": {
+"amaiera": "2026-06-24T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-06-23T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22373"
+},
+"g22374": {
+"amaiera": "2026-06-24T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-06-23T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22374"
+},
+"g22375": {
+"amaiera": "2026-06-24T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-23T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22375"
+},
+"g22376": {
+"amaiera": "2026-06-24T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-06-23T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22376"
+},
+"g22377": {
+"amaiera": "2026-06-24T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-06-23T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22377"
+},
+"g22378": {
+"amaiera": "2026-06-24T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-06-23T23:04",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22378"
+},
+"g22379": {
+"amaiera": "2026-06-25T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-24T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22379"
+},
+"g22380": {
+"amaiera": "2026-06-25T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-06-24T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22380"
+},
+"g22381": {
+"amaiera": "2026-06-25T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-06-24T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22381"
+},
+"g22382": {
+"amaiera": "2026-06-25T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-24T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22382"
+},
+"g22383": {
+"amaiera": "2026-06-25T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-06-24T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22383"
+},
+"g22384": {
+"amaiera": "2026-06-25T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-06-24T23:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22384"
+},
+"g22385": {
+"amaiera": "2026-06-25T23:50",
+"baliabidea": "eperra",
+"hasiera": "2026-06-25T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "AIAKO SUTE ITZALKETARAKO ESKAERA DTEK",
+"suterik": true,
+"zk": "22385"
+},
+"g22386": {
+"amaiera": "2026-06-26T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-06-25T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22386"
+},
+"g22387": {
+"amaiera": "2026-06-25T19:00",
+"baliabidea": "belea",
+"hasiera": "2026-06-25T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22387"
+},
+"g22388": {
+"amaiera": "2026-06-25T23:50",
+"baliabidea": "belea",
+"hasiera": "2026-06-25T19:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "AIAKO SUTE ITZALKETARAKO ESKAERA DTEK",
+"suterik": true,
+"zk": "22388"
+},
+"g22389": {
+"amaiera": "2026-06-26T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-06-25T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22389"
+},
+"g22390": {
+"amaiera": "2026-06-25T23:50",
+"baliabidea": "U5",
+"hasiera": "2026-06-25T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "AIAKO SUTE ITZALKETARAKO ESKAERA DTEK",
+"suterik": true,
+"zk": "22390"
+},
+"g22391": {
+"amaiera": "2026-06-27T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-06-26T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22391"
+},
+"g22392": {
+"amaiera": "2026-06-27T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-06-26T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22392"
+},
+"g22393": {
+"amaiera": "2026-06-27T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-06-26T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22393"
+},
+"g22394": {
+"amaiera": "2026-06-27T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-26T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22394"
+},
+"g22395": {
+"amaiera": "2026-06-27T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-06-26T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22395"
+},
+"g22396": {
+"amaiera": "2026-06-28T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-06-27T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22396"
+},
+"g22397": {
+"amaiera": "2026-06-28T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-06-27T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22397"
+},
+"g22398": {
+"amaiera": "2026-06-28T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-06-27T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22398"
+},
+"g22399": {
+"amaiera": "2026-06-28T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-06-27T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22399"
+},
+"g22400": {
+"amaiera": "2026-06-28T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-06-27T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22400"
+},
+"g22401": {
+"amaiera": "2026-06-28T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-06-27T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22401"
+},
+"g22402": {
+"amaiera": "2026-07-08T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-07T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Antzuolako sutean erremate lanak egin ostean, zaintzan jartzen da (22265)",
+"zk": "22402"
+},
+"g22403": {
+"amaiera": "2026-07-10T17:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-10T00:45",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Zaintzan sartu da Antzuolako sutera eremua bustitzera joan ondoren",
+"zk": "22403"
+},
+"g22404": {
+"amaiera": "2026-07-11T17:00",
+"baliabidea": "U1",
+"hasiera": "2026-07-10T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22404"
+},
+"g22405": {
+"amaiera": "2026-07-12T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-07-11T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22405"
+},
+"g22406": {
+"amaiera": "2026-07-12T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-07-11T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22406"
+},
+"g22407": {
+"amaiera": "2026-07-12T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-11T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22407"
+},
+"g22408": {
+"amaiera": "2026-07-12T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-07-11T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22408"
+},
+"g22409": {
+"amaiera": "2026-07-12T17:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-12T08:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22409"
+},
+"g22410": {
+"amaiera": "2026-07-13T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-07-12T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22410"
+},
+"g22411": {
+"amaiera": "2026-07-13T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-07-12T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22411"
+},
+"g22412": {
+"amaiera": "2026-07-13T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-07-12T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22412"
+},
+"g22413": {
+"amaiera": "2026-07-13T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-07-12T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22413"
+},
+"g22414": {
+"amaiera": "2026-07-13T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-07-12T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22414"
+},
+"g22415": {
+"amaiera": "2026-07-13T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-07-12T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22415"
+},
+"g22416": {
+"amaiera": "2026-07-13T17:45",
+"baliabidea": "belea",
+"hasiera": "2026-07-13T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22416"
+},
+"g22417": {
+"amaiera": "2026-07-13T23:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-13T17:45",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22417"
+},
+"g22418": {
+"amaiera": "2026-07-14T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-13T23:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22418"
+},
+"g22419": {
+"amaiera": "2026-07-14T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-07-13T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22419"
+},
+"g22420": {
+"amaiera": "2026-07-14T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-07-13T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22420"
+},
+"g22421": {
+"amaiera": "2026-07-15T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-07-14T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22421"
+},
+"g22422": {
+"amaiera": "2026-07-15T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-14T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22422"
+},
+"g22423": {
+"amaiera": "2026-07-15T20:15",
+"baliabidea": "arno",
+"hasiera": "2026-07-15T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "EZKIO-ITSASON ITZALKETA LANAK 721",
+"suterik": true,
+"zk": "22423"
+},
+"g22424": {
+"amaiera": "2026-07-16T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-07-15T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22424"
+},
+"g22425": {
+"amaiera": "2026-07-15T20:17",
+"baliabidea": "U1",
+"hasiera": "2026-07-15T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "EZKIO-ITSASON ITZALKETA LANAK 721",
+"suterik": true,
+"zk": "22425"
+},
+"g22426": {
+"amaiera": "2026-07-16T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-07-16T01:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "ZAINTZAN JARRAITZEN DU",
+"zk": "22426"
+},
+"g22427": {
+"amaiera": "2026-07-17T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-07-16T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22427"
+},
+"g22428": {
+"amaiera": "2026-07-17T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-07-16T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22428"
+},
+"g22429": {
+"amaiera": "2026-07-17T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-07-16T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22429"
+},
+"g22430": {
+"amaiera": "2026-07-17T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-07-16T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22430"
+},
+"g22431": {
+"amaiera": "2026-07-18T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-07-17T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22431"
+},
+"g22432": {
+"amaiera": "2026-07-18T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-17T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22432"
+},
+"g22433": {
+"amaiera": "2026-07-18T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-07-17T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22433"
+},
+"g22434": {
+"amaiera": "2026-07-19T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-07-18T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22434"
+},
+"g22435": {
+"amaiera": "2026-07-19T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-07-18T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22435"
+},
+"g22436": {
+"amaiera": "2026-07-19T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-07-18T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22436"
+},
+"g22437": {
+"amaiera": "2026-07-20T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-07-19T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22437"
+},
+"g22438": {
+"amaiera": "2026-07-20T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-19T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Kide hau ordubete geroago sartu da taldean.",
+"zk": "22438"
+},
+"g22439": {
+"amaiera": "2026-07-19T20:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-19T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Jon Quinterok zaintza egiteari utzi behar izan du 4 ordu lehenago.",
+"zk": "22439"
+},
+"g22440": {
+"amaiera": "2026-07-20T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-19T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "Bi kide saitza osoa egin dute.",
+"zk": "22440"
+},
+"g22441": {
+"amaiera": "2026-07-19T20:00",
+"baliabidea": "kia",
+"hasiera": "2026-07-19T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22441"
+},
+"g22442": {
+"amaiera": "2026-07-20T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-07-19T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22442"
+},
+"g22443": {
+"amaiera": "2026-07-21T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-07-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22443"
+},
+"g22444": {
+"amaiera": "2026-07-21T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-07-20T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22444"
+},
+"g22445": {
+"amaiera": "2026-07-21T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-20T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22445"
+},
+"g22446": {
+"amaiera": "2026-07-22T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-07-21T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22446"
+},
+"g22447": {
+"amaiera": "2026-07-22T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-21T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22447"
+},
+"g22448": {
+"amaiera": "2026-07-22T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-21T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Taldeko beste 5 kiderekin elkartu da.",
+"zk": "22448"
+},
+"g22449": {
+"amaiera": "2026-07-22T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-07-21T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22449"
+},
+"g22450": {
+"amaiera": "2026-07-23T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-07-22T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22450"
+},
+"g22451": {
+"amaiera": "2026-07-23T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-07-22T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22451"
+},
+"g22452": {
+"amaiera": "2026-07-23T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-07-22T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22452"
+},
+"g22453": {
+"amaiera": "2026-07-24T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-07-23T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22453"
+},
+"g22454": {
+"amaiera": "2026-07-24T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-07-23T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22454"
+},
+"g22455": {
+"amaiera": "2026-07-24T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-07-23T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22455"
+},
+"g22456": {
+"amaiera": "2026-07-25T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-07-24T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22456"
+},
+"g22457": {
+"amaiera": "2026-07-25T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-07-24T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22457"
+},
+"g22458": {
+"amaiera": "2026-07-25T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-07-24T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22458"
+},
+"g22460": {
+"amaiera": "2026-07-29T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-07-28T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22460"
+},
+"g22461": {
+"amaiera": "2026-07-29T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-07-28T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22461"
+},
+"g22462": {
+"amaiera": "2026-07-29T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-07-28T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22462"
+},
+"g22463": {
+"amaiera": "2026-07-29T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-07-28T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22463"
+},
+"g22464": {
+"amaiera": "2026-07-29T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-07-28T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22464"
+},
+"g22465": {
+"amaiera": "2026-07-30T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-07-29T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22465"
+},
+"g22466": {
+"amaiera": "2026-07-30T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-07-29T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22466"
+},
+"g22467": {
+"amaiera": "2026-07-30T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-29T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22467"
+},
+"g22468": {
+"amaiera": "2026-07-30T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-07-29T19:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22468"
+},
+"g22469": {
+"amaiera": "2026-07-30T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-07-29T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22469"
+},
+"g22470": {
+"amaiera": "2026-07-30T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-07-29T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22470"
+},
+"g22471": {
+"amaiera": "2026-07-31T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-07-30T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22471"
+},
+"g22472": {
+"amaiera": "2026-07-31T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-07-30T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22472"
+},
+"g22473": {
+"amaiera": "2026-07-30T22:35",
+"baliabidea": "belea",
+"hasiera": "2026-07-30T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22473"
+},
+"g22474": {
+"amaiera": "2026-07-31T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-07-30T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22474"
+},
+"g22475": {
+"amaiera": "2026-08-02T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-01T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22475"
+},
+"g22476": {
+"amaiera": "2026-08-02T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-01T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22476"
+},
+"g22477": {
+"amaiera": "2026-08-02T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-08-01T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22477"
+},
+"g22478": {
+"amaiera": "2026-08-03T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-08-02T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22478"
+},
+"g22479": {
+"amaiera": "2026-08-03T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-08-02T23:35",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Zaintza Madariagako sutearen ostean (22568-722)",
+"zk": "22479"
+},
+"g22480": {
+"amaiera": "2026-07-31T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-07-30T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "Gaizki ulertua. Gertakari zkia. 22586",
+"zk": "22480"
+},
+"g22481": {
+"amaiera": "2026-08-04T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-03T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22481"
+},
+"g22482": {
+"amaiera": "2026-08-04T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-08-03T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22482"
+},
+"g22483": {
+"amaiera": "2026-08-04T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-08-03T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22483"
+},
+"g22484": {
+"amaiera": "2026-08-05T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-04T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22484"
+},
+"g22485": {
+"amaiera": "2026-08-05T00:00",
+"baliabidea": "erroia",
+"hasiera": "2026-08-04T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22485"
+},
+"g22486": {
+"amaiera": "2026-08-05T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-08-04T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22486"
+},
+"g22487": {
+"amaiera": "2026-08-06T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-08-05T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22487"
+},
+"g22488": {
+"amaiera": "2026-08-06T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-08-05T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22488"
+},
+"g22489": {
+"amaiera": "2026-08-06T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-08-05T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22489"
+},
+"g22490": {
+"amaiera": "2026-08-06T21:00",
+"baliabidea": "eperra",
+"hasiera": "2026-08-06T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Komunikazioan akatsa dela eta, Jon G-rekin hitz egin ondoren lau orduko zaintza adostu da.",
+"zk": "22490"
+},
+"g22491": {
+"amaiera": "2026-08-07T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-08-06T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22491"
+},
+"g22492": {
+"amaiera": "2026-08-07T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-08-06T17:00",
+"kideak": 6,
+"mota": "praktika",
+"oharrak": "Tximista baso-sute praktika Alegian Jon G-rekin eta Baliarrainen zaintza.",
+"zk": "22492"
+},
+"g22493": {
+"amaiera": "2026-08-07T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-08-06T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22493"
+},
+"g22494": {
+"amaiera": "2026-08-08T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-08-07T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22494"
+},
+"g22495": {
+"amaiera": "2026-08-08T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-08-07T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22495"
+},
+"g22496": {
+"amaiera": "2026-08-08T08:00",
+"baliabidea": "U2",
+"hasiera": "2026-08-07T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22496"
+},
+"g22497": {
+"amaiera": "2026-08-08T23:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-08T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22497"
+},
+"g22498": {
+"amaiera": "2026-08-08T23:00",
+"baliabidea": "erroia",
+"hasiera": "2026-08-08T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22498"
+},
+"g22499": {
+"amaiera": "2026-08-13T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-12T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22499"
+},
+"g22500": {
+"amaiera": "2026-08-13T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-08-12T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22500"
+},
+"g22501": {
+"amaiera": "2026-08-13T00:00",
+"baliabidea": "lanperna",
+"hasiera": "2026-08-12T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22501"
+},
+"g22502": {
+"amaiera": "2026-08-13T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-08-12T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22502"
+},
+"g22503": {
+"amaiera": "2026-08-14T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-13T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22503"
+},
+"g22504": {
+"amaiera": "2026-08-14T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-08-13T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22504"
+},
+"g22505": {
+"amaiera": "2026-08-14T00:00",
+"baliabidea": "sustrai",
+"hasiera": "2026-08-13T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "DE PRACTICAS EN HONDARRIBA DE 17:30 A 21:00",
+"zk": "22505"
+},
+"g22506": {
+"amaiera": "2026-08-14T00:00",
+"baliabidea": "kia",
+"hasiera": "2026-08-13T17:00",
+"kideak": 2,
+"mota": "zaintza",
+"oharrak": "DE PRACTICAS EN HONDARRIBA DE 17:30 A 21:00",
+"zk": "22506"
+},
+"g22507": {
+"amaiera": "2026-08-14T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-08-13T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22507"
+},
+"g22508": {
+"amaiera": "2026-08-15T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-08-14T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22508"
+},
+"g22509": {
+"amaiera": "2026-08-15T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-08-14T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22509"
+},
+"g22510": {
+"amaiera": "2026-08-15T08:00",
+"baliabidea": "U5",
+"hasiera": "2026-08-14T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22510"
+},
+"g22511": {
+"amaiera": "2026-08-19T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-08-18T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22511"
+},
+"g22512": {
+"amaiera": "2026-08-19T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-18T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22512"
+},
+"g22513": {
+"amaiera": "2026-08-19T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-08-18T20:30",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22513"
+},
+"g22514": {
+"amaiera": "2026-08-19T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-08-18T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22514"
+},
+"g22515": {
+"amaiera": "2026-08-20T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-08-19T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22515"
+},
+"g22516": {
+"amaiera": "2026-08-20T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-19T17:00",
+"kideak": 3,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22516"
+},
+"g22517": {
+"amaiera": "2026-08-20T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-08-19T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22517"
+},
+"g22518": {
+"amaiera": "2026-08-23T12:00",
+"baliabidea": "U1",
+"hasiera": "2026-08-22T22:40",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "GABIRIAKO BS OSTEAN ZAINTZAN JARRAITU",
+"zk": "22518"
+},
+"g22519": {
+"amaiera": "2026-08-23T12:15",
+"baliabidea": "talaia",
+"hasiera": "2026-08-23T12:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "Acuden al IF de Gabiria",
+"suterik": true,
+"zk": "22519"
+},
+"g22520": {
+"amaiera": "2026-08-24T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-23T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22520"
+},
+"g22521": {
+"amaiera": "2026-08-24T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-08-23T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22521"
+},
+"g22522": {
+"amaiera": "2026-08-24T00:00",
+"baliabidea": "zuhaitz",
+"hasiera": "2026-08-23T18:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22522"
+},
+"g22523": {
+"amaiera": "2026-08-24T22:00",
+"baliabidea": "pikua",
+"hasiera": "2026-08-24T17:00",
+"kideak": 3,
+"mota": "praktika",
+"oharrak": "GABIRIAN BASO-SUTE PRAKTIKA-ZAINTZA",
+"zk": "22523"
+},
+"g22524": {
+"amaiera": "2026-08-24T22:00",
+"baliabidea": "eperra",
+"hasiera": "2026-08-24T17:00",
+"kideak": 3,
+"mota": "praktika",
+"oharrak": "GABIRIAN BASO-SUTE PRAKTIKA-ZAINTZA",
+"zk": "22524"
+},
+"g22525": {
+"amaiera": "2026-08-25T23:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-25T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22525"
+},
+"g22526": {
+"amaiera": "2026-08-26T22:00",
+"baliabidea": "talaia",
+"hasiera": "2026-08-26T17:00",
+"kideak": 5,
+"mota": "praktika",
+"oharrak": "LASTUR INGURUAN PRAKTIKA-ZAINTZA LANAK",
+"zk": "22526"
+},
+"g22527": {
+"amaiera": "2026-08-24T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-08-23T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22527"
+},
+"g22528": {
+"amaiera": "2026-08-27T22:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-27T17:00",
+"kideak": 6,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22528"
+},
+"g22529": {
+"amaiera": "2026-08-28T23:00",
+"baliabidea": "arno",
+"hasiera": "2026-08-28T17:00",
+"kideak": 3,
+"mota": "praktika",
+"oharrak": "EZKION PRAKTIKA ETA ZAINTZA",
+"zk": "22529"
+},
+"g22530": {
+"amaiera": "2026-08-28T23:00",
+"baliabidea": "belea",
+"hasiera": "2026-08-28T17:00",
+"kideak": 3,
+"mota": "praktika",
+"oharrak": "EZKION PRAKTIKA ETA ZAINTZA",
+"zk": "22530"
+},
+"g22531": {
+"amaiera": "2026-08-29T23:00",
+"baliabidea": "eperra",
+"hasiera": "2026-08-29T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22531"
+},
+"g22532": {
+"amaiera": "2026-08-30T22:00",
+"baliabidea": "agina",
+"hasiera": "2026-08-30T17:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22532"
+},
+"g22533": {
+"amaiera": "2026-09-03T20:30",
+"baliabidea": "txantxiku",
+"hasiera": "2026-09-03T17:00",
+"kideak": 4,
+"mota": "praktika",
+"oharrak": "Sute itzaltze praktiketan (Leintz Gatzaga)",
+"zk": "22533"
+},
+"g22534": {
+"amaiera": "2026-09-05T00:00",
+"baliabidea": "talaia",
+"hasiera": "2026-09-04T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22534"
+},
+"g22535": {
+"amaiera": "2026-09-05T00:00",
+"baliabidea": "pikua",
+"hasiera": "2026-09-04T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22535"
+},
+"g22536": {
+"amaiera": "2026-09-05T08:00",
+"baliabidea": "U4",
+"hasiera": "2026-09-04T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22536"
+},
+"g22537": {
+"amaiera": "2026-09-06T00:00",
+"baliabidea": "agina",
+"hasiera": "2026-09-05T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22537"
+},
+"g22538": {
+"amaiera": "2026-09-06T00:00",
+"baliabidea": "belea",
+"hasiera": "2026-09-05T16:00",
+"kideak": 5,
+"mota": "zaintza",
+"oharrak": "Jon Quinterok ezin izan zuen zaintza egin eta ordezko arduraduna Harkaitz izan zen Tel. 688829110",
+"zk": "22538"
+},
+"g22539": {
+"amaiera": "2026-09-06T08:00",
+"baliabidea": "U3",
+"hasiera": "2026-09-05T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22539"
+},
+"g22540": {
+"amaiera": "2026-09-07T00:00",
+"baliabidea": "eperra",
+"hasiera": "2026-09-06T17:00",
+"kideak": 7,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22540"
+},
+"g22541": {
+"amaiera": "2026-09-07T00:00",
+"baliabidea": "harkaitz",
+"hasiera": "2026-09-06T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22541"
+},
+"g22542": {
+"amaiera": "2026-09-07T08:00",
+"baliabidea": "U1",
+"hasiera": "2026-09-06T17:00",
+"kideak": 1,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22542"
+},
+"g22543": {
+"amaiera": "2026-09-08T00:00",
+"baliabidea": "arno",
+"hasiera": "2026-09-07T17:00",
+"kideak": 4,
+"mota": "zaintza",
+"oharrak": "",
+"zk": "22543"
+}
+},
+"suteak": {
+"s702": {
+"herria": "LEINTZ-GATZAGA",
+"lekua": "ELGEAKO MENDILERROA",
+"oharrak": "",
+"zk": "702"
+},
+"s703": {
+"herria": "ANTZUOLA",
+"lekua": "GOIZPER ATZEAN, ANTIGUA AUZOA, 4",
+"oharrak": "",
+"zk": "703"
+},
+"s704": {
+"herria": "IRUN",
+"lekua": "SAN MARTZIAL ETA TIROKETA ZELAIAN ARTEAN",
+"oharrak": "",
+"zk": "704"
+},
+"s705": {
+"herria": "OIARTZUN",
+"lekua": "OZENTZIO KALEA 27TIK 300 M MENDI ALDERA",
+"oharrak": "",
+"zk": "705"
+},
+"s706": {
+"herria": "LEINTZ-GATZAGA",
+"lekua": "LEINTZ-GATZAGA",
+"oharrak": "",
+"zk": "706"
+},
+"s707": {
+"herria": "DEBA",
+"lekua": "ELORRIAGA",
+"oharrak": "",
+"zk": "707"
+},
+"s709": {
+"herria": "ARRASATE",
+"lekua": "MONTARRON PARKEAN",
+"oharrak": "",
+"zk": "709"
+},
+"s710": {
+"herria": "",
+"lekua": "BESAIDE",
+"oharrak": "",
+"zk": "710"
+},
+"s711": {
+"herria": "AZKOITIA",
+"lekua": "Zeleder baserria - Elosu errepidea 52",
+"oharrak": "",
+"zk": "711"
+},
+"s713": {
+"herria": "ZERAIN",
+"lekua": "AIZPEA AUZOA",
+"oharrak": "",
+"zk": "713"
+},
+"s714": {
+"herria": "ZEGAMA",
+"lekua": "GALARRETA (ARABA)",
+"oharrak": "",
+"zk": "714"
+},
+"s715": {
+"herria": "ZERAIN",
+"lekua": "AIZPEA AUZOA",
+"oharrak": "",
+"zk": "715"
+},
+"s716": {
+"herria": "ZEGAMA",
+"lekua": "ZALDUONDO (ARABA)",
+"oharrak": "",
+"zk": "716"
+},
+"s717": {
+"herria": "ESKORIATZA",
+"lekua": "FAGOR EDERLAN ETA AP-1 ARTEAN",
+"oharrak": "",
+"zk": "717"
+},
+"s718": {
+"herria": "AIA",
+"lekua": "ZARAUTZKO KANPING OSTEAN, AMEZTEGIKO PUNTAN",
+"oharrak": "",
+"zk": "718"
+},
+"s719": {
+"herria": "ANTZUOLA",
+"lekua": "BASALDE AUZOA",
+"oharrak": "",
+"zk": "719"
+},
+"s720": {
+"herria": "OÑATI",
+"lekua": "ALOÑAMENDI",
+"oharrak": "",
+"zk": "720"
+},
+"s721": {
+"herria": "EZKIO-ITSASO",
+"lekua": "EZKIO BARRUNDIA 34",
+"oharrak": "",
+"zk": "721"
+},
+"s722": {
+"herria": "AZKOITIA",
+"lekua": "MADARIAGA AUZOA",
+"oharrak": "",
+"zk": "722"
+},
+"s723": {
+"herria": "",
+"lekua": "LARREA (ARABA) ELGEAKO MENDILERROA",
+"oharrak": "",
+"zk": "723"
+},
+"s724": {
+"herria": "ABALTZISKETA",
+"lekua": "ARABAKO LLANTENO ALDEAN",
+"oharrak": "",
+"zk": "724"
+},
+"s725": {
+"herria": "ABALTZISKETA",
+"lekua": "ARABAN LANTERO ALDKEO SUTEAN",
+"oharrak": "",
+"zk": "725"
+},
+"s726": {
+"herria": "GABIRIA",
+"lekua": "ALEGIA AUZOA - CALDERERIA JUAN LASA",
+"oharrak": "",
+"zk": "726"
+},
+"s727": {
+"herria": "ESKORIATZA",
+"lekua": "ELGEA",
+"oharrak": "",
+"zk": "727"
+},
+"s728": {
+"herria": "IDIAZABAL",
+"lekua": "ETXEGARATE ETA ATXURBI ARTEAN",
+"oharrak": "",
+"zk": "728"
+},
+"s729": {
+"herria": "OÑATI",
+"lekua": "LARRAÑA AUZOA",
+"oharrak": "",
+"zk": "729"
+},
+"s730": {
+"herria": "OÑATI",
+"lekua": "ZUBILLAGA UZOAN",
+"oharrak": "",
+"zk": "730"
+},
+"s731": {
+"herria": "BERGARA",
+"lekua": "BASALGO 45, LEZARRIGOIKOA BASERRI INGURUAN",
+"oharrak": "",
+"zk": "731"
+},
+"s732": {
+"herria": "MUTRIKU",
+"lekua": "AITZETA KANPINAREN INGURUAN",
+"oharrak": "",
+"zk": "732"
+}
+},
+"eskuhartzeak": {
+"i702-U2-20260319": {
+"baliabidea": "U2",
+"bukatu": "2026-03-19T23:45",
+"deia": "2026-03-19T19:49",
+"erantzuna": "2026-03-19T20:12",
+"etxeratu": "",
+"iritsi": "2026-03-19T22:05",
+"itzuli": "2026-03-19T23:45",
+"kideak": 1,
+"oharrak": "",
+"sutea": "702",
+"zaintzan": "auto"
+},
+"i702-agina-20260319": {
+"baliabidea": "agina",
+"bukatu": "2026-03-19T23:59",
+"deia": "2026-03-19T19:38",
+"erantzuna": "2026-03-19T19:38",
+"etxeratu": "",
+"iritsi": "2026-03-19T20:28",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "702",
+"zaintzan": "auto"
+},
+"i702-belea-20260319": {
+"baliabidea": "belea",
+"bukatu": "2026-03-20T00:24",
+"deia": "2026-03-19T20:04",
+"erantzuna": "2026-03-19T20:04",
+"etxeratu": "",
+"iritsi": "2026-03-19T21:34",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "702",
+"zaintzan": "auto"
+},
+"i703-U5-20260321": {
+"baliabidea": "U5",
+"bukatu": "2026-03-21T16:47",
+"deia": "2026-03-21T11:50",
+"erantzuna": "2026-03-21T11:50",
+"etxeratu": "2026-03-21T17:40",
+"iritsi": "2026-03-21T12:49",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "703",
+"zaintzan": "auto"
+},
+"i703-eperra-20260321": {
+"baliabidea": "eperra",
+"bukatu": "2026-03-21T17:23",
+"deia": "2026-03-21T12:41",
+"erantzuna": "2026-03-21T12:41",
+"etxeratu": "2026-03-21T18:40",
+"iritsi": "2026-03-21T14:13",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "703",
+"zaintzan": "auto"
+},
+"i703-pikua-20260321": {
+"baliabidea": "pikua",
+"bukatu": "2026-03-21T17:44",
+"deia": "2026-03-21T11:52",
+"erantzuna": "2026-03-21T11:52",
+"etxeratu": "2026-03-21T18:18",
+"iritsi": "2026-03-21T12:42",
+"itzuli": "",
+"kideak": 2,
+"oharrak": "",
+"sutea": "703",
+"zaintzan": "auto"
+},
+"i704-U2-20260322": {
+"baliabidea": "U2",
+"bukatu": "2026-03-23T00:09",
+"deia": "2026-03-22T23:30",
+"erantzuna": "2026-03-22T23:30",
+"etxeratu": "2026-03-23T00:30",
+"iritsi": "2026-03-23T00:09",
+"itzuli": "2026-03-23T00:30",
+"kideak": 1,
+"oharrak": "",
+"sutea": "704",
+"zaintzan": "auto"
+},
+"i704-lanperna-20260322": {
+"baliabidea": "lanperna",
+"bukatu": "2026-03-23T01:27",
+"deia": "2026-03-22T23:04",
+"erantzuna": "2026-03-22T23:04",
+"etxeratu": "2026-03-23T02:01",
+"iritsi": "2026-03-22T23:45",
+"itzuli": "",
+"kideak": 6,
+"oharrak": "",
+"sutea": "704",
+"zaintzan": "auto"
+},
+"i705-lanperna-20260406": {
+"baliabidea": "lanperna",
+"bukatu": "2026-04-07T00:09",
+"deia": "2026-04-06T23:51",
+"erantzuna": "2026-04-06T23:51",
+"etxeratu": "2026-04-07T01:00",
+"iritsi": "2026-04-07T00:09",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "705",
+"zaintzan": "auto"
+},
+"i706-U5-20260417": {
+"baliabidea": "U5",
+"bukatu": "2026-04-17T19:30",
+"deia": "2026-04-17T14:00",
+"erantzuna": "",
+"etxeratu": "2026-04-17T21:00",
+"iritsi": "2026-04-17T15:15",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "706",
+"zaintzan": "auto"
+},
+"i706-agina-20260417": {
+"baliabidea": "agina",
+"bukatu": "2026-04-17T19:30",
+"deia": "2026-04-17T14:45",
+"erantzuna": "",
+"etxeratu": "2026-04-17T20:00",
+"iritsi": "2026-04-17T15:15",
+"itzuli": "",
+"kideak": 7,
+"oharrak": "",
+"sutea": "706",
+"zaintzan": "auto"
+},
+"i706-harkaitz-20260417": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-04-17T19:30",
+"deia": "2026-04-17T14:05",
+"erantzuna": "2026-04-17T14:05",
+"etxeratu": "2026-04-17T20:40",
+"iritsi": "2026-04-17T15:15",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "706",
+"zaintzan": "auto"
+},
+"i707-arno-20260429": {
+"baliabidea": "arno",
+"bukatu": "2026-04-29T19:30",
+"deia": "2026-04-29T14:30",
+"erantzuna": "2026-04-29T14:30",
+"etxeratu": "2026-04-29T20:15",
+"iritsi": "2026-04-29T15:15",
+"itzuli": "",
+"kideak": 6,
+"oharrak": "",
+"sutea": "707",
+"zaintzan": "auto"
+},
+"i707-talaia-20260429": {
+"baliabidea": "talaia",
+"bukatu": "2026-04-29T19:30",
+"deia": "2026-04-29T14:45",
+"erantzuna": "2026-04-29T14:45",
+"etxeratu": "2026-04-29T20:00",
+"iritsi": "2026-04-29T15:15",
+"itzuli": "",
+"kideak": 6,
+"oharrak": "",
+"sutea": "707",
+"zaintzan": "auto"
+},
+"i709-agina-20260525": {
+"baliabidea": "agina",
+"bukatu": "2026-05-25T22:50",
+"deia": "2026-05-25T21:18",
+"erantzuna": "2026-05-25T21:18",
+"etxeratu": "",
+"iritsi": "2026-05-25T22:00",
+"itzuli": "2026-05-25T22:50",
+"kideak": 5,
+"oharrak": "",
+"sutea": "709",
+"zaintzan": "auto"
+},
+"i710-U5-20260529": {
+"baliabidea": "U5",
+"bukatu": "2026-05-29T13:30",
+"deia": "2026-05-29T07:00",
+"erantzuna": "2026-05-29T07:00",
+"etxeratu": "2026-05-29T14:30",
+"iritsi": "2026-05-29T07:00",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "710",
+"zaintzan": "auto"
+},
+"i710-agina-20260529": {
+"baliabidea": "agina",
+"bukatu": "2026-05-29T13:30",
+"deia": "2026-05-29T07:00",
+"erantzuna": "2026-05-29T07:00",
+"etxeratu": "2026-05-29T14:00",
+"iritsi": "2026-05-29T07:00",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "710",
+"zaintzan": "auto"
+},
+"i710-harkaitz-20260529": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-05-29T13:30",
+"deia": "2026-05-29T06:30",
+"erantzuna": "2026-05-29T06:30",
+"etxeratu": "2026-05-29T15:00",
+"iritsi": "2026-05-29T06:30",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "710",
+"zaintzan": "auto"
+},
+"i711-eperra-20260618": {
+"baliabidea": "eperra",
+"bukatu": "2026-06-18T20:19",
+"deia": "2026-06-18T18:50",
+"erantzuna": "2026-06-18T18:50",
+"etxeratu": "",
+"iritsi": "2026-06-18T19:35",
+"itzuli": "2026-06-18T20:19",
+"kideak": 7,
+"oharrak": "",
+"sutea": "711",
+"zaintzan": "auto"
+},
+"i713-U5-20260620": {
+"baliabidea": "U5",
+"bukatu": "2026-06-20T21:38",
+"deia": "2026-06-20T15:39",
+"erantzuna": "2026-06-20T15:39",
+"etxeratu": "2026-06-20T22:22",
+"iritsi": "2026-06-20T17:11",
+"itzuli": "2026-06-20T21:38",
+"kideak": 1,
+"oharrak": "",
+"sutea": "713",
+"zaintzan": "auto"
+},
+"i713-agina-20260620": {
+"baliabidea": "agina",
+"bukatu": "2026-06-20T21:38",
+"deia": "2026-06-20T14:09",
+"erantzuna": "2026-06-20T14:09",
+"etxeratu": "",
+"iritsi": "2026-06-20T15:40",
+"itzuli": "2026-06-20T21:38",
+"kideak": 5,
+"oharrak": "",
+"sutea": "713",
+"zaintzan": "auto"
+},
+"i714-eperra-20260620": {
+"baliabidea": "eperra",
+"bukatu": "2026-06-20T20:50",
+"deia": "2026-06-20T18:22",
+"erantzuna": "2026-06-20T18:22",
+"etxeratu": "",
+"iritsi": "2026-06-20T19:45",
+"itzuli": "2026-06-20T20:50",
+"kideak": 5,
+"oharrak": "",
+"sutea": "714",
+"zaintzan": "auto"
+},
+"i714-harkaitz-20260620": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-06-20T20:50",
+"deia": "2026-06-20T18:22",
+"erantzuna": "2026-06-20T18:22",
+"etxeratu": "",
+"iritsi": "2026-06-20T19:42",
+"itzuli": "2026-06-20T20:50",
+"kideak": 5,
+"oharrak": "",
+"sutea": "714",
+"zaintzan": "auto"
+},
+"i715-U3-20260621": {
+"baliabidea": "U3",
+"bukatu": "2026-06-21T15:15",
+"deia": "2026-06-21T11:17",
+"erantzuna": "2026-06-21T11:17",
+"etxeratu": "2026-06-21T16:26",
+"iritsi": "2026-06-21T12:37",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "715",
+"zaintzan": "auto"
+},
+"i715-agina-20260621": {
+"baliabidea": "agina",
+"bukatu": "2026-06-21T15:15",
+"deia": "2026-06-21T10:42",
+"erantzuna": "2026-06-21T10:42",
+"etxeratu": "2026-06-21T16:01",
+"iritsi": "2026-06-21T12:27",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "715",
+"zaintzan": "auto"
+},
+"i716-U4-20260624": {
+"baliabidea": "U4",
+"bukatu": "2026-06-24T21:05",
+"deia": "2026-06-24T14:30",
+"erantzuna": "2026-06-24T14:30",
+"etxeratu": "2026-06-24T23:00",
+"iritsi": "2026-06-24T16:05",
+"itzuli": "2026-06-24T23:00",
+"kideak": 1,
+"oharrak": "",
+"sutea": "716",
+"zaintzan": "auto"
+},
+"i716-erroia-20260624": {
+"baliabidea": "erroia",
+"bukatu": "2026-06-24T21:05",
+"deia": "2026-06-24T12:30",
+"erantzuna": "2026-06-24T12:30",
+"etxeratu": "2026-06-24T23:30",
+"iritsi": "2026-06-24T13:30",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "716",
+"zaintzan": "auto"
+},
+"i716-harkaitz-20260623": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-06-23T19:29",
+"deia": "2026-06-23T10:51",
+"erantzuna": "2026-06-23T10:51",
+"etxeratu": "2026-06-23T20:27",
+"iritsi": "2026-06-23T13:30",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "716",
+"zaintzan": "auto"
+},
+"i716-sustrai-20260626": {
+"baliabidea": "sustrai",
+"bukatu": "2026-06-26T22:17",
+"deia": "2026-06-26T15:30",
+"erantzuna": "2026-06-26T15:30",
+"etxeratu": "2026-06-26T23:48",
+"iritsi": "2026-06-26T17:13",
+"itzuli": "",
+"kideak": 6,
+"oharrak": "",
+"sutea": "716",
+"zaintzan": "auto"
+},
+"i716-talaia-20260624": {
+"baliabidea": "talaia",
+"bukatu": "2026-06-24T21:05",
+"deia": "2026-06-24T14:49",
+"erantzuna": "2026-06-24T14:49",
+"etxeratu": "2026-06-24T23:30",
+"iritsi": "2026-06-24T18:00",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "716",
+"zaintzan": "auto"
+},
+"i717-U2-20260623": {
+"baliabidea": "U2",
+"bukatu": "2026-06-23T22:05",
+"deia": "2026-06-23T16:54",
+"erantzuna": "2026-06-23T16:54",
+"etxeratu": "2026-06-23T23:04",
+"iritsi": "2026-06-23T19:15",
+"itzuli": "2026-06-23T23:04",
+"kideak": 1,
+"oharrak": "",
+"sutea": "717",
+"zaintzan": "auto"
+},
+"i717-pikua-20260623": {
+"baliabidea": "pikua",
+"bukatu": "2026-06-23T23:00",
+"deia": "2026-06-23T17:01",
+"erantzuna": "2026-06-23T17:01",
+"etxeratu": "2026-06-23T23:39",
+"iritsi": "2026-06-23T17:40",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "717",
+"zaintzan": "auto"
+},
+"i718-U5-20260625": {
+"baliabidea": "U5",
+"bukatu": "2026-06-26T03:12",
+"deia": "2026-06-25T23:50",
+"erantzuna": "2026-06-25T23:50",
+"etxeratu": "2026-06-26T04:16",
+"iritsi": "2026-06-26T01:05",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "718",
+"zaintzan": "auto"
+},
+"i718-belea-20260625": {
+"baliabidea": "belea",
+"bukatu": "2026-06-26T03:29",
+"deia": "2026-06-25T23:50",
+"erantzuna": "2026-06-25T23:50",
+"etxeratu": "2026-06-26T04:05",
+"iritsi": "2026-06-26T00:11",
+"itzuli": "",
+"kideak": 6,
+"oharrak": "",
+"sutea": "718",
+"zaintzan": "auto"
+},
+"i718-eperra-20260625": {
+"baliabidea": "eperra",
+"bukatu": "2026-06-26T03:28",
+"deia": "2026-06-25T23:50",
+"erantzuna": "2026-06-25T23:50",
+"etxeratu": "2026-06-26T04:19",
+"iritsi": "2026-06-25T23:51",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "718",
+"zaintzan": "auto"
+},
+"i719-U3-20260707": {
+"baliabidea": "U3",
+"bukatu": "2026-07-07T16:35",
+"deia": "2026-07-07T11:05",
+"erantzuna": "2026-07-07T11:05",
+"etxeratu": "2026-07-07T18:00",
+"iritsi": "2026-07-07T12:48",
+"itzuli": "2026-07-07T18:00",
+"kideak": 1,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-U3-20260709": {
+"baliabidea": "U3",
+"bukatu": "2026-07-09T23:40",
+"deia": "2026-07-09T20:14",
+"erantzuna": "2026-07-09T20:14",
+"etxeratu": "2026-07-10T00:45",
+"iritsi": "2026-07-09T21:52",
+"itzuli": "2026-07-10T00:45",
+"kideak": 1,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-U5-20260706": {
+"baliabidea": "U5",
+"bukatu": "2026-07-06T20:40",
+"deia": "2026-07-06T14:14",
+"erantzuna": "2026-07-06T14:14",
+"etxeratu": "2026-07-06T21:00",
+"iritsi": "2026-07-06T15:44",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-agina-20260706": {
+"baliabidea": "agina",
+"bukatu": "2026-07-06T22:22",
+"deia": "2026-07-06T15:05",
+"erantzuna": "2026-07-06T15:05",
+"etxeratu": "2026-07-06T23:04",
+"iritsi": "2026-07-06T16:35",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-arno-20260706": {
+"baliabidea": "arno",
+"bukatu": "2026-07-07T03:46",
+"deia": "2026-07-06T16:55",
+"erantzuna": "2026-07-06T16:55",
+"etxeratu": "2026-07-07T04:30",
+"iritsi": "2026-07-06T18:30",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-eperra-20260707": {
+"baliabidea": "eperra",
+"bukatu": "2026-07-07T23:00",
+"deia": "2026-07-07T17:00",
+"erantzuna": "2026-07-07T17:00",
+"etxeratu": "2026-07-07T23:59",
+"iritsi": "2026-07-07T18:00",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-pikua-20260706": {
+"baliabidea": "pikua",
+"bukatu": "2026-07-06T20:21",
+"deia": "2026-07-06T14:12",
+"erantzuna": "2026-07-06T14:12",
+"etxeratu": "2026-07-06T20:41",
+"iritsi": "2026-07-06T15:02",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-pikua-20260707": {
+"baliabidea": "pikua",
+"bukatu": "2026-07-07T16:35",
+"deia": "2026-07-07T08:36",
+"erantzuna": "2026-07-07T08:36",
+"etxeratu": "2026-07-07T17:14",
+"iritsi": "2026-07-07T09:00",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i719-pikua-20260709": {
+"baliabidea": "pikua",
+"bukatu": "2026-07-09T23:40",
+"deia": "2026-07-09T20:21",
+"erantzuna": "2026-07-09T20:21",
+"etxeratu": "2026-07-10T00:10",
+"iritsi": "2026-07-09T20:59",
+"itzuli": "",
+"kideak": 3,
+"oharrak": "",
+"sutea": "719",
+"zaintzan": "auto"
+},
+"i720-pikua-20260711": {
+"baliabidea": "pikua",
+"bukatu": "2026-07-11T22:50",
+"deia": "2026-07-11T17:00",
+"erantzuna": "2026-07-11T17:00",
+"etxeratu": "2026-07-11T23:51",
+"iritsi": "2026-07-11T18:00",
+"itzuli": "",
+"kideak": 3,
+"oharrak": "",
+"sutea": "720",
+"zaintzan": "auto"
+},
+"i720-talaia-20260710": {
+"baliabidea": "talaia",
+"bukatu": "2026-07-10T22:55",
+"deia": "2026-07-10T12:38",
+"erantzuna": "2026-07-10T12:38",
+"etxeratu": "2026-07-11T00:20",
+"iritsi": "2026-07-10T18:01",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "720",
+"zaintzan": "auto"
+},
+"i721-U1-20260715": {
+"baliabidea": "U1",
+"bukatu": "2026-07-15T23:26",
+"deia": "2026-07-15T20:17",
+"erantzuna": "2026-07-15T20:17",
+"etxeratu": "2026-07-16T01:00",
+"iritsi": "2026-07-15T21:39",
+"itzuli": "2026-07-16T01:00",
+"kideak": 1,
+"oharrak": "",
+"sutea": "721",
+"zaintzan": "auto"
+},
+"i721-arno-20260715": {
+"baliabidea": "arno",
+"bukatu": "2026-07-15T23:29",
+"deia": "2026-07-15T20:15",
+"erantzuna": "2026-07-15T20:15",
+"etxeratu": "2026-07-16T00:34",
+"iritsi": "2026-07-15T20:59",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "721",
+"zaintzan": "auto"
+},
+"i722-U2-20260802": {
+"baliabidea": "U2",
+"bukatu": "2026-08-02T22:22",
+"deia": "2026-08-02T15:56",
+"erantzuna": "2026-08-02T15:56",
+"etxeratu": "2026-08-02T23:35",
+"iritsi": "2026-08-02T17:34",
+"itzuli": "2026-08-02T23:35",
+"kideak": 1,
+"oharrak": "",
+"sutea": "722",
+"zaintzan": "auto"
+},
+"i722-eperra-20260802-2": {
+"baliabidea": "eperra",
+"bukatu": "2026-08-02T23:36",
+"deia": "2026-08-02T18:51",
+"erantzuna": "2026-08-02T18:51",
+"etxeratu": "2026-08-02T23:59",
+"iritsi": "2026-08-02T18:51",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "722",
+"zaintzan": "auto"
+},
+"i722-eperra-20260802": {
+"baliabidea": "eperra",
+"bukatu": "2026-08-02T23:36",
+"deia": "2026-08-02T12:43",
+"erantzuna": "2026-08-02T12:43",
+"etxeratu": "2026-08-02T23:59",
+"iritsi": "2026-08-02T12:43",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "722",
+"zaintzan": "auto"
+},
+"i723-agina-20260809": {
+"baliabidea": "agina",
+"bukatu": "2026-08-09T15:18",
+"deia": "2026-08-09T10:54",
+"erantzuna": "2026-08-09T10:54",
+"etxeratu": "2026-08-09T16:01",
+"iritsi": "2026-08-09T12:14",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "723",
+"zaintzan": "auto"
+},
+"i724-erroia-20260814": {
+"baliabidea": "erroia",
+"bukatu": "2026-08-14T21:10",
+"deia": "2026-08-14T08:00",
+"erantzuna": "2026-08-14T08:00",
+"etxeratu": "",
+"iritsi": "2026-08-14T10:27",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "724",
+"zaintzan": "auto"
+},
+"i724-harkaitz-20260814": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-08-14T21:10",
+"deia": "2026-08-14T08:00",
+"erantzuna": "2026-08-14T08:00",
+"etxeratu": "",
+"iritsi": "2026-08-14T10:27",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "724",
+"zaintzan": "auto"
+},
+"i725-harkaitz-20260815": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-08-15T17:54",
+"deia": "2026-08-15T07:30",
+"erantzuna": "2026-08-15T07:30",
+"etxeratu": "",
+"iritsi": "2026-08-15T09:50",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "725",
+"zaintzan": "auto"
+},
+"i726-U1-20260822": {
+"baliabidea": "U1",
+"bukatu": "2026-08-22T21:01",
+"deia": "2026-08-22T15:03",
+"erantzuna": "2026-08-22T15:03",
+"etxeratu": "2026-08-22T22:40",
+"iritsi": "2026-08-22T16:34",
+"itzuli": "2026-08-22T22:40",
+"kideak": 1,
+"oharrak": "",
+"sutea": "726",
+"zaintzan": "auto"
+},
+"i726-erroia-20260822": {
+"baliabidea": "erroia",
+"bukatu": "2026-08-22T21:07",
+"deia": "2026-08-22T14:31",
+"erantzuna": "2026-08-22T14:31",
+"etxeratu": "2026-08-22T22:08",
+"iritsi": "2026-08-22T15:50",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "726",
+"zaintzan": "auto"
+},
+"i726-talaia-20260823": {
+"baliabidea": "talaia",
+"bukatu": "2026-08-23T19:30",
+"deia": "2026-08-23T12:15",
+"erantzuna": "2026-08-23T12:15",
+"etxeratu": "2026-08-23T20:44",
+"iritsi": "2026-08-23T13:42",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "726",
+"zaintzan": "auto"
+},
+"i727-U1-20260908": {
+"baliabidea": "U1",
+"bukatu": "2026-09-08T19:14",
+"deia": "2026-09-08T06:50",
+"erantzuna": "2026-09-08T06:50",
+"etxeratu": "2026-09-08T21:46",
+"iritsi": "2026-09-08T10:11",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "727",
+"zaintzan": "auto"
+},
+"i727-U3-20260919": {
+"baliabidea": "U3",
+"bukatu": "2026-09-19T17:32",
+"deia": "2026-09-19T11:36",
+"erantzuna": "2026-09-19T11:36",
+"etxeratu": "2026-09-19T19:28",
+"iritsi": "2026-09-19T13:29",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "727",
+"zaintzan": "auto"
+},
+"i727-arno-20260919": {
+"baliabidea": "arno",
+"bukatu": "2026-09-19T18:00",
+"deia": "2026-09-19T11:31",
+"erantzuna": "2026-09-19T11:31",
+"etxeratu": "2026-09-19T19:30",
+"iritsi": "2026-09-19T13:14",
+"itzuli": "",
+"kideak": 3,
+"oharrak": "",
+"sutea": "727",
+"zaintzan": "auto"
+},
+"i727-erroia-20260908": {
+"baliabidea": "erroia",
+"bukatu": "2026-09-08T19:14",
+"deia": "2026-09-08T10:39",
+"erantzuna": "2026-09-08T10:40",
+"etxeratu": "2026-09-08T21:08",
+"iritsi": "2026-09-08T13:29",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "727",
+"zaintzan": "auto"
+},
+"i727-harkaitz-20260908": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-09-08T18:00",
+"deia": "2026-09-08T06:39",
+"erantzuna": "2026-09-08T06:39",
+"etxeratu": "2026-09-08T19:34",
+"iritsi": "2026-09-08T09:21",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "727",
+"zaintzan": "auto"
+},
+"i728-U3-20260908": {
+"baliabidea": "U3",
+"bukatu": "2026-09-08T21:50",
+"deia": "2026-09-08T15:54",
+"erantzuna": "2026-09-08T15:54",
+"etxeratu": "2026-09-08T22:51",
+"iritsi": "2026-09-08T17:03",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i728-U4-20260909": {
+"baliabidea": "U4",
+"bukatu": "2026-09-09T14:28",
+"deia": "2026-09-09T06:00",
+"erantzuna": "2026-09-09T06:00",
+"etxeratu": "2026-09-09T15:55",
+"iritsi": "2026-09-09T08:06",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i728-agina-20260908": {
+"baliabidea": "agina",
+"bukatu": "2026-09-08T21:40",
+"deia": "2026-09-08T16:04",
+"erantzuna": "2026-09-08T16:04",
+"etxeratu": "2026-09-08T22:28",
+"iritsi": "2026-09-08T17:03",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i728-erroia-20260909": {
+"baliabidea": "erroia",
+"bukatu": "2026-09-09T14:28",
+"deia": "2026-09-09T07:08",
+"erantzuna": "2026-09-09T07:08",
+"etxeratu": "2026-09-09T15:36",
+"iritsi": "2026-09-09T08:06",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i728-harkaitz-20260909": {
+"baliabidea": "harkaitz",
+"bukatu": "2026-09-09T13:42",
+"deia": "2026-09-09T07:18",
+"erantzuna": "2026-09-09T07:18",
+"etxeratu": "2026-09-09T14:34",
+"iritsi": "2026-09-09T08:06",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i728-talaia-20260908": {
+"baliabidea": "talaia",
+"bukatu": "2026-09-08T22:21",
+"deia": "2026-09-08T16:01",
+"erantzuna": "2026-09-08T16:01",
+"etxeratu": "2026-09-08T23:45",
+"iritsi": "2026-09-08T18:10",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "728",
+"zaintzan": "auto"
+},
+"i729-U3-20260912": {
+"baliabidea": "U3",
+"bukatu": "2026-09-12T15:07",
+"deia": "2026-09-12T09:00",
+"erantzuna": "2026-09-12T09:00",
+"etxeratu": "2026-09-12T16:00",
+"iritsi": "2026-09-12T10:36",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "729",
+"zaintzan": "auto"
+},
+"i729-U4-20260911": {
+"baliabidea": "U4",
+"bukatu": "2026-09-12T00:55",
+"deia": "2026-09-11T19:32",
+"erantzuna": "2026-09-11T19:32",
+"etxeratu": "2026-09-12T02:37",
+"iritsi": "2026-09-11T21:15",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "729",
+"zaintzan": "auto"
+},
+"i729-agina-20260911": {
+"baliabidea": "agina",
+"bukatu": "2026-09-12T00:55",
+"deia": "2026-09-11T19:15",
+"erantzuna": "2026-09-11T19:15",
+"etxeratu": "2026-09-12T01:36",
+"iritsi": "2026-09-11T20:32",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "729",
+"zaintzan": "auto"
+},
+"i729-talaia-20260911": {
+"baliabidea": "talaia",
+"bukatu": "2026-09-12T00:55",
+"deia": "2026-09-11T19:23",
+"erantzuna": "2026-09-11T19:23",
+"etxeratu": "2026-09-12T02:25",
+"iritsi": "2026-09-11T21:39",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "729",
+"zaintzan": "auto"
+},
+"i729-talaia-20260912": {
+"baliabidea": "talaia",
+"bukatu": "2026-09-12T16:09",
+"deia": "2026-09-12T09:09",
+"erantzuna": "2026-09-12T09:09",
+"etxeratu": "2026-09-12T17:13",
+"iritsi": "2026-09-12T11:10",
+"itzuli": "",
+"kideak": 5,
+"oharrak": "",
+"sutea": "729",
+"zaintzan": "auto"
+},
+"i730-U1-20260922": {
+"baliabidea": "U1",
+"bukatu": "2026-09-23T01:00",
+"deia": "2026-09-22T17:01",
+"erantzuna": "2026-09-22T17:01",
+"etxeratu": "",
+"iritsi": "2026-09-22T19:48",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "730",
+"zaintzan": "auto"
+},
+"i730-U3-20260923": {
+"baliabidea": "U3",
+"bukatu": "2026-09-23T13:50",
+"deia": "2026-09-23T08:00",
+"erantzuna": "2026-09-23T08:00",
+"etxeratu": "",
+"iritsi": "2026-09-23T09:44",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "730",
+"zaintzan": "auto"
+},
+"i730-agina-20260922": {
+"baliabidea": "agina",
+"bukatu": "2026-09-23T00:05",
+"deia": "2026-09-22T19:20",
+"erantzuna": "2026-09-22T19:20",
+"etxeratu": "",
+"iritsi": "2026-09-22T19:40",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "730",
+"zaintzan": "auto"
+},
+"i730-txantxiku-20260923": {
+"baliabidea": "txantxiku",
+"bukatu": "2026-09-23T13:30",
+"deia": "2026-09-23T08:30",
+"erantzuna": "2026-09-23T08:30",
+"etxeratu": "",
+"iritsi": "2026-09-23T09:50",
+"itzuli": "",
+"kideak": 2,
+"oharrak": "",
+"sutea": "730",
+"zaintzan": "auto"
+},
+"i731-agina-20260922": {
+"baliabidea": "agina",
+"bukatu": "2026-09-22T19:20",
+"deia": "2026-09-22T17:30",
+"erantzuna": "2026-09-22T17:30",
+"etxeratu": "",
+"iritsi": "2026-09-22T18:00",
+"itzuli": "",
+"kideak": 4,
+"oharrak": "",
+"sutea": "731",
+"zaintzan": "auto"
+},
+"i732-U1-20260923": {
+"baliabidea": "U1",
+"bukatu": "2026-09-23T05:35",
+"deia": "2026-09-23T01:00",
+"erantzuna": "2026-09-23T01:00",
+"etxeratu": "",
+"iritsi": "2026-09-23T02:30",
+"itzuli": "",
+"kideak": 1,
+"oharrak": "",
+"sutea": "732",
+"zaintzan": "auto"
+},
+"i732-arno-20260923": {
+"baliabidea": "arno",
+"bukatu": "2026-09-23T04:55",
+"deia": "2026-09-23T01:20",
+"erantzuna": "2026-09-23T01:20",
+"etxeratu": "",
+"iritsi": "2026-09-23T02:10",
+"itzuli": "",
+"kideak": 3,
+"oharrak": "",
+"sutea": "732",
+"zaintzan": "auto"
+}
+},
+"config": null
+}
