@@ -178,7 +178,7 @@ const H=36e5, DAY=864e5;
 const DEFAULT_CFG={taldeHasiera:'17:00',taldeAmaiera:'00:00',zistHasiera:'17:00',zistAmaiera:'08:00',taldeAtseden:24,zistAtseden:9,
   eremuak:[true,true,true,true],lehentasunak:{'1':[2,3,4],'2':[1,3,4],'3':[4,2,1],'4':[3,1,2]},profKontrola:true,
   tarifak:{taldeZaintza:0,taldeItzaltze:0,zistZaintza:0,zistItzaltze:0},
-  fwiMugak:[10,20,30,40,50],arriskuEkintzak:[{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:true},{taldeak:2,hasiera:'15:00',prof:true},{taldeak:2,hasiera:'13:00',prof:true}],baxuanEz:false,babestuMaila:3,zistMaila:5};
+  fwiMugak:[10,20,30,40,50],arriskuEkintzak:[{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:true},{taldeak:2,hasiera:'15:00',prof:true},{taldeak:2,hasiera:'13:00',prof:true}],baxuanEz:false,babestuMaila:3,zistMaila:5,esleipena:'etxea'};
 const DEFAULT_RES=[['U1','U-1','zisterna',null,false],['U2','U-2','zisterna',null,false],['U3','U-3','zisterna',null,false],['U4','U-4','zisterna',null,false],['U5','U-5','zisterna',null,false],
  ['arno','Arno','taldea',1,false],['eperra','Eperra','taldea',1,false],['talaia','Talaia','taldea',1,true],['agina','Agiña','taldea',2,false],['pikua','Pikua','taldea',2,true],
  ['zuhaitz','Zuhaitz','taldea',3,false],['belea','Belea','taldea',3,false],['harkaitz','Harkaitz','taldea',3,true],['erroia','Erroia','taldea',3,true],
@@ -450,7 +450,8 @@ function vRules(){
   <label class="f">Zisternen hasiera<input type="time" name="zistHasiera" value="${c.zistHasiera}"></label><label class="f">Zisternen amaiera<input type="time" name="zistAmaiera" value="${c.zistAmaiera}"></label>
   <label class="f">Taldeen gutxieneko atsedena (h)<input type="number" min="0" step="1" name="taldeAtseden" value="${c.taldeAtseden}"></label><label class="f">Zisternen gutxieneko atsedena (h)<input type="number" min="0" step="1" name="zistAtseden" value="${c.zistAtseden}"></label></div></div>
   <div class="panel"><h3>Eremuak</h3><div class="grid">${[1,2,3,4].map(z=>`<label class="chk"><input type="checkbox" name="eremua${z}" ${c.eremuak[z-1]?'checked':''}> ${z}. eremua aktibo</label>`).join('')}
-  <label class="chk span2"><input type="checkbox" name="profKontrola" ${c.profKontrola?'checked':''}> Egunero gutxienez talde profesional bat</label></div></div>
+  <label class="chk span2"><input type="checkbox" name="profKontrola" ${c.profKontrola?'checked':''}> Egunero gutxienez talde profesional bat</label>
+  <label class="f span2">Esleipen-irizpidea<select name="esleipena"><option value="etxea" ${c.esleipena!=='oreka'?'selected':''}>Talde bakoitza bere eremuan (beste eremu batera, bere eremukorik ez dagoenean bakarrik)</option><option value="oreka" ${c.esleipena==='oreka'?'selected':''}>Guardia kopurua berdintzea lehenetsi (Excel-eko irizpidea)</option></select></label></div></div>
   <div class="panel"><h3>Laguntza-lehentasunak</h3><div class="tbl"><table><thead><tr><th>Bete beharreko eremua</th><th>1. aukera</th><th>2. aukera</th><th>3. aukera</th></tr></thead><tbody>
   ${[1,2,3,4].map(z=>`<tr><td>${z}. eremua</td>${[0,1,2].map(i=>`<td>${zsel(z,i)}</td>`).join('')}</tr>`).join('')}</tbody></table></div></div>
   <div class="panel"><h3>Tarifak (€ orduko, pertsonako)</h3><div class="grid"><label class="f">Taldeak, zaintza<input type="number" min="0" step="0.01" name="taldeZaintza" value="${c.tarifak.taldeZaintza}"></label><label class="f">Taldeak, itzaltzea<input type="number" min="0" step="0.01" name="taldeItzaltze" value="${c.tarifak.taldeItzaltze}"></label>
@@ -784,7 +785,7 @@ function propose(startDate,nDays,avail,st){
       const hs=sl.l>=0&&sl.act.hasiera?sl.act.hasiera:c.taldeHasiera;const [ts,te]=slotAt(date,hs,c.taldeAmaiera);
       let cand=taldeak.filter(r=>avail?.[r.id]?.[d]!==false&&!assigned.includes(r)&&restOk(r.id,ts,te,+c.taldeAtseden)&&!(last&&c.profKontrola&&!hasPro&&!r.profesionala));
       if(sl.i===0&&sl.act.prof&&cand.some(r=>r.profesionala))cand=cand.filter(r=>r.profesionala);
-      let best=null,bs=Infinity;for(const r of cand){const sc=counts[r.id]*100+pen(sl.z,r.eremua)+(prot.has(r.eremua)&&r.eremua!==sl.z?1000:0)+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
+      const home=c.esleipena!=='oreka';let best=null,bs=Infinity;for(const r of cand){const mv=r.eremua!==sl.z;const sc=(home&&mv?100000+pen(sl.z,r.eremua)*1000:pen(sl.z,r.eremua))+counts[r.id]*100+(prot.has(r.eremua)&&mv?(home?1000000:1000):0)+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
       row.slots.push({z:sl.z,i:sl.i,l:sl.l,v:sl.v,res:best,hs:F(ts),he:F(te)});
       if(best){assigned.push(best);counts[best.id]++;busy[best.id].push([ts,te]);if(best.eremua!==sl.z)row.moves.push(`${best.izena} Z${best.eremua}→Z${sl.z}`)}
     });
@@ -804,7 +805,7 @@ function vProposal(){
   const dates=[...Array(p.days)].map((_,i)=>addDays(p.start,i));
   const dayHead=dates.map(d=>`<th>${WD[new Date(PD(d)).getUTCDay()]} ${d.slice(8,10)}</th>`).join('');
   const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
-  let out=`<h2>Proposamena</h2><p class="lead">Aplikazioak zaintzak proposatzen ditu guardia gutxien dituzten taldeak aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Eremu bakoitzeko BASUGIX balioa sartzen baduzu, arriskuaren arabera egokitzen du: talde kopurua, sarrera-ordua, profesionalak eta zisternaren kokapena (Arauak atalean aldatzen dira). Gelaxka bakoitzean beste talde bat aukera dezakezu gorde aurretik.</p>
+  let out=`<h2>Proposamena</h2><p class="lead">Aplikazioak zaintzak proposatzen ditu: eremu bakoitzean bertako taldeak lehenetsiz eta haien artean guardia gutxien dituena aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Eremu bakoitzeko BASUGIX balioa sartzen baduzu, arriskuaren arabera egokitzen du: talde kopurua, sarrera-ordua, profesionalak eta zisternaren kokapena (Arauak atalean aldatzen dira). Gelaxka bakoitzean beste talde bat aukera dezakezu gorde aurretik.</p>
   <div class="tools"><label class="f">Hasiera-data<input type="date" id="pStart" value="${p.start}"></label>
   <label class="f">Egunak<input type="number" id="pDays" min="1" max="31" value="${p.days}" style="width:80px"></label>
   <button class="btn primary" data-act="propose">Proposamena sortu</button></div>
@@ -1041,7 +1042,7 @@ async function act(a,el){
         tarifak:{taldeZaintza:+g('taldeZaintza').value||0,taldeItzaltze:+g('taldeItzaltze').value||0,zistZaintza:+g('zistZaintza').value||0,zistItzaltze:+g('zistItzaltze').value||0},
         fwiMugak:[1,2,3,4,5].map(l=>+g('muga'+l).value||0),arriskuEkintzak:[0,1,2,3,4,5].map(l=>({taldeak:+g('tk'+l).value||0,hasiera:g('hs'+l).value||'17:00',prof:g('pf'+l).checked})),
         baxuanEz:g('baxuanEz').checked,babestuMaila:+g('babestuMaila').value,zistMaila:+g('zistMaila').value,
-        bgxUrl:g('bgxUrl').value.trim(),bgxAgg:g('bgxAgg').value,bgxZonak:Object.fromEntries([1,2,3,4].map(z=>[String(z),BGX_ST.filter((n,i)=>g(`bz_${z}_${i}`).checked)]))};
+        esleipena:g('esleipena').value,bgxUrl:g('bgxUrl').value.trim(),bgxAgg:g('bgxAgg').value,bgxZonak:Object.fromEntries([1,2,3,4].map(z=>[String(z),BGX_ST.filter((n,i)=>g(`bz_${z}_${i}`).checked)]))};
       for(let i=1;i<c.fwiMugak.length;i++)if(c.fwiMugak[i]<=c.fwiMugak[i-1]){toast('Mugak goranzko ordenan egon behar dute');return}
       await safe(()=>put('config','arauak',c),'Arauak gordeta');break}
     case 'propose':{const p=ensureProp();p.result=propose(p.start,p.days,p.avail);render();break}
