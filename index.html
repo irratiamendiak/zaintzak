@@ -111,6 +111,8 @@ tr.total td{font-weight:600;background:var(--sunk)}
 .bar.plan{background:repeating-linear-gradient(135deg,var(--pine) 0 5px,var(--pine-soft) 5px 10px);color:var(--ink)}
 .bar.praktika.plan{background:repeating-linear-gradient(135deg,var(--ochre) 0 5px,var(--ochre-soft) 5px 10px)}
 .lg-plan{background:repeating-linear-gradient(135deg,var(--pine) 0 4px,var(--pine-soft) 4px 8px)}
+.lv0{background:#D6EBD6!important;color:#1F5A3A!important}.lv1{background:#E3EEC4!important;color:#46600F!important}.lv2{background:#F5E6A6!important;color:#6B5200!important}.lv3{background:#F6C995!important;color:#7A3E04!important}.lv4{background:#F0A08A!important;color:#7E1E0A!important}.lv5{background:#A3201A!important;color:#fff!important}
+input.fwi{width:74px;text-align:right;font-weight:600}
 .now{margin:0 0 24px}.now h3{margin-bottom:8px}
 .cert dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:10px 0 14px}.cert dt{color:var(--muted)}.cert dd{margin:0;font-weight:600}
 /* fires */
@@ -175,14 +177,15 @@ const WD=['Ig','Al','Ar','Az','Og','Ol','Lr'];
 const H=36e5, DAY=864e5;
 const DEFAULT_CFG={taldeHasiera:'17:00',taldeAmaiera:'00:00',zistHasiera:'17:00',zistAmaiera:'08:00',taldeAtseden:24,zistAtseden:9,
   eremuak:[true,true,true,true],lehentasunak:{'1':[2,3,4],'2':[1,3,4],'3':[4,2,1],'4':[3,1,2]},profKontrola:true,
-  tarifak:{taldeZaintza:0,taldeItzaltze:0,zistZaintza:0,zistItzaltze:0}};
+  tarifak:{taldeZaintza:0,taldeItzaltze:0,zistZaintza:0,zistItzaltze:0},
+  fwiMugak:[10,20,30,40,50],arriskuEkintzak:[{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:false},{taldeak:1,hasiera:'17:00',prof:true},{taldeak:2,hasiera:'15:00',prof:true},{taldeak:2,hasiera:'13:00',prof:true}],baxuanEz:false,babestuMaila:3,zistMaila:5};
 const DEFAULT_RES=[['U1','U-1','zisterna',null,false],['U2','U-2','zisterna',null,false],['U3','U-3','zisterna',null,false],['U4','U-4','zisterna',null,false],['U5','U-5','zisterna',null,false],
  ['arno','Arno','taldea',1,false],['eperra','Eperra','taldea',1,false],['talaia','Talaia','taldea',1,true],['agina','Agiña','taldea',2,false],['pikua','Pikua','taldea',2,true],
  ['zuhaitz','Zuhaitz','taldea',3,false],['belea','Belea','taldea',3,false],['harkaitz','Harkaitz','taldea',3,true],['erroia','Erroia','taldea',3,true],
  ['kia','Kia','taldea',4,false],['sustrai','Sustrai','taldea',4,false],['lanperna','Lanperna','taldea',4,false]];
 
-const S={baliabideak:{},zaintzak:{},suteak:{},eskuhartzeak:{},ziurtagiriak:{},config:null};
-const COLLS=['baliabideak','zaintzak','suteak','eskuhartzeak','ziurtagiriak'];
+const S={baliabideak:{},zaintzak:{},suteak:{},eskuhartzeak:{},ziurtagiriak:{},arriskua:{},config:null};
+const COLLS=['baliabideak','zaintzak','suteak','eskuhartzeak','ziurtagiriak','arriskua'];
 
 function P(s){if(!s)return null;const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})/.exec(s);return m?Date.UTC(+m[1],+m[2]-1,+m[3],+m[4],+m[5]):null}
 function F(ms){return new Date(ms).toISOString().slice(0,16)}
@@ -203,7 +206,7 @@ function maxNum(arr){let m=0;for(const v of arr){const n=parseInt(String(v||'').
 function nextGuardZk(){return maxNum(Object.values(S.zaintzak).map(g=>g.zk))+1}
 function nextFireZk(){return maxNum([...Object.values(S.suteak).map(f=>f.zk),...Object.values(S.eskuhartzeak).map(i=>i.sutea)])+1}
 function newId(p){return p+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
-function cfg(st){const c=(st||S).config||{};return {...DEFAULT_CFG,...c,tarifak:{...DEFAULT_CFG.tarifak,...(c.tarifak||{})},lehentasunak:{...DEFAULT_CFG.lehentasunak,...(c.lehentasunak||{})},eremuak:c.eremuak||DEFAULT_CFG.eremuak}}
+function cfg(st){let c=(st||S).config||{};if(c.fwiMugak&&c.fwiMugak.length!==5){c={...c};delete c.fwiMugak;delete c.arriskuEkintzak;delete c.babestuMaila;delete c.zistMaila}return {...DEFAULT_CFG,...c,tarifak:{...DEFAULT_CFG.tarifak,...(c.tarifak||{})},lehentasunak:{...DEFAULT_CFG.lehentasunak,...(c.lehentasunak||{})},eremuak:c.eremuak||DEFAULT_CFG.eremuak}}
 function resList(st){st=st||S;return Object.entries(st.baliabideak).map(([id,r])=>({id,...r})).sort((a,b)=>((a.ordena??99)-(b.ordena??99))||String(a.izena).localeCompare(b.izena))}
 function resName(id){return S.baliabideak[id]?.izena||id}
 function isZist(id){return S.baliabideak[id]?.mota==='zisterna'}
@@ -276,36 +279,6 @@ function aggregate(M,from,to){
 }
 
 /* Proposamen automatikoa (Excel-eko algoritmoa) */
-function propose(startDate,nDays,avail,st){
-  st=st||S;const c=cfg(st);const active=resList(st).filter(r=>r.aktibo!==false);
-  const taldeak=active.filter(r=>r.mota==='taldea'),zist=active.filter(r=>r.mota==='zisterna');
-  const year=startDate.slice(0,4);const counts={},prev={},busy={};
-  for(const r of active){counts[r.id]=0;busy[r.id]=[]}
-  for(const g of Object.values(st.zaintzak)){const s=P(g.hasiera),e=P(g.amaiera);if(!(g.baliabidea in counts))continue;
-    if(s!=null&&e!=null)busy[g.baliabidea].push([s,e]);if(g.mota!=='praktika'&&g.hasiera&&g.hasiera.slice(0,4)===year)counts[g.baliabidea]++}
-  for(const k in counts)prev[k]=counts[k];
-  const restOk=(id,s,e,rh)=>busy[id].every(([bs,be])=>!(s<be+rh*H&&e+rh*H>bs));
-  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
-  const pen=(z,h)=>{if(h===z)return 0;const i=(c.lehentasunak[String(z)]||[]).indexOf(h);return i<0?40:(i+1)*10};
-  const days=[];
-  for(let d=0;d<nDays;d++){
-    const date=addDays(startDate,d);const row={date,zones:{},zist:null,moves:[]};const assigned=[];
-    const [ts,te]=slot(date,'taldea',c);
-    zones.forEach((z,k)=>{
-      const last=k===zones.length-1,hasPro=assigned.some(r=>r.profesionala);
-      const cand=taldeak.filter(r=>avail?.[r.id]?.[d]!==false&&!assigned.includes(r)&&restOk(r.id,ts,te,+c.taldeAtseden)&&!(last&&c.profKontrola&&!hasPro&&!r.profesionala));
-      let best=null,bs=Infinity;for(const r of cand){const sc=counts[r.id]*100+pen(z,r.eremua)+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
-      row.zones[z]=best;if(best){assigned.push(best);counts[best.id]++;busy[best.id].push([ts,te]);if(best.eremua!==z)row.moves.push(`${best.izena} Z${best.eremua}→Z${z}`)}
-    });
-    const [zs,ze]=slot(date,'zisterna',c);
-    let best=null,bs=Infinity;for(const r of zist){if(avail?.[r.id]?.[d]===false||!restOk(r.id,zs,ze,+c.zistAtseden))continue;const sc=counts[r.id]*100+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
-    row.zist=best;if(best){counts[best.id]++;busy[best.id].push([zs,ze])}
-    row.pros=assigned.filter(r=>r.profesionala).length;row.covered=zones.every(z=>row.zones[z]);
-    days.push(row);
-  }
-  return {days,zones,counts,prev};
-}
-
 /* ===================== Datu-biltegia ===================== */
 const UI={tab:'denbora',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
 let DB=null,DL=null,MODEL=null,renderQueued=false;
@@ -483,6 +456,8 @@ function vRules(){
   <div class="panel"><h3>Tarifak (€ orduko, pertsonako)</h3><div class="grid"><label class="f">Taldeak, zaintza<input type="number" min="0" step="0.01" name="taldeZaintza" value="${c.tarifak.taldeZaintza}"></label><label class="f">Taldeak, itzaltzea<input type="number" min="0" step="0.01" name="taldeItzaltze" value="${c.tarifak.taldeItzaltze}"></label>
   <label class="f">Zisternak, zaintza<input type="number" min="0" step="0.01" name="zistZaintza" value="${c.tarifak.zistZaintza}"></label><label class="f">Zisternak, itzaltzea<input type="number" min="0" step="0.01" name="zistItzaltze" value="${c.tarifak.zistItzaltze}"></label></div>
   <p class="muted" style="font-size:13px;margin:8px 0 0">Praktikak zaintza-tarifarekin ordaintzen dira.</p></div>
+  ${vRiskRules(c)}
+  ${vBgxRules(c)}
   </div><div class="tools" style="margin-top:16px"><button type="button" class="btn primary" data-act="save-cfg">Arauak gorde</button></div></form>
   <div class="panel" style="margin-top:20px"><h3>Babeskopia</h3><p class="muted" style="margin:0 0 10px;max-width:70ch">Datu guztiak (baliabideak, zaintzak, suteak, esku-hartzeak eta arauak) JSON fitxategi batean gorde edo berreskuratu. Inportatzean, uneko datuak fitxategikoekin ordezkatzen dira.</p>
   <div class="tools" style="margin:0"><button type="button" class="btn" data-act="backup-export">Datuak esportatu (JSON)</button><label class="btn" style="display:inline-flex;align-items:center">Datuak inportatu<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>`;
@@ -600,35 +575,6 @@ function finishForm(id){
 }
 
 /* ---- Proposamena ---- */
-function vProposal(){
-  const p=ensureProp();const c=cfg();const res=resList().filter(r=>r.aktibo!==false);
-  const taldeak=res.filter(r=>r.mota==='taldea'),zist=res.filter(r=>r.mota==='zisterna');
-  const dayHead=[...Array(p.days)].map((_,i)=>{const d=addDays(p.start,i);return `<th>${WD[new Date(PD(d)).getUTCDay()]} ${d.slice(8,10)}</th>`}).join('');
-  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
-  let out=`<h2>Proposamena</h2><p class="lead">Aplikazioak zaintzak proposatzen ditu: eremu aktibo bakoitzeko talde bat eta lurralde osorako zisterna bat, guardia gutxien dituena aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Gelaxka bakoitzean beste talde bat aukera dezakezu gorde aurretik.</p>
-  <div class="tools"><label class="f">Hasiera-data<input type="date" id="pStart" value="${p.start}"></label>
-  <label class="f">Egunak<input type="number" id="pDays" min="1" max="31" value="${p.days}" style="width:80px"></label>
-  <button class="btn primary" data-act="propose">Proposamena sortu</button></div>`;
-  if(p.result){
-    const R=p.result;const cnt={...R.prev};
-    const sel=(d,z,list,cur)=>`<select data-pz="${d}|${z}" aria-label="${z==='Z'?'Zisterna':z+'. eremua'}"><option value="">—</option>${list.map(r=>`<option value="${esc(r.id)}" ${cur&&cur.id===r.id?'selected':''}>${esc(r.izena)}${r.mota==='taldea'&&z!=='Z'&&r.eremua!==+z?` (Z${r.eremua??'?'})`:''}</option>`).join('')}</select>`;
-    out+=`<div class="tbl" style="margin-bottom:12px"><table><thead><tr><th>Eguna</th>${zones.map(z=>`<th>${z}. eremua</th>`).join('')}<th>Zisterna</th><th>Profesionalak</th><th>Oharrak</th></tr></thead><tbody>
-    ${R.days.map((d,di)=>{const wd=WD[new Date(PD(d.date)).getUTCDay()];const ids=[...Object.values(d.zones),d.zist].filter(Boolean).map(r=>r.id);
-      ids.forEach(i=>cnt[i]=(cnt[i]||0)+1);const dup=ids.filter((x,i)=>ids.indexOf(x)!==i);const pros=Object.values(d.zones).filter(r=>r&&r.profesionala).length;
-      const notes=[];if(dup.length)notes.push('Errepikatuta: '+dup.map(resName).join(', '));
-      ids.forEach(i=>{if(p.avail[i]&&p.avail[i][di]===false)notes.push(resName(i)+' ez dago erabilgarri')});
-      zones.forEach(z=>{if(!d.zones[z])notes.push(z+'. eremua estali gabe')});if(!d.zist)notes.push('Zisternarik ez');
-      return `<tr><td><b>${wd}</b> ${d.date.slice(8,10)}/${d.date.slice(5,7)}</td>${zones.map(z=>`<td>${sel(di,z,taldeak,d.zones[z])}</td>`).join('')}<td>${sel(di,'Z',zist,d.zist)}</td>
-      <td><span class="okbad ${pros>=1||!c.profKontrola?'ok':'bad'}">${pros}</span></td><td class="wrap">${notes.length?`<span class="wtext">${esc(notes.join('. '))}</span>`:''}</td></tr>`}).join('')}</tbody></table></div>
-    <div class="tools"><button class="btn primary" data-act="save-prop">Zaintzak gorde</button><span class="muted" style="align-self:center;max-width:70ch">Planifikatu gisa gordetzen dira (taldeak ${c.taldeHasiera}–${c.taldeAmaiera}, zisternak ${c.zistHasiera}–${c.zistAmaiera}). Zaintza egin ondoren, sartu benetako sarrera, irteera eta kide kopurua eta markatu egiaztatuta.</span></div>
-    <h3 style="margin:18px 0 8px">Kargaren laburpena (${p.start.slice(0,4)})</h3><div class="tbl" style="margin-bottom:20px"><table><thead><tr><th>Baliabidea</th><th class="num">Aurreko zaintzak</th><th class="num">Proposamen berria</th><th class="num">Guztira</th><th>Profesionala</th></tr></thead><tbody>
-    ${res.map(r=>`<tr><td>${esc(r.izena)}</td><td class="num">${R.prev[r.id]||0}</td><td class="num">${(cnt[r.id]||0)-(R.prev[r.id]||0)}</td><td class="num">${cnt[r.id]||0}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td></tr>`).join('')}</tbody></table></div>`;
-  }
-  out+=`<h3 style="margin:8px 0 8px">Erabilgarritasuna</h3><p class="lead">Kendu marka baliabide bat egun horretan erabilgarri ez badago, eta sortu proposamena berriro.</p>
-  <div class="tbl av"><table><thead><tr><th>Baliabidea</th>${dayHead}</tr></thead><tbody>${res.map(r=>`<tr><td>${esc(r.izena)}${r.mota==='taldea'?` <span class="muted">Z${r.eremua??'?'}</span>`:''}</td>${p.avail[r.id].map((v,i)=>`<td><input type="checkbox" data-av="${esc(r.id)}|${i}" ${v?'checked':''} aria-label="${esc(r.izena)} ${addDays(p.start,i)}"></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
-  return out;
-}
-
 /* ---- Zerbitzuak eta ziurtagiriak ---- */
 function services(M,resId){
   const b=M.byRes[resId];if(!b)return [];const items=[];
@@ -805,6 +751,128 @@ function vIssued(){
   <td><button class="btn small" data-act="cert-regen" data-id="${esc(c.id)}">PDF</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Oraindik ez da ziurtagiririk eman. PDF bat deskargatzean hemen erregistratzen da.</div>'}`;
 }
 
+/* ---- Arriskua (FWI) ---- */
+const LVL=['Oso baxua','Baxua','Ertaina','Handia','Oso handia','Muturrekoa'];const IDX='BASUGIX';
+function riskOf(date,z,st){const r=((st||S).arriskua||{})[date];const v=r?r['z'+z]:null;return (v===''||v==null||isNaN(+v))?null:+v}
+function lvlOf(v,c){if(v==null)return -1;const m=c.fwiMugak;let l=0;while(l<LVL.length-1&&v>=+m[l])l++;return l}
+function slotAt(date,hs,am){const s=P(date+'T'+hs);let e=P(date+'T'+am);if(e<=s)e+=DAY;return [s,e]}
+function lvChip(v,l){return l<0?'<span class="chip mute">'+IDX+' ?</span>':`<span class="chip lv${l}" title="${LVL[l]}">${IDX} ${n2(v)} · ${LVL[l]}</span>`}
+
+/* Proposamen automatikoa: Excel-eko algoritmoa + arriskuaren araberako gomendioak */
+function propose(startDate,nDays,avail,st){
+  st=st||S;const c=cfg(st);const active=resList(st).filter(r=>r.aktibo!==false);
+  const taldeak=active.filter(r=>r.mota==='taldea'),zist=active.filter(r=>r.mota==='zisterna');
+  const year=startDate.slice(0,4);const counts={},prev={},busy={};
+  for(const r of active){counts[r.id]=0;busy[r.id]=[]}
+  for(const g of Object.values(st.zaintzak)){const s=P(g.hasiera),e=P(g.amaiera);if(!(g.baliabidea in counts))continue;
+    if(s!=null&&e!=null)busy[g.baliabidea].push([s,e]);if(g.mota!=='praktika'&&g.hasiera&&g.hasiera.slice(0,4)===year)counts[g.baliabidea]++}
+  for(const k in counts)prev[k]=counts[k];
+  const restOk=(id,s,e,rh)=>busy[id].every(([bs,be])=>!(s<be+rh*H&&e+rh*H>bs));
+  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
+  const pen=(z,h)=>{if(h===z)return 0;const i=(c.lehentasunak[String(z)]||[]).indexOf(h);return i<0?40:(i+1)*10};
+  const days=[];
+  for(let d=0;d<nDays;d++){
+    const date=addDays(startDate,d);const row={date,slots:[],zist:null,moves:[],risk:{},skip:[]};const assigned=[];
+    const zl=zones.map(z=>{const v=riskOf(date,z,st),l=lvlOf(v,c);row.risk[z]={v,l};return {z,v,l,act:c.arriskuEkintzak[l<0?2:l]}});
+    const used=zl.filter(x=>{if(x.l===0&&c.baxuanEz){row.skip.push(x.z);return false}return true});
+    const prot=new Set(used.filter(x=>x.l>=+c.babestuMaila).map(x=>x.z));
+    const order=[...used].sort((a,b)=>b.l-a.l||a.z-b.z);const want=[];
+    for(const x of order){const n=Math.max(0,+x.act.taldeak||0);for(let i=0;i<n;i++)want.push({...x,i})}
+    want.sort((a,b)=>a.i-b.i||b.l-a.l||a.z-b.z); // zona bakoitzaren lehen taldea lehenik
+    want.forEach((sl,k)=>{
+      const last=k===want.length-1,hasPro=assigned.some(r=>r.profesionala);
+      const hs=sl.l>=0&&sl.act.hasiera?sl.act.hasiera:c.taldeHasiera;const [ts,te]=slotAt(date,hs,c.taldeAmaiera);
+      let cand=taldeak.filter(r=>avail?.[r.id]?.[d]!==false&&!assigned.includes(r)&&restOk(r.id,ts,te,+c.taldeAtseden)&&!(last&&c.profKontrola&&!hasPro&&!r.profesionala));
+      if(sl.i===0&&sl.act.prof&&cand.some(r=>r.profesionala))cand=cand.filter(r=>r.profesionala);
+      let best=null,bs=Infinity;for(const r of cand){const sc=counts[r.id]*100+pen(sl.z,r.eremua)+(prot.has(r.eremua)&&r.eremua!==sl.z?1000:0)+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
+      row.slots.push({z:sl.z,i:sl.i,l:sl.l,v:sl.v,res:best,hs:F(ts),he:F(te)});
+      if(best){assigned.push(best);counts[best.id]++;busy[best.id].push([ts,te]);if(best.eremua!==sl.z)row.moves.push(`${best.izena} Z${best.eremua}→Z${sl.z}`)}
+    });
+    row.slots.sort((a,b)=>a.z-b.z||a.i-b.i);
+    const [zs,ze]=slot(date,'zisterna',c);
+    let best=null,bs=Infinity;for(const r of zist){if(avail?.[r.id]?.[d]===false||!restOk(r.id,zs,ze,+c.zistAtseden))continue;const sc=counts[r.id]*100+(r.ordena??0)/100;if(sc<bs){bs=sc;best=r}}
+    row.zist=best;if(best){counts[best.id]++;busy[best.id].push([zs,ze])}
+    const top=[...used].sort((a,b)=>b.l-a.l)[0];if(top&&top.l>=+c.zistMaila)row.zistZ=top.z;
+    days.push(row);
+  }
+  return {days,zones,counts,prev};
+}
+
+function vProposal(){
+  const p=ensureProp();const c=cfg();const res=resList().filter(r=>r.aktibo!==false);
+  const taldeak=res.filter(r=>r.mota==='taldea'),zist=res.filter(r=>r.mota==='zisterna');
+  const dates=[...Array(p.days)].map((_,i)=>addDays(p.start,i));
+  const dayHead=dates.map(d=>`<th>${WD[new Date(PD(d)).getUTCDay()]} ${d.slice(8,10)}</th>`).join('');
+  const zones=[1,2,3,4].filter(z=>c.eremuak[z-1]);
+  let out=`<h2>Proposamena</h2><p class="lead">Aplikazioak zaintzak proposatzen ditu guardia gutxien dituzten taldeak aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Eremu bakoitzeko BASUGIX balioa sartzen baduzu, arriskuaren arabera egokitzen du: talde kopurua, sarrera-ordua, profesionalak eta zisternaren kokapena (Arauak atalean aldatzen dira). Gelaxka bakoitzean beste talde bat aukera dezakezu gorde aurretik.</p>
+  <div class="tools"><label class="f">Hasiera-data<input type="date" id="pStart" value="${p.start}"></label>
+  <label class="f">Egunak<input type="number" id="pDays" min="1" max="31" value="${p.days}" style="width:80px"></label>
+  <button class="btn primary" data-act="propose">Proposamena sortu</button></div>
+  <h3 style="margin:6px 0 6px">BASUGIX arrisku-indizea eremuka</h3><div class="tools" style="margin:4px 0 8px"><button class="btn" data-act="bgx-load">BASUGIX kargatu (panel-fwi)</button>${UI.bgx?`<span class="muted" style="align-self:center;font-size:13px">Panelaren eguneraketa: ${esc(UI.bgx.act.slice(0,16).replace('T',' '))}</span>`:''}</div><p class="lead">Idatzi egun eta eremu bakoitzeko BASUGIX balioa (gaurkoa edo iragarpena), eremua ordezkatzen duen estazioarena. Hutsik utzita, egun ertaina bezala tratatzen da. Balioak gordetzen dira eta Kontsultetan erabil daitezke.</p>
+  <div class="tbl av" style="margin-bottom:18px"><table><thead><tr><th>Eremua</th>${dayHead}</tr></thead><tbody>${zones.map(z=>`<tr><td><b>${z}. eremua</b></td>${dates.map(d=>{const v=riskOf(d,z),l=lvlOf(v,c);return `<td><input type="number" step="0.1" min="0" inputmode="decimal" class="fwi ${l>=0?'lv'+l:''}" data-risk="${d}|${z}" value="${v==null?'':v}" aria-label="BASUGIX ${z}. eremua ${d}" title="${l>=0?LVL[l]:'Daturik ez'}${(S.arriskua?.[d]||{})['d'+z]?' — '+esc(S.arriskua[d]['d'+z]):''}"></td>`}).join('')}</tr>`).join('')}</tbody></table></div>`;
+  if(p.result){
+    const R=p.result;const cnt={...R.prev};
+    const sel=(d,k,list,cur,z)=>`<select data-pz="${d}|${k}" aria-label="${z?z+'. eremua':'Zisterna'}"><option value="">—</option>${list.map(r=>`<option value="${esc(r.id)}" ${cur&&cur.id===r.id?'selected':''}>${esc(r.izena)}${r.mota==='taldea'&&z&&r.eremua!==z?` (Z${r.eremua??'?'})`:''}</option>`).join('')}</select>`;
+    out+=`<div class="tbl" style="margin-bottom:12px"><table><thead><tr><th>Eguna</th>${zones.map(z=>`<th>${z}. eremua</th>`).join('')}<th>Zisterna</th><th>Prof.</th><th>Oharrak</th></tr></thead><tbody>
+    ${R.days.map((d,di)=>{const wd=WD[new Date(PD(d.date)).getUTCDay()];const ids=[...d.slots.map(s=>s.res),d.zist].filter(Boolean).map(r=>r.id);
+      ids.forEach(i=>cnt[i]=(cnt[i]||0)+1);const dup=ids.filter((x,i)=>ids.indexOf(x)!==i);const pros=d.slots.filter(s=>s.res&&s.res.profesionala).length;
+      const notes=[];if(dup.length)notes.push('Errepikatuta: '+dup.map(resName).join(', '));
+      ids.forEach(i=>{if(p.avail[i]&&p.avail[i][di]===false)notes.push(resName(i)+' ez dago erabilgarri')});
+      d.slots.forEach(s=>{if(!s.res)notes.push(s.z+'. eremua estali gabe')});if(!d.zist)notes.push('Zisternarik ez');
+      return `<tr><td><b>${wd}</b> ${d.date.slice(8,10)}/${d.date.slice(5,7)}</td>${zones.map(z=>{const rk=d.risk[z]||{v:null,l:-1};const ss=d.slots.map((s,k)=>({s,k})).filter(x=>x.s.z===z);
+        return `<td style="white-space:normal;min-width:150px">${lvChip(rk.v,rk.l)}${ss.map(({s,k})=>`<div style="margin-top:6px">${sel(di,k,taldeak,s.res,z)}${s.hs.slice(11)!==c.taldeHasiera?`<div class="muted" style="font-size:12px">Sarrera ${s.hs.slice(11)}</div>`:''}</div>`).join('')}${d.skip.includes(z)?'<div class="muted" style="font-size:12px;margin-top:6px">Arrisku baxua: zaintzarik ez</div>':''}</td>`}).join('')}
+      <td>${sel(di,'Z',zist,d.zist,0)}${d.zistZ?`<div class="muted" style="font-size:12px">Kokapena: Z${d.zistZ}</div>`:''}</td>
+      <td><span class="okbad ${pros>=1||!c.profKontrola?'ok':'bad'}">${pros}</span></td><td class="wrap">${notes.length?`<span class="wtext">${esc(notes.join('. '))}</span>`:''}${d.moves.length?`<div class="muted" style="font-size:12px">${esc(d.moves.join(', '))}</div>`:''}</td></tr>`}).join('')}</tbody></table></div>
+    <div class="tools"><button class="btn primary" data-act="save-prop">Zaintzak gorde</button><span class="muted" style="align-self:center;max-width:70ch">Planifikatu gisa gordetzen dira. Zaintza egin ondoren, sartu benetako sarrera, irteera eta kide kopurua eta markatu egiaztatuta.</span></div>
+    <h3 style="margin:18px 0 8px">Kargaren laburpena (${p.start.slice(0,4)})</h3><div class="tbl" style="margin-bottom:20px"><table><thead><tr><th>Baliabidea</th><th class="num">Aurreko zaintzak</th><th class="num">Proposamen berria</th><th class="num">Guztira</th><th>Profesionala</th></tr></thead><tbody>
+    ${res.map(r=>`<tr><td>${esc(r.izena)}</td><td class="num">${R.prev[r.id]||0}</td><td class="num">${(cnt[r.id]||0)-(R.prev[r.id]||0)}</td><td class="num">${cnt[r.id]||0}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td></tr>`).join('')}</tbody></table></div>`;
+  }
+  out+=`<h3 style="margin:8px 0 8px">Erabilgarritasuna</h3><p class="lead">Kendu marka baliabide bat egun horretan erabilgarri ez badago, eta sortu proposamena berriro.</p>
+  <div class="tbl av"><table><thead><tr><th>Baliabidea</th>${dayHead}</tr></thead><tbody>${res.map(r=>`<tr><td>${esc(r.izena)}${r.mota==='taldea'?` <span class="muted">Z${r.eremua??'?'}</span>`:''}</td>${p.avail[r.id].map((v,i)=>`<td><input type="checkbox" data-av="${esc(r.id)}|${i}" ${v?'checked':''} aria-label="${esc(r.izena)} ${addDays(p.start,i)}"></td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  return out;
+}
+function vRiskRules(c){
+  return `<div class="panel"><h3>Arriskua (BASUGIX) eta gomendioak</h3><p class="muted" style="margin:0 0 10px;font-size:13px">BASUGIX mailak (20 puntu = egun ertaina) eta maila bakoitzean proposamenak zer egin behar duen.</p>
+  <div class="tbl"><table><thead><tr><th>Maila</th><th>Puntuak hemendik</th><th>Taldeak eremuko</th><th>Sarrera</th><th>Profesionala lehenetsi</th></tr></thead><tbody>
+  ${LVL.map((n,l)=>{const a=c.arriskuEkintzak[l]||{};return `<tr><td><span class="chip lv${l}">${n}</span></td><td>${l===0?'0':`<input type="number" step="0.1" min="0" name="muga${l}" value="${c.fwiMugak[l-1]}" style="width:80px">`}</td>
+  <td><input type="number" min="0" max="3" name="tk${l}" value="${a.taldeak??1}" style="width:60px"></td><td><input type="time" name="hs${l}" value="${a.hasiera||c.taldeHasiera}"></td><td><input type="checkbox" name="pf${l}" ${a.prof?'checked':''}></td></tr>`}).join('')}</tbody></table></div>
+  <div class="grid" style="margin-top:10px"><label class="chk span2"><input type="checkbox" name="baxuanEz" ${c.baxuanEz?'checked':''}> Arrisku baxuan eremu horretan zaintzarik ez proposatu</label>
+  <label class="f">Taldeak ez atera beren eremutik maila honetatik aurrera<select name="babestuMaila">${LVL.map((n,l)=>`<option value="${l}" ${+c.babestuMaila===l?'selected':''}>${n}</option>`).join('')}<option value="9" ${+c.babestuMaila===9?'selected':''}>Inoiz ez</option></select></label>
+  <label class="f">Zisterna arrisku handieneko eremuan kokatu, maila honetatik aurrera<select name="zistMaila">${LVL.map((n,l)=>`<option value="${l}" ${+c.zistMaila===l?'selected':''}>${n}</option>`).join('')}<option value="9" ${+c.zistMaila===9?'selected':''}>Inoiz ez</option></select></label></div></div>`;
+}
+
+/* ---- BASUGIX: panel-fwi-ko fwi.json irakurri eta kalkulatu ---- */
+const BGX_ST=['Gipuzkoa','Altzola','Arrasate','Berastegi','Bidania','Miramon','Mutriku','Ordizia','Pasaia','Zarautz','Zegama','Zizurkil'];
+const BGX_URL='https://irratiamendiak.github.io/panel-fwi/fwi.json';
+const BGX_PTS=[[1.1,-3.6],[2.3,3.2],[2.9,6.4],[4.95,13.2],[6.3,16.4],[8.1,20],[10.1,23.2],[12.5,26.4],[15.9,30],[19.65,33.2],[30.4,40],[37,43.2],[57.2,50]];
+function bgxBase(f){f=Math.max(+f,0.1);const x=Math.log(f),P=BGX_PTS;let a=P[0],b=P[1];
+  if(f>=P[P.length-1][0]){a=P[P.length-2];b=P[P.length-1]}else if(f>P[0][0]){for(let i=0;i<P.length-1;i++)if(P[i][0]<=f&&f<=P[i+1][0]){a=P[i];b=P[i+1];break}}
+  return a[1]+(b[1]-a[1])*(x-Math.log(a[0]))/(Math.log(b[0])-Math.log(a[0]))}
+function basugix(fwi,fecha,mult){if(fwi==null||isNaN(+fwi))return null;const m=+fecha.slice(5,7);
+  return Math.round(Math.max(0,bgxBase(fwi)+([12,1,2,3,4].includes(m)?10*Math.log2(3.2):0)+10*Math.log2(+mult||1))*10)/10}
+async function loadBasugix(){
+  const c=cfg();const r=await fetch(c.bgxUrl||BGX_URL,{cache:'no-store'});if(!r.ok)throw new Error('HTTP '+r.status);const d=await r.json();
+  const st={};for(const s of d.estaciones||[]){const m={};for(const x of s.prevision||[])m[x.fecha]={v:basugix(x.fwi,x.fecha,x.mult_viento),p:true};
+    for(const x of s.dias||[]){const v=basugix(x.fwi,x.fecha,x.mult_viento);if(v!=null)m[x.fecha]={v,p:false}}st[s.nombre]=m}
+  UI.bgx={st,act:d.actualizado||'',at:Date.now()};return UI.bgx}
+function bgxZone(z,date){const c=cfg();const names=(c.bgxZonak&&c.bgxZonak[String(z)]&&c.bgxZonak[String(z)].length)?c.bgxZonak[String(z)]:['Gipuzkoa'];
+  const vals=names.map(n=>({n,x:UI.bgx?.st?.[n]?.[date]})).filter(o=>o.x&&o.x.v!=null);if(!vals.length)return null;
+  const v=c.bgxAgg==='avg'?Math.round(vals.reduce((s,o)=>s+o.x.v,0)/vals.length*10)/10:Math.max(...vals.map(o=>o.x.v));
+  return {v,p:vals.some(o=>o.x.p),det:vals.map(o=>`${o.n} ${n2(o.x.v)}${o.x.p?' (iragarpena)':''}`).join(', ')}}
+async function applyBasugix(quiet){
+  try{await loadBasugix()}catch(e){if(!quiet)toast('Ezin izan da BASUGIX kargatu ('+(e.message||e)+'). Egiaztatu helbidea Arauak atalean.');return}
+  const p=ensureProp();const zones=[1,2,3,4].filter(z=>cfg().eremuak[z-1]);let n=0;
+  await safe(async()=>{for(let i=0;i<p.days;i++){const date=addDays(p.start,i);const cur=clone((S.arriskua||{})[date]||{});let ch=false;
+    for(const z of zones){const r=bgxZone(z,date);if(!r)continue;cur['z'+z]=r.v;cur['d'+z]=r.det;ch=true;n++}
+    if(ch){cur.iturria='BASUGIX'+(UI.bgx.act?' '+UI.bgx.act.slice(0,16).replace('T',' '):'');await put('arriskua',date,cur)}}});
+  if(!quiet)toast(n?`BASUGIX kargatuta: ${n} balio`:'Ez dago BASUGIX daturik egun horietarako');render()}
+function vBgxRules(c){const zones=c.bgxZonak||{};
+  return `<div class="panel"><h3>BASUGIX lotura (panel-fwi)</h3><p class="muted" style="margin:0 0 10px;font-size:13px">Proposamenak eremu bakoitzeko BASUGIX balioa panel-fwi-tik hartzen du (gaurkoa eta iragarpena). Aukeratu eremu bakoitza ordezkatzen duten estazioak; hainbat badira, handiena edo batez bestekoa hartzen da.</p>
+  <div class="grid"><label class="f span2">fwi.json helbidea<input name="bgxUrl" value="${esc(c.bgxUrl||BGX_URL)}"></label>
+  <label class="f">Hainbat estazio badaude<select name="bgxAgg"><option value="max" ${c.bgxAgg!=='avg'?'selected':''}>Balio handiena</option><option value="avg" ${c.bgxAgg==='avg'?'selected':''}>Batez bestekoa</option></select></label></div>
+  ${[1,2,3,4].map(z=>`<fieldset><legend>${z}. eremua</legend><div class="radios" style="gap:8px 16px">${BGX_ST.map((n,i)=>`<label class="chk" style="font-size:14px"><input type="checkbox" name="bz_${z}_${i}" ${(zones[String(z)]||[]).includes(n)?'checked':''}> ${n}</label>`).join('')}</div></fieldset>`).join('')}
+  <p class="muted" style="font-size:13px;margin:8px 0 0">Eremu batek estaziorik ez badu, Gipuzkoa osoaren balioa erabiltzen da.</p></div>`}
+
 /* ===================== Formularioak ===================== */
 const dlg=document.getElementById('dlg');
 function openDlg(title,body,foot,onInput){
@@ -886,7 +954,7 @@ function resForm(id){
 async function act(a,el){
   const id=el.dataset.id;const f=document.getElementById('dlgForm');
   switch(a){
-    case 'tab':UI.tab=el.dataset.k;lsSet('zi-tab',UI.tab);render();window.scrollTo(0,0);break;
+    case 'tab':if(el.dataset.k==='proposamena'&&UI.mode!=='db'&&!UI.bgxTried){UI.bgxTried=true;setTimeout(()=>applyBasugix(true),50)}UI.tab=el.dataset.k;lsSet('zi-tab',UI.tab);render();window.scrollTo(0,0);break;
     case 'go-warns':UI.tab='denbora';render();setTimeout(()=>document.getElementById('warns')?.scrollIntoView({behavior:'smooth'}),30);break;
     case 'tl-move':UI.tlStart=addDays(UI.tlStart,+el.dataset.n);render();break;
     case 'tl-today':UI.tlStart=monday(todayStr());render();break;
@@ -933,6 +1001,7 @@ async function act(a,el){
     case 'cert-view':{const v=findService(el.dataset.k);if(!v)break;openDlg(CERT_TITLE[v.type],certHTML(v),`<span class="sp"></span><button type="button" class="btn" data-act="close">Itxi</button><button type="button" class="btn primary" data-act="cert-pdf" data-k="${esc(v.key)}">PDF deskargatu</button>`);break}
     case 'cert-pdf':{const v=findService(el.dataset.k);if(v)certPdf(v);break}
     case 'liq-pdf':liqPdf();break;
+    case 'bgx-load':await applyBasugix(false);break;
     case 'cert-regen':{const c=S.ziurtagiriak[id];if(!c)break;if(c.mota==='liq'){const o={y:UI.lYear,m:UI.lMonth,r:UI.cRes};UI.lYear=c.lYear;UI.lMonth=c.lMonth;UI.cRes=c.baliabidea;liqPdf();UI.lYear=o.y;UI.lMonth=o.m;UI.cRes=o.r}else{const v=findService(c.key);if(v)certPdf(v);else toast('Zerbitzu hori ez da aurkitzen (datuak aldatu dira)')}break}
     case 'login':{const fm=document.getElementById('loginForm');const {error}=await SB.auth.signInWithPassword({email:fm.elements.email.value.trim(),password:fm.elements.pass.value});
       if(error){toast('Ezin izan da sartu: '+error.message);break}const s=await SB.auth.getSession();UI.session=s.data.session;UI.loaded=false;render();await supaStart();break}
@@ -969,15 +1038,22 @@ async function act(a,el){
       for(const z of [1,2,3,4]){const arr=[0,1,2].map(i=>+g(`lh_${z}_${i}`).value);if(new Set(arr).size<3){toast(`${z}. eremuko lehentasunak errepikatuta daude`);return}lh[String(z)]=arr}
       const c={taldeHasiera:g('taldeHasiera').value,taldeAmaiera:g('taldeAmaiera').value,zistHasiera:g('zistHasiera').value,zistAmaiera:g('zistAmaiera').value,
         taldeAtseden:+g('taldeAtseden').value||0,zistAtseden:+g('zistAtseden').value||0,eremuak:[1,2,3,4].map(z=>g('eremua'+z).checked),profKontrola:g('profKontrola').checked,lehentasunak:lh,
-        tarifak:{taldeZaintza:+g('taldeZaintza').value||0,taldeItzaltze:+g('taldeItzaltze').value||0,zistZaintza:+g('zistZaintza').value||0,zistItzaltze:+g('zistItzaltze').value||0}};
+        tarifak:{taldeZaintza:+g('taldeZaintza').value||0,taldeItzaltze:+g('taldeItzaltze').value||0,zistZaintza:+g('zistZaintza').value||0,zistItzaltze:+g('zistItzaltze').value||0},
+        fwiMugak:[1,2,3,4,5].map(l=>+g('muga'+l).value||0),arriskuEkintzak:[0,1,2,3,4,5].map(l=>({taldeak:+g('tk'+l).value||0,hasiera:g('hs'+l).value||'17:00',prof:g('pf'+l).checked})),
+        baxuanEz:g('baxuanEz').checked,babestuMaila:+g('babestuMaila').value,zistMaila:+g('zistMaila').value,
+        bgxUrl:g('bgxUrl').value.trim(),bgxAgg:g('bgxAgg').value,bgxZonak:Object.fromEntries([1,2,3,4].map(z=>[String(z),BGX_ST.filter((n,i)=>g(`bz_${z}_${i}`).checked)]))};
+      for(let i=1;i<c.fwiMugak.length;i++)if(c.fwiMugak[i]<=c.fwiMugak[i-1]){toast('Mugak goranzko ordenan egon behar dute');return}
       await safe(()=>put('config','arauak',c),'Arauak gordeta');break}
     case 'propose':{const p=ensureProp();p.result=propose(p.start,p.days,p.avail);render();break}
     case 'save-prop':{const p=UI.prop;if(!p?.result)break;const c=cfg();let n=0,skip=0,zkN=nextGuardZk();
-      const ok=await safe(async()=>{for(const d of p.result.days){const items=[...Object.values(d.zones).filter(Boolean),d.zist].filter(Boolean).filter((r,i,a)=>a.findIndex(x=>x.id===r.id)===i);
-        for(const r of items){const gid='p'+d.date.replace(/-/g,'')+'-'+r.id;
+      const ok=await safe(async()=>{for(const d of p.result.days){const seen=new Set();
+        const items=[...d.slots.filter(s=>s.res).map(s=>({r:s.res,hs:s.hs,he:s.he,z:s.z,l:s.l,v:s.v})),...(d.zist?[{r:d.zist,z:d.zistZ||null}]:[])];
+        for(const it of items){const r=it.r;if(seen.has(r.id))continue;seen.add(r.id);const gid='p'+d.date.replace(/-/g,'')+'-'+r.id;
           if(S.zaintzak[gid]||Object.values(S.zaintzak).some(g=>g.baliabidea===r.id&&(g.hasiera||'').startsWith(d.date)&&g.mota!=='praktika')){skip++;continue}
-          const [s,e]=slot(d.date,r.mota,c);const mv=r.mota==='taldea'?Object.entries(d.zones).find(([z,x])=>x&&x.id===r.id):null;
-          await put('zaintzak',gid,{baliabidea:r.id,mota:'zaintza',egoera:'planifikatua',hasiera:F(s),amaiera:F(e),kideak:r.kideak||1,zk:String(zkN++),oharrak:mv&&+mv[0]!==r.eremua?`Proposamena: Z${r.eremua}→Z${mv[0]}`:'Proposamena'});n++}}});
+          let hs,he;if(r.mota==='taldea'&&it.hs){hs=it.hs;he=it.he}else{const [s,e]=slot(d.date,r.mota,c);hs=F(s);he=F(e)}
+          const notes=['Proposamena'];if(r.mota==='taldea'&&it.z&&r.eremua!==it.z)notes.push(`Z${r.eremua}→Z${it.z}`);if(r.mota==='zisterna'&&it.z)notes.push(`kokapena Z${it.z}`);
+          if(it.l>=0)notes.push(`${IDX} ${it.v} (${LVL[it.l]})`);
+          await put('zaintzak',gid,{baliabidea:r.id,mota:'zaintza',egoera:'planifikatua',hasiera:hs,amaiera:he,kideak:r.kideak||1,zk:String(zkN++),oharrak:notes.join(', ')});n++}}});
       if(ok){toast(`${n} zaintza gordeta${skip?`, ${skip} lehendik zeudenak`:''}`);p.result=null;render()}break}
     case 'backup-export':save(`zaintzak-babeskopia_${todayStr()}.json`,JSON.stringify({baliabideak:S.baliabideak,zaintzak:S.zaintzak,suteak:S.suteak,eskuhartzeak:S.eskuhartzeak,ziurtagiriak:S.ziurtagiriak,config:S.config},null,1),'application/json');break;
     case 'export-liq':exportLiq();break;
@@ -1012,7 +1088,8 @@ function boot(){
     if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
     if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
     if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
-    if(el.dataset.pz){const [d,z]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(z==='Z')day.zist=r;else day.zones[z]=r;render();return}
+    if(el.dataset.pz){const [d,k]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(k==='Z')day.zist=r;else day.slots[+k].res=r;render();return}
+    if(el.dataset.risk){const [d,z]=el.dataset.risk.split('|');const cur=clone((S.arriskua||{})[d]||{});cur['z'+z]=el.value===''?null:Math.round(+el.value*10)/10;safe(()=>put('arriskua',d,cur));return}
     if(el.dataset.av){const [rid,i]=el.dataset.av.split('|');ensureProp().avail[rid][+i]=el.checked;return}
     if(el.id==='pStart'&&el.value){const p=ensureProp();p.start=el.value;p.result=null;render();return}
     if(el.id==='pDays'){const p=ensureProp();p.days=Math.max(1,Math.min(31,+el.value||7));p.avail={};p.result=null;render();return}
