@@ -113,6 +113,8 @@ tr.total td{font-weight:600;background:var(--sunk)}
 .lg-plan{background:repeating-linear-gradient(135deg,var(--pine) 0 4px,var(--pine-soft) 4px 8px)}
 .lv0{background:#D6EBD6!important;color:#1F5A3A!important}.lv1{background:#E3EEC4!important;color:#46600F!important}.lv2{background:#F5E6A6!important;color:#6B5200!important}.lv3{background:#F6C995!important;color:#7A3E04!important}.lv4{background:#F0A08A!important;color:#7E1E0A!important}.lv5{background:#A3201A!important;color:#fff!important}
 input.fwi{width:74px;text-align:right;font-weight:600}
+td.tused,div.tused{font-weight:700;color:var(--ember)}
+.dtw{display:flex;gap:4px}.dtw input[type=time]{flex:1;min-width:0}.dtw select{min-height:38px;font-size:13px;padding:4px;max-width:46%}
 .now{margin:0 0 24px}.now h3{margin-bottom:8px}
 .cert dl{display:grid;grid-template-columns:max-content 1fr;gap:4px 14px;margin:10px 0 14px}.cert dt{color:var(--muted)}.cert dd{margin:0;font-weight:600}
 /* fires */
@@ -369,8 +371,8 @@ function vGuards(){
   <button class="btn" data-act="exp-g" data-k="xlsx">Excel</button><button class="btn" data-act="exp-g" data-k="pdf">PDF</button>
   </div>
   <div class="sumline"><span><b>${list.length}</b>tarte</span><span><b>${n2(th)}</b>ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
-  ${list.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Gertakari-zk.</th><th>Oharrak</th></tr></thead><tbody>
-  ${list.map(g=>`<tr class="click" data-act="edit-guard" data-id="${esc(g.id)}"><td><b>${esc(resName(g.rec.baliabidea))}</b></td><td>${chip(g.rec.mota==='praktika'?'praktika':'zaintza')}${g.rec.suterik?' <span class="chip itzaltze">Sutera</span>':''}${g.plan?' <span class="chip mute">Planifikatua</span>':''}</td><td>${showDT(g.rec.hasiera)}</td><td>${showDT(g.rec.amaiera)}</td><td class="num">${n2(g.h)}</td><td class="num">${g.k}</td><td class="num">${n2(g.hp)}</td><td>${esc(g.rec.zk||'')}</td><td class="wrap">${esc(g.rec.oharrak||'')}${g.warn.filter(w=>!w.info).map(w=>`<div class="wtext">${esc(w.t)}</div>`).join('')}</td></tr>`).join('')}
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Data</th><th>Sarrera</th><th>Irteera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Gertakari-zk.</th><th>Oharrak</th></tr></thead><tbody>
+  ${list.map(g=>`<tr class="click" data-act="edit-guard" data-id="${esc(g.id)}"><td><b>${esc(resName(g.rec.baliabidea))}</b></td><td>${chip(g.rec.mota==='praktika'?'praktika':'zaintza')}${g.rec.suterik?' <span class="chip itzaltze">Sutera</span>':''}${g.plan?' <span class="chip mute">Planifikatua</span>':''}</td><td>${fD(g.rec.hasiera)}</td><td>${tRel(g.rec.hasiera)}</td><td>${tRel(g.rec.amaiera,g.rec.hasiera)}</td><td class="num">${n2(g.h)}</td><td class="num">${g.k}</td><td class="num">${n2(g.hp)}</td><td>${esc(g.rec.zk||'')}</td><td class="wrap">${esc(g.rec.oharrak||'')}${g.warn.filter(w=>!w.info).map(w=>`<div class="wtext">${esc(w.t)}</div>`).join('')}</td></tr>`).join('')}
   </tbody></table></div>`:'<div class="empty">Ez dago zaintzarik iragazki hauekin.</div>'}`;
 }
 
@@ -382,21 +384,27 @@ function vFires(){
   if(UI.fRes||UI.fFrom||UI.fTo)arr=arr.filter(x=>x.ints.some(intOk));
   arr.sort((a,b)=>b.last-a.last||String(b.k).localeCompare(String(a.k)));
   let th=0,tp=0;arr.forEach(x=>x.ints.forEach(o=>{if(intOk(o)){th+=o.h;tp+=o.hp}}));
-  return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Zaintzan zeudenean itzaltzea DEIAtik hasten da; zaintzarik gabe, ERANTZUNAtik. Amaiera ETXERATU da, edo zaintzara itzultzeko ordua lehenago bada, hori.</p>
+  return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Ordu guztiak agertzen dira; <b style="color:var(--ember)">gorriz</b> itzaltze-orduak kalkulatzeko erabilitakoak (zaintzarik gabe: ERANTZUNA → ETXERATU; zaintzan: DEIA → ETXERATU edo zaintzara itzultzea).</p>
   <div class="tools"><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
   <label class="f">Noiztik<input type="date" data-filter="fFrom" value="${esc(UI.fFrom)}"></label><label class="f">Noiz arte<input type="date" data-filter="fTo" value="${esc(UI.fTo)}"></label>
   <button class="btn" data-act="exp-f" data-k="xlsx">Excel</button><button class="btn" data-act="exp-f" data-k="pdf">PDF</button></div>
   <div class="sumline"><span><b>${arr.length}</b>sute</span><span><b>${n2(th)}</b>itzaltze ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
   ${arr.length?arr.map(x=>`<article class="fire"><div class="fire-head"><h3>Sutea ${esc(x.k)}</h3><span class="place">${esc([x.f.herria,x.f.lekua].filter(Boolean).join(', '))||'Kokapenik gabe'}</span>
   <span class="acts"><button class="btn small" data-act="edit-fire" data-id="${esc(x.id)}">Editatu</button><button class="btn small" data-act="new-int" data-sute="${esc(x.k)}">Baliabidea gehitu</button></span></div>
-  ${x.ints.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Deia</th><th>Egoera</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Abisuak</th></tr></thead><tbody>
-  ${x.ints.filter(intOk).map(o=>`<tr class="click" data-act="edit-int" data-id="${esc(o.id)}"><td><b>${esc(resName(o.rec.baliabidea))}</b></td><td>${showMs(o.deia)}</td>
-  <td>${o.og?'<span class="chip zaintza">Zaintzan</span>':'<span class="chip mute">Zaintzarik gabe</span>'}</td>
-  <td>${showMs(o.start)}<div class="muted" style="font-size:12px">${esc(o.startRule||'')}</div></td><td>${showMs(o.end)}<div class="muted" style="font-size:12px">${esc(o.endRule||'')}</div></td>
+  ${x.ints.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Egoera</th><th>Data</th><th>Deia</th><th>Erantzuna</th><th>Iritsi</th><th>Bukatu</th><th>Etxeratu</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Abisuak</th></tr></thead><tbody>
+  ${x.ints.filter(intOk).map(o=>`<tr class="click" data-act="edit-int" data-id="${esc(o.id)}"><td><b>${esc(resName(o.rec.baliabidea))}</b></td>
+  <td>${o.og?'<span class="chip zaintza">Zaintzan</span>':'<span class="chip mute">Zaintzarik gabe</span>'}</td>${timeCells(o)}
   <td class="num">${n2(o.h)}</td><td class="num">${o.k}</td><td class="num">${n2(o.hp)}</td><td class="wrap">${o.warn.map(w=>`<div class="wtext"${w.info?' style="color:var(--muted)"':''}>${esc(w.t)}</div>`).join('')}</td></tr>`).join('')}
   </tbody></table></div>`:'<p class="muted" style="padding:10px 12px;margin:0">Ez du esku-hartzerik oraindik.</p>'}</article>`).join(''):'<div class="empty">Ez dago suterik erregistratuta.</div>'}`;
 }
 
+function timeCells(o){const r=o.rec;const st=o.start,en=o.end;
+  const c=(s,used,extra)=>{const ms=P(s);const t=s?tRel(s,r.deia):'—';return `<td${used?' class="tused" title="Kalkuluan erabilia"':''}>${t}${extra||''}</td>`};
+  const usedStart=k=>st!=null&&P(r[k])===st&&((o.og&&k==='deia')||(!o.og&&k==='erantzuna')||(!o.og&&!r.erantzuna&&k==='deia'));
+  const usedEnd=k=>en!=null&&P(r[k])===en&&((k==='etxeratu'&&o.endRule==='ETXERATU'));
+  const itz=r.itzuli?`<div class="muted${en!=null&&P(r.itzuli)===en?' tused':''}" style="font-size:12px">Zaintzara: ${tRel(r.itzuli,r.deia)}</div>`:'';
+  const nxt=o.next&&o.endRule&&o.endRule.startsWith('Hurrengo')?`<div class="muted" style="font-size:12px">${esc(o.endRule)}</div>`:'';
+  return `<td>${fD(r.deia)}</td>`+c(r.deia,usedStart('deia'))+c(r.erantzuna,usedStart('erantzuna'))+c(r.iritsi,false)+c(r.bukatu,false,nxt)+c(r.etxeratu,usedEnd('etxeratu'),itz)}
 function ensureProp(){
   if(!UI.prop){const t=todayStr();UI.prop={start:addDays(monday(t),7),days:7,avail:{},result:null}}
   const p=UI.prop;for(const r of resList())if(!p.avail[r.id]||p.avail[r.id].length!==p.days)p.avail[r.id]=Array(p.days).fill(true);return p;
@@ -488,7 +496,7 @@ function vNow(only){
   const A=only==='f'?[]:act,O=only==='g'?[]:ong,Pn=only==='f'?[]:pend;
   if(!A.length&&!O.length&&!Pn.length)return '';
   let h='<section class="now"><h3>Orain</h3><div class="tbl">';
-  for(const o of O)h+=`<div class="warn-item"><div class="w-main"><span class="chip itzaltze">Itzaltzen</span> <b>${esc(resName(o.rec.baliabidea))}</b>, sutea ${esc(o.rec.sutea)}<div class="w-when">${showMs(o.start)}etik, ${o.k} kide</div></div><button class="btn small primary" data-act="finish-int" data-id="${esc(o.id)}">Itzaltzea amaitu</button><button class="btn small" data-act="edit-int" data-id="${esc(o.id)}">Ireki</button></div>`;
+  for(const o of O)h+=`<div class="warn-item"><div class="w-main"><span class="chip itzaltze">Itzaltzen</span> <b>${esc(resName(o.rec.baliabidea))}</b>, sutea ${esc(o.rec.sutea)}<div class="w-when">Deia ${showT(P(o.rec.deia))}, erantzuna ${showT(P(o.rec.erantzuna))}, iritsi ${showT(P(o.rec.iritsi))} · ${o.k} kide · ${showMs(o.start)}etik kontatzen</div></div><button class="btn small primary" data-act="finish-int" data-id="${esc(o.id)}">Itzaltzea amaitu</button><button class="btn small" data-act="edit-int" data-id="${esc(o.id)}">Ireki</button></div>`;
   for(const g of A)h+=`<div class="warn-item"><div class="w-main"><span class="chip zaintza">Zaintzan</span> <b>${esc(resName(g.rec.baliabidea))}</b>${g.plan?' <span class="chip mute">Planifikatua</span>':''}<div class="w-when">${showT(g.s)}–${showT(g.e)}, ${g.k} kide</div></div><button class="btn small primary" data-act="fire-from-guard" data-id="${esc(g.id)}">Suterik izan da</button><button class="btn small" data-act="edit-guard" data-id="${esc(g.id)}">Editatu</button></div>`;
   if(Pn.length)h+=`<div class="warn-item"><div class="w-main"><span class="chip warn">Berretsi gabe</span> <b>${pend.length} zaintza planifikatu</b><div class="w-when">Bete benetako orduak eta kideak likidatu ahal izateko.</div></div>${pend.slice(0,6).map(g=>`<button class="btn small" data-act="edit-guard" data-id="${esc(g.id)}">${esc(resName(g.rec.baliabidea))} ${F(g.s).slice(5,10).split('-').reverse().join('/')}</button>`).join('')}</div>`;
   return h+'</div></section>';
@@ -533,6 +541,7 @@ function guardForm(id,preset){
   const g=id?clone(S.zaintzak[id]):{baliabidea:preset?.res||resList()[0]?.id||'',mota:'zaintza',hasiera:'',amaiera:'',kideak:'',zk:'',oharrak:''};
   if(!id&&!g.kideak)g.kideak=S.baliabideak[g.baliabidea]?.kideak||1;
   if(!id&&!g.zk)g.zk=String(nextGuardZk());
+  const gb=(g.hasiera||todayStr()).slice(0,10);
   const linked=id&&g.suterik?Object.entries(S.eskuhartzeak).find(([k,i])=>i.baliabidea===g.baliabidea&&i.deia===g.amaiera):null;
   const fireBlock=linked?`<p style="margin:0 0 8px">Zaintza sutera joateko amaitu zen: sutea ${esc(linked[1].sutea)}, deia ${showDT(linked[1].deia)}.</p>
     <button type="button" class="btn small" data-act="edit-int" data-id="${esc(linked[0])}">Esku-hartzea ireki</button>`
@@ -540,19 +549,18 @@ function guardForm(id,preset){
     <div id="fireBox" style="margin-top:10px"><p class="muted" style="font-size:13px;margin:0 0 10px">Zaintza DEIAren orduan amaitzen da eta hortik aurrera itzaltze-orduak kontatzen dira. Bukatu eta etxeratu orduak orain edo geroago bete daitezke.</p>
     <div class="grid"><label class="f">Sutea<select name="sutea"><option value="__new">Sute berria…</option>${fireOptions('')}</select></label>
     <label class="f nf">Sute-zk.<input name="fzk" value="${nextFireZk()}"></label><label class="f nf">Herria<input name="fherria"></label><label class="f nf">Lekua<input name="flekua"></label>
-    <label class="f">Deia<input type="datetime-local" name="deia"></label><label class="f">Suterako kideak<input type="number" name="fkideak" min="1" max="40" value="${esc(g.kideak)}"></label>
-    <label class="f">Iritsi<input type="datetime-local" name="iritsi"></label><label class="f">Bukatu<input type="datetime-local" name="bukatu"></label><label class="f">Etxeratu<input type="datetime-local" name="etxeratu"></label></div>
+    ${dtF('deia','Deia','',gb,'hasiera')}<label class="f">Suterako kideak<input type="number" name="fkideak" min="1" max="40" value="${esc(g.kideak)}"></label>
+    ${dtF('iritsi','Iritsi','',gb,'deia')}${dtF('bukatu','Bukatu','',gb,'iritsi')}${dtF('etxeratu','Etxeratu','',gb,'bukatu')}</div>
     <label class="chk" style="margin-top:12px"><input type="checkbox" name="jarraitu"> Itzaltzearen ostean zaintzan jarraitu</label>
-    <div class="grid" id="contBox" style="margin-top:8px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli"></label><label class="f">Zaintzaren amaiera<input type="datetime-local" name="contEnd"></label></div></div>`;
+    <div class="grid" id="contBox" style="margin-top:8px">${dtF('itzuli','Zaintzara itzuli','',gb,'bukatu')}${dtF('contEnd','Zaintzaren amaiera','',gb,'itzuli')}</div></div>`;
   const body=`<div class="grid"><label class="f">Baliabidea<select name="baliabidea">${resOptions(g.baliabidea)}</select></label>
   <label class="f">Mota<select name="mota"><option value="zaintza" ${g.mota!=='praktika'?'selected':''}>Zaintza</option><option value="praktika" ${g.mota==='praktika'?'selected':''}>Praktika</option></select></label>
   <label class="f">Kideak (efektiboak)<input type="number" name="kideak" min="1" max="40" value="${esc(g.kideak)}"></label>
-  <label class="f">Sarrera<input type="datetime-local" name="hasiera" value="${esc(g.hasiera)}"></label>
-  <label class="f">Irteera<input type="datetime-local" name="amaiera" value="${esc(g.amaiera)}"></label>
+  ${dtBase(gb,'Data')}${dtF('hasiera','Sarrera',g.hasiera,gb)}${dtF('amaiera','Irteera',g.amaiera,gb,'hasiera')}
   <label class="f">Gertakari-zk.<input name="zk" value="${esc(g.zk)}"></label>
   <label class="chk span2"><input type="checkbox" name="egiaztatua" ${g.egoera!=='planifikatua'?'checked':''}> Benetako orduak eta kideak egiaztatuta (likidatzeko prest)</label>
   <label class="f span2">Oharrak<textarea name="oharrak">${esc(g.oharrak)}</textarea></label></div>
-  <div class="tools" style="margin:10px 0 0"><button type="button" class="btn small" data-act="std-slot">Ordutegi estandarra sarrera-datarako</button></div>
+  <div class="tools" style="margin:10px 0 0"><button type="button" class="btn small" data-act="std-slot">Ordutegi estandarra data honetarako</button></div>
   <fieldset><legend>Sutea</legend>${fireBlock}</fieldset>
   <div class="calc" id="calc"></div>`;
   const foot=`${id?`<button type="button" class="btn danger" data-act="del-guard" data-id="${esc(id)}">Ezabatu</button>`:''}<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-guard" data-id="${esc(id||'')}">Gorde</button>`;
@@ -561,9 +569,9 @@ function guardForm(id,preset){
     if(fb){fb.style.display=fire?'':'none';
       const isNew=f.elements.sutea.value==='__new';f.querySelectorAll('.nf').forEach(x=>x.style.display=isNew?'':'none');
       const cont=f.elements.jarraitu.checked;document.getElementById('contBox').style.display=cont?'':'none';
-      if(fire&&!f.elements.deia.value){const s=P(fv(f,'hasiera')),e=P(fv(f,'amaiera')),n=nowMs();f.elements.deia.value=F(s!=null&&e!=null&&n>s&&n<e?n:(e??n))}
-      if(cont&&!f.elements.itzuli.value&&f.elements.bukatu.value)f.elements.itzuli.value=f.elements.bukatu.value;
-      if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value){const am=fv(f,'amaiera');f.elements.contEnd.value=am&&P(am)>P(f.elements.itzuli.value)?am:defEnd(f.elements.itzuli.value,S.baliabideak[fv(f,'baliabidea')]?.mota)}}
+      if(fire&&!f.elements.deia.value){const s=P(fv(f,'hasiera')),e=P(fv(f,'amaiera')),n=nowMs();setDT(f,'deia',F(s!=null&&e!=null&&n>s&&n<e?n:(e??n)))}
+      if(cont&&!f.elements.itzuli.value&&f.elements.bukatu.value)setDT(f,'itzuli',f.elements.bukatu.value);
+      if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value){const am=fv(f,'amaiera');setDT(f,'contEnd',am&&P(am)>P(f.elements.itzuli.value)?am:defEnd(f.elements.itzuli.value,S.baliabideak[fv(f,'baliabidea')]?.mota))}}
     const s=P(fv(f,'hasiera')),k=+fv(f,'kideak')||0;let e=P(fv(f,'amaiera'));if(fire&&P(fv(f,'deia'))!=null)e=P(fv(f,'deia'));
     const h=(s!=null&&e!=null&&e>s)?(e-s)/H:0;
     let x=`<div class="row"><span>Zaintza-orduak</span><b>${n2(h)}</b></div><div class="row"><span>Zaintza ordu-pertsonak</span><b>${n2(h*k)}</b></div>`;
@@ -576,16 +584,16 @@ function guardForm(id,preset){
 function finishForm(id){
   const r=clone(S.eskuhartzeak[id]);if(!r)return;const o=MODEL.I[id];const now=F(nowMs());
   const body=`<p style="margin:0 0 12px"><b>${esc(resName(r.baliabidea))}</b>, sutea ${esc(r.sutea)}. Itzaltzea ${showMs(o?.start)}etik kontatzen da (${esc(o?.startRule||'')}), ${esc(r.kideak)} kide.</p>
-  <div class="grid"><label class="f">Bukatu<input type="datetime-local" name="bukatu" value="${esc(r.bukatu||now)}"></label><label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
+  <div class="grid">${dtBase((r.deia||now).slice(0,10),'Deiaren data')}${dtF('bukatu','Bukatu',r.bukatu||now,(r.deia||now).slice(0,10),null,r.deia)}<label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
   <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" checked> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu"> Zaintzan jarraitu</label></div>
-  <div class="grid" id="homeBox" style="margin-top:10px"><label class="f">Etxeratu<input type="datetime-local" name="etxeratu" value="${esc(r.etxeratu)}"></label></div>
-  <div class="grid" id="contBox" style="margin-top:10px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli"></label><label class="f">Zaintzaren amaiera<input type="datetime-local" name="contEnd"></label></div></fieldset>
+  <div class="grid" id="homeBox" style="margin-top:10px">${dtF('etxeratu','Etxeratu',r.etxeratu,(r.deia||now).slice(0,10),'bukatu')}</div>
+  <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli','',(r.deia||now).slice(0,10),'bukatu')}${dtF('contEnd','Zaintzaren amaiera','',(r.deia||now).slice(0,10),'itzuli')}</div></fieldset>
   <div class="calc" id="calc"></div>`;
   openDlg('Itzaltzea amaitu',body,`<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-finish" data-id="${esc(id)}">Gorde</button>`,f=>{
     const cont=f.querySelector('input[name=ondoren]:checked').value==='jarraitu';
     document.getElementById('contBox').style.display=cont?'':'none';document.getElementById('homeBox').style.display=cont?'none':'';
-    if(cont&&!f.elements.itzuli.value)f.elements.itzuli.value=fv(f,'bukatu');
-    if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value)f.elements.contEnd.value=defEnd(f.elements.itzuli.value,S.baliabideak[r.baliabidea]?.mota);
+    if(cont&&!f.elements.itzuli.value)setDT(f,'itzuli',fv(f,'bukatu'));
+    if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value)setDT(f,'contEnd',defEnd(f.elements.itzuli.value,S.baliabideak[r.baliabidea]?.mota));
     const end=P(cont?fv(f,'itzuli'):fv(f,'etxeratu')),k=+fv(f,'kideak')||0;
     document.getElementById('calc').innerHTML=o&&end!=null&&end>o.start?`<div class="row"><span>Itzaltze-orduak</span><b>${n2((end-o.start)/H)}</b></div><div class="row"><span>Ordu-pertsonak</span><b>${n2((end-o.start)/H*k)}</b></div>`:'<div class="row"><span>Itzaltze-orduak</span><b>—</b></div>';
   });
@@ -615,8 +623,8 @@ function vCerts(){
   return `<div class="tools"><label class="f">Baliabidea<select data-filter="cRes">${resOptions(UI.cRes,true)}</select></label><span class="grow"></span>
   ${UI.cRes?`<button class="btn primary" data-act="liq-pdf">Likidazio-agiria PDF (${UI.lMonth?MONTHS[UI.lMonth-1]:'urte osoa'})</button>`:'<span class="muted" style="align-self:center">Aukeratu baliabide bat likidazio-agiria sortzeko.</span>'}</div>
   <div class="sumline"><span><b>${list.length}</b>zerbitzu</span><span><b>${n2(T.zp)}</b>zaintza o-p</span><span><b>${n2(T.ip)}</b>itzaltze o-p</span><span><b>${eur(T.eur)}</b></span></div>
-  ${list.length?`<div class="tbl"><table><thead><tr><th>Data</th><th>Baliabidea</th><th>Zerbitzua</th><th class="num">Zaintza o-p</th><th class="num">Itzaltze o-p</th><th class="num">Zenbatekoa</th><th>Ziurtagiria</th><th>Bidalita</th></tr></thead><tbody>
-  ${list.map(v=>`<tr><td>${showMs(v.s)}</td><td><b>${esc(resName(v.res))}</b></td><td>${tl[v.type]}${v.open?` <span class="chip warn">${v.items.some(i=>i.open&&i.ref.ongoing)?'Abian':'Amaiera falta'}</span>`:''}</td><td class="num">${n2(v.zp+v.pp)}</td><td class="num">${n2(v.ip)}</td><td class="num">${eur(v.eur)}</td>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Data</th><th>Hasiera</th><th>Baliabidea</th><th>Zerbitzua</th><th class="num">Zaintza o-p</th><th class="num">Itzaltze o-p</th><th class="num">Zenbatekoa</th><th>Ziurtagiria</th><th>Bidalita</th></tr></thead><tbody>
+  ${list.map(v=>`<tr><td>${fD(F(v.s))}</td><td>${tRelMs(v.s)}</td><td><b>${esc(resName(v.res))}</b></td><td>${tl[v.type]}${v.open?` <span class="chip warn">${v.items.some(i=>i.open&&i.ref.ongoing)?'Abian':'Amaiera falta'}</span>`:''}</td><td class="num">${n2(v.zp+v.pp)}</td><td class="num">${n2(v.ip)}</td><td class="num">${eur(v.eur)}</td>
   <td><button class="btn small" data-act="cert-view" data-k="${esc(v.key)}">Ikusi</button> <button class="btn small" data-act="cert-pdf" data-k="${esc(v.key)}">PDF</button></td>${sentCell(v.no,{no:v.no,tituloa:CERT_TITLE[v.type].split(' / ')[0],mota:v.type,baliabidea:v.res,key:v.key,hasiera:F(v.s),amaiera:v.open?'':F(v.e),op:v.zp+v.pp+v.ip,eur:v.eur})}</tr>`).join('')}</tbody></table></div>`:'<div class="empty">Ez dago zerbitzurik epe honetan.</div>'}`;
 }
 
@@ -635,22 +643,22 @@ function certHTML(v){
   const R=S.baliabideak[v.res]||{};const [i1,i2]=introBi(R,v),[t1,t2]=totalsBi(v);
   return `<div class="cert"><h3>${esc(CERT_TITLE[v.type])}</h3><dl><dt>Ziurtagiri-zk. / Nº certificado</dt><dd>${esc(v.no)}</dd><dt>Baliabidea / Recurso</dt><dd>${esc(R.izena||v.res)} (${mResBi(R)})</dd><dt>Zerbitzua / Servicio</dt><dd>${showMs(v.s)} – ${v.open?endTxt(v.items.find(i=>i.open)):showMs(v.e)}</dd></dl>
   <p style="margin:0 0 4px">${esc(i1)}</p><p class="muted" style="margin:0 0 12px">${esc(i2)}</p>
-  <div class="tbl"><table><thead><tr><th>Mota / Tipo</th><th>Hasiera / Inicio</th><th>Amaiera / Fin</th><th class="num">Orduak / Horas</th><th class="num">Kideak / Efectivos</th><th class="num">Ordu-pertsonak / Horas-persona</th><th class="num">€/h</th><th class="num">Zenbatekoa / Importe</th></tr></thead><tbody>
-  ${v.items.map(it=>`<tr><td>${esc(itemLabel(it))}</td><td>${showMs(it.s)}</td><td>${endTxt(it)}</td><td class="num">${n2(it.h)}</td><td class="num">${it.kid}</td><td class="num">${n2(it.hp)}</td><td class="num">${eur(it.rate)}</td><td class="num">${eur(it.hp*it.rate)}</td></tr>${it.k==='itzaltze'?`<tr><td colspan="8" class="wrap" style="font-size:13px">${esc(fireLine(it.ref))}</td></tr>`:''}`).join('')}
-  <tr class="total"><td colspan="5">Guztira / Total</td><td class="num">${n2(v.zp+v.pp+v.ip)}</td><td></td><td class="num">${eur(v.eur)}</td></tr></tbody></table></div>
+  <div class="tbl"><table><thead><tr><th>Mota / Tipo</th><th>Data / Fecha</th><th>Hasiera / Inicio</th><th>Amaiera / Fin</th><th class="num">Orduak / Horas</th><th class="num">Kideak / Efectivos</th><th class="num">Ordu-pertsonak / Horas-persona</th><th class="num">€/h</th><th class="num">Zenbatekoa / Importe</th></tr></thead><tbody>
+  ${v.items.map(it=>`<tr><td>${esc(itemLabel(it))}</td><td>${fD(F(it.s))}</td><td>${tRelMs(it.s)}</td><td>${it.open?endTxt(it):tRelMs(it.e,F(it.s))}</td><td class="num">${n2(it.h)}</td><td class="num">${it.kid}</td><td class="num">${n2(it.hp)}</td><td class="num">${eur(it.rate)}</td><td class="num">${eur(it.hp*it.rate)}</td></tr>${it.k==='itzaltze'?`<tr><td colspan="9" class="wrap" style="font-size:13px">${esc(fireLine(it.ref))}</td></tr>`:''}`).join('')}
+  <tr class="total"><td colspan="6">Guztira / Total</td><td class="num">${n2(v.zp+v.pp+v.ip)}</td><td></td><td class="num">${eur(v.eur)}</td></tr></tbody></table></div>
   <p style="margin:10px 0 2px">${esc(t1)}</p><p class="muted" style="margin:0">${esc(t2)}</p>
   ${v.open?`<p class="wtext">${esc(openMsg(v))}</p>`:''}</div>`;
 }
 function pdfSign(d,y){if(y>232){d.addPage();y=30}y=Math.max(y+16,226);d.setFontSize(9);d.text(pdfT('Egina / Fecha: '+todayStr().split('-').reverse().join('/')),18,y-8);
   d.setDrawColor(120);d.rect(18,y,80,34);d.rect(112,y,80,34);d.text('Taldeburua / Jefe de retén',20,y+5);d.text('Arduraduna / Responsable',114,y+5);
   d.setFontSize(7);d.setTextColor(110);d.text('Izena eta sinadura / Nombre y firma',20,y+9);d.text('Izena eta sinadura / Nombre y firma',114,y+9);d.setTextColor(0)}
-const CERT_COLS=[{t:'Mota',t2:'Tipo',x:18,w:22},{t:'Hasiera',t2:'Inicio',x:42,w:27},{t:'Amaiera',t2:'Fin',x:71,w:27},{t:'Orduak',t2:'Horas',x:98,w:13,align:'r'},{t:'Kideak',t2:'Efectivos',x:113,w:14,align:'r'},{t:'Ordu-pert.',t2:'Horas-pers.',x:129,w:18,align:'r'},{t:'EUR/h',t2:'',x:149,w:13,align:'r'},{t:'Zenbatekoa',t2:'Importe',x:164,w:28,align:'r'}];
+const CERT_COLS=[{t:'Mota',t2:'Tipo',x:18,w:22},{t:'Data',t2:'Fecha',x:42,w:20},{t:'Hasiera',t2:'Inicio',x:63,w:16},{t:'Amaiera',t2:'Fin',x:80,w:18},{t:'Orduak',t2:'Horas',x:98,w:13,align:'r'},{t:'Kideak',t2:'Efectivos',x:113,w:14,align:'r'},{t:'Ordu-pert.',t2:'Horas-pers.',x:129,w:18,align:'r'},{t:'EUR/h',t2:'',x:149,w:13,align:'r'},{t:'Zenbatekoa',t2:'Importe',x:164,w:28,align:'r'}];
 function certPage(d,v){
   const R=S.baliabideak[v.res]||{};
   let y=pdfHead(d,CERT_TITLE[v.type],[['Ziurtagiri-zk. / Nº',v.no],['Baliabidea / Recurso',`${R.izena||v.res} (${mResBi(R)})`],['Zerbitzua / Servicio',`${showMs(v.s)} - ${v.open?endTxt(v.items.find(i=>i.open)):showMs(v.e)}`]]);
   d.setFontSize(10);for(const [i,p] of introBi(R,v).entries()){if(i)d.setTextColor(90,100,95);const ls=d.splitTextToSize(pdfT(p),174);d.text(ls,18,y);y+=ls.length*4.6+2;d.setTextColor(0)}y+=6;
-  const rows=[];for(const it of v.items){rows.push({cells:[itemLabel(it).split(' / '),showMs(it.s),it.open?endTxt(it).split(' / '):endTxt(it),n2(it.h),String(it.kid),n2(it.hp),n2(it.rate),eur(it.hp*it.rate)],sub:it.k!=='itzaltze'?null:'Extinción'});if(it.k==='itzaltze')rows.push({note:fireLine(it.ref)})}
-  rows.push({bold:true,cells:[['Guztira','Total'],'','','','',n2(v.zp+v.pp+v.ip),'',eur(v.eur)]});
+  const rows=[];for(const it of v.items){rows.push({cells:[itemLabel(it).split(' / '),fD(F(it.s)),tRelMs(it.s),it.open?endTxt(it).split(' / '):tRelMs(it.e,F(it.s)),n2(it.h),String(it.kid),n2(it.hp),n2(it.rate),eur(it.hp*it.rate)],sub:it.k!=='itzaltze'?null:'Extinción'});if(it.k==='itzaltze')rows.push({note:fireLine(it.ref)})}
+  rows.push({bold:true,cells:[['Guztira','Total'],'','','','','',n2(v.zp+v.pp+v.ip),'',eur(v.eur)]});
   y=pdfTable(d,y,CERT_COLS,rows);
   d.setFontSize(9);for(const [i,t] of totalsBi(v).entries()){if(i)d.setTextColor(90,100,95);const ls=d.splitTextToSize(pdfT(t),174);d.text(ls,18,y+4);y+=ls.length*4.4;d.setTextColor(0)}
   if(v.open){d.setTextColor(150,90,0);const ls=d.splitTextToSize(pdfT(openMsg(v)),174);d.text(ls,18,y+8);y+=ls.length*4.4+4;d.setTextColor(0)}
@@ -663,7 +671,7 @@ function liqPdf(){
     let y=pdfHead(d,'Likidazio-agiria / Documento de liquidación',[['Baliabidea / Recurso',`${R.izena||UI.cRes} (${mResBi(R)})`],['Epea / Periodo',epea],['Zerbitzuak / Servicios',String(list.length)]]);
     const cols=[{t:'Data',t2:'Fecha',x:18,w:28},{t:'Zerbitzua',t2:'Servicio',x:48,w:40},{t:'Zaintza o-p',t2:'Guardia h-p',x:90,w:22,align:'r'},{t:'Praktika o-p',t2:'Prácticas h-p',x:114,w:22,align:'r'},{t:'Itzaltze o-p',t2:'Extinción h-p',x:138,w:22,align:'r'},{t:'Zenbatekoa',t2:'Importe',x:162,w:30,align:'r'}];
     const tl={zaintza:'Zaintza / Guardia',praktika:'Praktika / Prácticas',itzaltze:'Itzaltzea / Extinción',mixed:'Zaintza + itzaltzea / Guardia + extinción'};const T={zp:0,pp:0,ip:0,eur:0};
-    const rows=list.map(v=>{T.zp+=v.zp;T.pp+=v.pp;T.ip+=v.ip;T.eur+=v.eur;const lb=tl[v.type].split(' / ');if(v.open)lb[0]+=' *';return {cells:[showMs(v.s),lb,n2(v.zp),n2(v.pp),n2(v.ip),eur(v.eur)]}});
+    const rows=list.map(v=>{T.zp+=v.zp;T.pp+=v.pp;T.ip+=v.ip;T.eur+=v.eur;const lb=tl[v.type].split(' / ');if(v.open)lb[0]+=' *';return {cells:[fD(F(v.s))+' '+tRelMs(v.s),lb,n2(v.zp),n2(v.pp),n2(v.ip),eur(v.eur)]}});
     rows.push({bold:true,cells:[['Guztira','Total'],'',n2(T.zp),n2(T.pp),n2(T.ip),eur(T.eur)]});
     y=pdfTable(d,y+2,cols,rows);logCert(`L-${UI.lYear}${UI.lMonth?String(UI.lMonth).padStart(2,'0'):''}-${UI.cRes}`,{no:`L-${UI.lYear}${UI.lMonth?'-'+String(UI.lMonth).padStart(2,'0'):''}-${(R.izena||UI.cRes).toUpperCase()}`,tituloa:'Likidazio-agiria',mota:'liq',baliabidea:UI.cRes,epea:epea,lYear:UI.lYear,lMonth:UI.lMonth,op:T.zp+T.pp+T.ip,zp:T.zp,pp:T.pp,ip:T.ip,eur:T.eur});
     if(list.some(v=>v.open)){d.setFontSize(8);d.text(pdfT('* Itzaltzea abian edo amaiera-ordurik gabe. / * Extinción en curso o sin hora de fin.'),18,y+3);y+=6}
@@ -750,19 +758,19 @@ function vQuery(){
   <div class="sumline"><span><b>${rows.length}</b>erregistro</span><span><b>${n2(T.zaintza[1])}</b>zaintza o-p</span><span><b>${n2(T.praktika[1])}</b>praktika o-p</span><span><b>${n2(T.itzaltze[1])}</b>itzaltze o-p</span><span><b>${eur(T.zaintza[2]+T.praktika[2]+T.itzaltze[2])}</b></span></div>
   ${rows.length?`<details style="margin:0 0 14px"><summary style="cursor:pointer;font-weight:600">Laburpena baliabideka</summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Baliabidea</th><th class="num">Erregistroak</th><th class="num">Zaintza o-p</th><th class="num">Praktika o-p</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Zenbatekoa</th></tr></thead><tbody>
   ${resList().filter(r=>byRes[r.id]).map(r=>{const b=byRes[r.id];return `<tr><td><b>${esc(r.izena)}</b></td><td class="num">${b.n}</td><td class="num">${n2(b.zp)}</td><td class="num">${n2(b.pp)}</td><td class="num">${n2(b.ip)}</td><td class="num">${n2(b.zp+b.pp+b.ip)}</td><td class="num">${eur(b.eur)}</td></tr>`}).join('')}</tbody></table></div></details>
-  <div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Sutea / zk.</th><th>Oharrak</th></tr></thead><tbody>
-  ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}</td><td>${showMs(r.s)}</td><td>${showMs(r.e)}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
+  <div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Data</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Sutea / zk.</th><th>Oharrak</th></tr></thead><tbody>
+  ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}</td><td>${fD(F(r.s))}</td><td>${tRelMs(r.s)}</td><td>${tRelMs(r.e,F(r.s))}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
   </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; Excel eta PDF fitxategietan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
 }
 async function exportQuery(fmt){const rows=qRows().sort((a,b)=>a.s-b.s);if(!rows.length){toast('Ez dago daturik iragazki hauekin');return}
   const Q=UI.q;const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:''].filter(Boolean));
   const ml={zaintza:'Zaintza',praktika:'Praktika',itzaltze:'Itzaltzea'};const T={h:0,hp:0,e:0};rows.forEach(r=>{T.h+=r.h;T.hp+=r.hp;T.e+=r.eur});
   const name=ext=>expName('kontsulta',Q.res,Q.from,Q.to,ext);
-  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Hasiera',w:24},{t:'Amaiera',w:24},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Sutea / zk.',w:15},{t:'Oharrak',w:52}];
-    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fms(r.s),r.e!=null?fms(r.e):'—',n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),r.ohar]),['',`${rows.length} erregistro`,'','',n2(T.h),'',n2(T.hp),n2(T.e),'',''],name('pdf'));return}
-  const out=rows.map(r=>[resName(r.res),ml[r.mota],fms(r.s),r.e!=null?fms(r.e):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
-  out.push(['GUZTIRA','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','']);
-  await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
+  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Data',w:18},{t:'Hasiera',w:13},{t:'Amaiera',w:15},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Sutea / zk.',w:15},{t:'Oharrak',w:54}];
+    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fD(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'—',n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),r.ohar]),['',`${rows.length} erregistro`,'','','',n2(T.h),'',n2(T.hp),n2(T.e),'',''],name('pdf'));return}
+  const out=rows.map(r=>[resName(r.res),ml[r.mota],xDate(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
+  out.push(['GUZTIRA','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','']);
+  await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Data','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
 
 /* ---- Emandako ziurtagiriak ---- */
 function certId(no){return String(no).replace(/[^\w-]/g,'')}
@@ -914,8 +922,9 @@ async function xlsxLib(){if(window.XLSX)return window.XLSX;await loadScript('htt
 async function saveXlsx(name,sheets){
   let X;try{X=await xlsxLib()}catch(e){toast('Excel liburutegia ezin izan da kargatu. Saiatu berriro sarean zaudela.');return}
   const wb=X.utils.book_new();
-  for(const s of sheets){const ws=X.utils.aoa_to_sheet([s.head,...s.rows]);
-    ws['!cols']=s.head.map((h,i)=>({wch:Math.min(50,Math.max(String(h).length,...s.rows.slice(0,300).map(r=>String(r[i]??'').length))+2)}));
+  for(const s of sheets){const dc=[];const rows=s.rows.map((r,ri)=>r.map((v,ci)=>{if(v&&typeof v==='object'&&v.d){dc.push([ri+1,ci]);return (PD(v.d)-Date.UTC(1899,11,30))/DAY}return v}));
+    const ws=X.utils.aoa_to_sheet([s.head,...rows]);for(const [r,c] of dc){const a=X.utils.encode_cell({r,c});if(ws[a]){ws[a].t='n';ws[a].z='dd/mm/yyyy'}}
+    ws['!cols']=s.head.map((h,i)=>({wch:Math.min(50,Math.max(String(h).length,...s.rows.slice(0,300).map(r=>{const v=r[i];return v&&typeof v==='object'?10:String(v??'').length}))+2)}));
     if(s.rows.length)ws['!autofilter']={ref:ws['!ref']};X.utils.book_append_sheet(wb,ws,s.name.slice(0,31))}
   const buf=X.write(wb,{bookType:'xlsx',type:'array'});
   if(DL){try{await DL.save({filename:name,data:buf})}catch(e){if(e?.code!=='declined')toast('Ezin izan da deskargatu')}}
@@ -939,18 +948,18 @@ async function exportGuards(fmt){
   const meta=filterDesc(UI.gRes,UI.gFrom,UI.gTo,[UI.gMonth?'Hilabetea: '+MONTHS[UI.gMonth-1]:'',UI.gMota?'Mota: '+UI.gMota:''].filter(Boolean));
   const eu=g=>g.hp*rate(g.rec.baliabidea,'zaintza');let T={h:0,hp:0,e:0};list.forEach(g=>{T.h+=g.h;T.hp+=g.hp;T.e+=eu(g)});
   if(fmt==='xlsx'){
-    const rows=list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',g.plan?'Planifikatua':'Egiaztatua',g.rec.suterik?'Bai':'',fdt(g.rec.hasiera),fdt(g.rec.amaiera),r2(g.h),g.k,r2(g.hp),r2(eu(g)),g.rec.oharrak||'']);
-    rows.push(['','GUZTIRA','','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'']);
+    const rows=list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',g.plan?'Planifikatua':'Egiaztatua',g.rec.suterik?'Bai':'',xDate(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),r2(g.h),g.k,r2(g.hp),r2(eu(g)),g.rec.oharrak||'']);
+    rows.push(['','GUZTIRA','','','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'']);
     const by={};list.forEach(g=>{const b=by[g.rec.baliabidea]||(by[g.rec.baliabidea]={n:0,zh:0,zp:0,ph:0,pp:0,e:0});b.n++;b.e+=eu(g);if(g.rec.mota==='praktika'){b.ph+=g.h;b.pp+=g.hp}else{b.zh+=g.h;b.zp+=g.hp}});
     const sum=resList().filter(r=>by[r.id]).map(r=>{const b=by[r.id];return [r.izena,r.mota==='zisterna'?'Zisterna':'Taldea',b.n,r2(b.zh),r2(b.zp),r2(b.ph),r2(b.pp),r2(b.e)]});
     await saveXlsx(expName('zaintzak',UI.gRes,UI.gFrom,UI.gTo,'xlsx'),[
-      {name:'Zaintzak',head:['Gertakari-zk.','Baliabidea','Mota','Egoera','Sutera','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Oharrak'],rows},
+      {name:'Zaintzak',head:['Gertakari-zk.','Baliabidea','Mota','Egoera','Sutera','Data','Sarrera','Irteera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Oharrak'],rows},
       {name:'Laburpena baliabideka',head:['Baliabidea','Mota','Tarteak','Zaintza h','Zaintza o-p','Praktika h','Praktika o-p','Zenbatekoa €'],rows:sum},
       {name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}]);
   }else{
-    const cols=[{t:'Zk.',w:13},{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Egoera',w:16},{t:'Hasiera',w:24},{t:'Amaiera',w:24},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Oharrak',w:58}];
-    pdfReport('Zaintzak',meta,cols,list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',(g.plan?'Planifik.':'Egiaztatua')+(g.rec.suterik?' / sutera':''),fdt(g.rec.hasiera),fdt(g.rec.amaiera),n2(g.h),String(g.k),n2(g.hp),n2(eu(g)),g.rec.oharrak||'']),
-      ['',`${list.length} tarte`,'','','','',n2(T.h),'',n2(T.hp),n2(T.e),''],expName('zaintzak',UI.gRes,UI.gFrom,UI.gTo,'pdf'));
+    const cols=[{t:'Zk.',w:13},{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Egoera',w:16},{t:'Data',w:18},{t:'Sarrera',w:13},{t:'Irteera',w:15},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Oharrak',w:60}];
+    pdfReport('Zaintzak',meta,cols,list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',(g.plan?'Planifik.':'Egiaztatua')+(g.rec.suterik?' / sutera':''),fD(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),n2(g.h),String(g.k),n2(g.hp),n2(eu(g)),g.rec.oharrak||'']),
+      ['',`${list.length} tarte`,'','','','','',n2(T.h),'',n2(T.hp),n2(T.e),''],expName('zaintzak',UI.gRes,UI.gFrom,UI.gTo,'pdf'));
   }
 }
 async function exportFires(fmt){
@@ -958,21 +967,21 @@ async function exportFires(fmt){
   const meta=filterDesc(UI.fRes,UI.fFrom,UI.fTo);const fi=o=>S.suteak['s'+o.rec.sutea]||{};const eu=o=>o.hp*rate(o.rec.baliabidea,'itzaltze');
   let T={h:0,hp:0,e:0};list.forEach(o=>{T.h+=o.h;T.hp+=o.hp;T.e+=eu(o)});
   if(fmt==='xlsx'){
-    const rows=list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fdt(o.rec.deia),fdt(o.rec.erantzuna),fdt(o.rec.iritsi),fdt(o.rec.bukatu),fdt(o.rec.etxeratu),fdt(o.rec.itzuli),fms(o.start),fms(o.end),o.startRule||'',o.endRule||'',r2(o.h),o.k,r2(o.hp),r2(eu(o)),o.rec.oharrak||'']);
-    rows.push(['','','','GUZTIRA','','','','','','','','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'']);
+    const rows=list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',xDate(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia),o.rec.itzuli?tRel(o.rec.itzuli,o.rec.deia):'',o.start!=null?tRelMs(o.start,o.rec.deia):'',o.end!=null?tRelMs(o.end,o.rec.deia):'',o.startRule||'',o.endRule||'',r2(o.h),o.k,r2(o.hp),r2(eu(o)),o.rec.oharrak||'']);
+    rows.push(['','','','GUZTIRA','','','','','','','','','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'']);
     const byF={};list.forEach(o=>{const b=byF[o.rec.sutea]||(byF[o.rec.sutea]={o,res:new Set(),hp:0,e:0,first:o.deia});b.res.add(resName(o.rec.baliabidea));b.hp+=o.hp;b.e+=eu(o)});
     const fires=Object.entries(byF).map(([k,b])=>[k,fi(b.o).herria||'',fi(b.o).lekua||'',fms(b.first),b.res.size,[...b.res].join(', '),r2(b.hp),r2(b.e)]);
     const byR={};list.forEach(o=>{const b=byR[o.rec.baliabidea]||(byR[o.rec.baliabidea]={n:0,f:new Set(),h:0,hp:0,e:0});b.n++;b.f.add(o.rec.sutea);b.h+=o.h;b.hp+=o.hp;b.e+=eu(o)});
     const sum=resList().filter(r=>byR[r.id]).map(r=>{const b=byR[r.id];return [r.izena,r.mota==='zisterna'?'Zisterna':'Taldea',b.n,b.f.size,r2(b.h),r2(b.hp),r2(b.e)]});
     await saveXlsx(expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'xlsx'),[
-      {name:'Esku-hartzeak',head:['Sutea','Herria','Lekua','Baliabidea','Zaintzan','Deia','Erantzuna','Iritsi','Bukatu','Etxeratu','Zaintzara itzuli','Itzaltze hasiera','Itzaltze amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Oharrak'],rows},
+      {name:'Esku-hartzeak',head:['Sutea','Herria','Lekua','Baliabidea','Zaintzan','Data','Deia','Erantzuna','Iritsi','Bukatu','Etxeratu','Zaintzara itzuli','Itzaltze hasiera','Itzaltze amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Oharrak'],rows},
       {name:'Suteak',head:['Sutea','Herria','Lekua','Lehen deia','Baliabide kop.','Baliabideak','Ordu-pertsonak','Zenbatekoa €'],rows:fires},
       {name:'Laburpena baliabideka',head:['Baliabidea','Mota','Esku-hartzeak','Suteak','Orduak','Ordu-pertsonak','Zenbatekoa €'],rows:sum},
       {name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}]);
   }else{
-    const cols=[{t:'Sutea',w:11},{t:'Herria',w:24},{t:'Baliabidea',w:17},{t:'Zaintzan',w:12},{t:'Deia',w:22},{t:'Hasiera',w:22},{t:'Amaiera',w:22},{t:'Amaiera-araua',w:24},{t:'Orduak',w:11,align:'r'},{t:'Kideak',w:10,align:'r'},{t:'Ordu-pert.',w:14,align:'r'},{t:'EUR',w:14,align:'r'}];
-    pdfReport('Suteak eta itzaltze-orduak',meta,cols,list.map(o=>[o.rec.sutea,fi(o).herria||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fdt(o.rec.deia),fms(o.start),o.end==null?(o.ongoing?'abian':'falta'):fms(o.end),o.endRule||'',n2(o.h),String(o.k),n2(o.hp),n2(eu(o))]),
-      ['',`${list.length} esku-hartze`,'','','','','','',n2(T.h),'',n2(T.hp),n2(T.e)],expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'pdf'));
+    const cols=[{t:'Sutea',w:10},{t:'Herria',w:20},{t:'Baliabidea',w:16},{t:'Zaint.',w:9},{t:'Data',w:18},{t:'Deia',w:12},{t:'Erantzuna',w:15},{t:'Iritsi',w:13},{t:'Bukatu',w:13},{t:'Etxeratu',w:22},{t:'Orduak',w:10,align:'r'},{t:'Kideak',w:10,align:'r'},{t:'Ordu-pert.',w:13,align:'r'},{t:'EUR',w:12,align:'r'}];
+    pdfReport('Suteak eta itzaltze-orduak',meta,cols,list.map(o=>[o.rec.sutea,fi(o).herria||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fD(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia)+(o.rec.itzuli?' (z. '+tRel(o.rec.itzuli,o.rec.deia)+')':''),n2(o.h),String(o.k),n2(o.hp),n2(eu(o))]),
+      ['',`${list.length} esku-hartze`,'','','','','','','','',n2(T.h),'',n2(T.hp),n2(T.e)],expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'pdf'));
   }
 }
 
@@ -1005,11 +1014,36 @@ function vMap(){
   <div class="tbl" style="padding:8px;background:#DCE8EF"><svg viewBox="-10 -25 ${GIPUZ.w+20} ${GIPUZ.h+35}" style="width:100%;height:auto;display:block" role="img" aria-label="Gipuzkoako jarduera-eremuen mapa">${paths}${st}</svg></div>`;
 }
 
+/* ---- Data eta ordua bereizita ---- */
+function tmm(t){const [a,b]=String(t).split(':');return (+a)*H+(+b)*6e4}
+function dtBase(base,label){return `<label class="f">${label||'Data'}<input type="date" name="__d" value="${base}"></label>`}
+function dtF(name,label,iso,base,after,afteriso){const t=iso?iso.slice(11,16):'';let off=iso&&base?Math.round((PD(iso.slice(0,10))-PD(base))/DAY):0;if(off<0)off=0;
+  const opts=[0,1,2,3,...(off>3?[off]:[])];
+  return `<label class="f">${label}<span class="dtw"><input type="time" data-dt="${name}"${after?` data-after="${after}"`:''}${afteriso?` data-afteriso="${esc(afteriso)}"`:''} value="${t}"><select data-dto="${name}"${iso?' data-man="1"':''} title="Eguna" aria-label="${esc(label)}: eguna">${opts.map(o=>`<option value="${o}" ${o===off?'selected':''}>${o?'+'+o+' egun':'Egun berean'}</option>`).join('')}</select><input type="hidden" name="${name}" value="${esc(iso||'')}"></span></label>`}
+function syncDT(f){const bd=f.elements.__d&&f.elements.__d.value;if(!bd)return;const val={};
+  f.querySelectorAll('input[data-dt]').forEach(inp=>{const n=inp.dataset.dt,sel=f.querySelector(`select[data-dto="${n}"]`),hid=f.elements[n];
+    if(!inp.value){hid.value='';val[n]=null;return}
+    let off;if(sel.dataset.man)off=+sel.value;else{let ref=null,a=inp.dataset.after;
+      while(a&&!ref){ref=val[a]||null;if(!ref){const ai=f.querySelector(`input[data-dt="${a}"]`);a=ai?ai.dataset.after:null}}
+      if(!ref&&inp.dataset.afteriso)ref=inp.dataset.afteriso;
+      let ms=PD(bd)+tmm(inp.value);if(ref){ms=PD(ref.slice(0,10))+tmm(inp.value);if(ms<P(ref))ms+=DAY}
+      off=Math.max(0,Math.round((PD(D(ms))-PD(bd))/DAY));if(![...sel.options].some(o=>+o.value===off)){const o=document.createElement('option');o.value=off;o.textContent='+'+off+' egun';sel.appendChild(o)}sel.value=String(off)}
+    const iso=F(PD(bd)+off*DAY+tmm(inp.value));hid.value=iso;val[n]=iso})}
+function setDT(f,name,iso){if(!iso||!f.elements.__d)return;if(!f.elements.__d.value||iso.slice(0,10)<f.elements.__d.value)f.elements.__d.value=iso.slice(0,10);
+  const inp=f.querySelector(`input[data-dt="${name}"]`),sel=f.querySelector(`select[data-dto="${name}"]`);if(!inp)return;inp.value=iso.slice(11,16);
+  const off=Math.round((PD(iso.slice(0,10))-PD(f.elements.__d.value))/DAY);if(![...sel.options].some(o=>+o.value===off)){const o=document.createElement('option');o.value=off;o.textContent='+'+off+' egun';sel.appendChild(o)}
+  sel.value=String(off);sel.dataset.man='1';syncDT(f)}
+function fD(s){return s?s.slice(8,10)+'/'+s.slice(5,7)+'/'+s.slice(0,4):'—'}
+function tRel(s,base){if(!s)return '—';const t=s.slice(11,16);if(!base)return t;const n=Math.round((PD(s.slice(0,10))-PD(base.slice(0,10)))/DAY);return n>0?`${t} +${n}`:n<0?`${t} ${n}`:t}
+function tRelMs(ms,base){return ms==null?'—':tRel(F(ms),base)}
+function xDate(s){return s?{d:s.slice(0,10)}:''}
 /* ===================== Formularioak ===================== */
 const dlg=document.getElementById('dlg');
 function openDlg(title,body,foot,onInput){
   dlg.innerHTML=`<form method="dialog" id="dlgForm" novalidate><div class="dlg-head"><h3>${title}</h3></div><div class="dlg-body">${body}</div><div class="dlg-foot">${foot}</div></form>`;
   dlg.showModal();const f=document.getElementById('dlgForm');
+  const dth=e=>{const t=e.target;if(t.dataset&&t.dataset.dt){const s=f.querySelector(`select[data-dto="${t.dataset.dt}"]`);if(s)delete s.dataset.man}if(t.dataset&&t.dataset.dto&&e.type==='change')t.dataset.man='1';syncDT(f)};
+  f.addEventListener('input',dth);f.addEventListener('change',dth);syncDT(f);
   if(onInput){f.addEventListener('input',()=>onInput(f));f.addEventListener('change',()=>onInput(f));onInput(f)}
   return f;
 }
@@ -1019,6 +1053,7 @@ function fv(f,n){const el=f.elements[n];if(!el)return '';if(el.type==='checkbox'
 function intForm(id,preset){
   const r=id?clone(S.eskuhartzeak[id]):{sutea:preset?.sute||'',baliabidea:resList()[0]?.id||'',deia:'',erantzuna:'',iritsi:'',bukatu:'',etxeratu:'',itzuli:'',kideak:'',zaintzan:'auto',oharrak:''};
   if(!id)r.kideak=S.baliabideak[r.baliabidea]?.kideak||1;
+  const ib=(r.deia||todayStr()).slice(0,10);
   const fireOpts=Object.values(S.suteak).sort((a,b)=>String(b.zk).localeCompare(String(a.zk),undefined,{numeric:true})).map(f=>`<option value="${esc(f.zk)}" ${String(f.zk)===String(r.sutea)?'selected':''}>${esc(f.zk)} ${esc(f.herria||'')}</option>`).join('');
   const body=`<div class="grid">
   <label class="f">Sutea<select name="sutea"><option value="__new" ${!r.sutea?'selected':''}>Sute berria…</option>${fireOpts}</select></label>
@@ -1026,16 +1061,13 @@ function intForm(id,preset){
   <label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
   <div class="grid" id="newFire" style="margin-top:10px"><label class="f">Sute-zk.<input name="fzk" value="${nextFireZk()}"></label><label class="f">Herria<input name="fherria"></label><label class="f">Lekua<input name="flekua"></label></div>
   <fieldset><legend>Orduak</legend><div class="grid">
-  <label class="f">Deia<input type="datetime-local" name="deia" value="${esc(r.deia)}"></label>
-  <label class="f">Erantzuna (irteera baieztatua)<input type="datetime-local" name="erantzuna" value="${esc(r.erantzuna)}"></label>
-  <label class="f">Iritsi<input type="datetime-local" name="iritsi" value="${esc(r.iritsi)}"></label>
-  <label class="f">Bukatu<input type="datetime-local" name="bukatu" value="${esc(r.bukatu)}"></label>
-  <label class="f">Etxeratu<input type="datetime-local" name="etxeratu" value="${esc(r.etxeratu)}"></label></div></fieldset>
+  ${dtBase(ib,'Data')}${dtF('deia','Deia',r.deia,ib)}${dtF('erantzuna','Erantzuna (irteera baieztatua)',r.erantzuna,ib,'deia')}
+  ${dtF('iritsi','Iritsi',r.iritsi,ib,'erantzuna')}${dtF('bukatu','Bukatu',r.bukatu,ib,'iritsi')}${dtF('etxeratu','Etxeratu',r.etxeratu,ib,'bukatu')}</div></fieldset>
   <fieldset><legend>Deia jaso zuenean zaintzan zegoen?</legend><div class="radios">
   ${[['auto','Automatikoki'],['bai','Bai'],['ez','Ez']].map(([v,l])=>`<label class="chk"><input type="radio" name="zaintzan" value="${v}" ${r.zaintzan===v||(!r.zaintzan&&v==='auto')?'checked':''}> ${l}</label>`).join('')}</div>
   <div id="cutBox" style="margin-top:8px"></div></fieldset>
   <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" ${r.itzuli?'':'checked'}> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu" ${r.itzuli?'checked':''}> Zaintzan jarraitu</label></div>
-  <div class="grid" id="contBox" style="margin-top:10px"><label class="f">Zaintzara itzuli<input type="datetime-local" name="itzuli" value="${esc(r.itzuli)}"></label><label class="f">Zaintza honen amaiera<input type="datetime-local" name="contEnd"></label>
+  <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli',r.itzuli,ib,'bukatu')}${dtF('contEnd','Zaintza honen amaiera','',ib,'itzuli')}
   <p class="muted span2" style="font-size:13px;margin:0">Itzaltzea zaintzara itzultzean amaitzen da. Ordu horretan zaintzarik ez badago, tarte berria sortzen da amaiera honekin.</p></div></fieldset>
   <label class="f" style="margin-top:12px">Oharrak<textarea name="oharrak">${esc(r.oharrak)}</textarea></label>
   <div class="calc" id="calc"></div>`;
@@ -1049,9 +1081,9 @@ function intForm(id,preset){
     const cb=document.getElementById('cutBox');
     if(o&&o.guard&&o.guard.e>o.deia&&o.og){const was=cb.dataset.g===o.guard.id?f.elements.cut?.checked:true;cb.dataset.g=o.guard.id;
       cb.innerHTML=`<label class="chk"><input type="checkbox" name="cut" ${was?'checked':''}> Zaintza (${showMs(o.guard.s)}–${showT(o.guard.e)}) DEIAren orduan moztu</label>`;
-      if(cont&&!f.elements.contEnd.value)f.elements.contEnd.value=F(o.guard.e)}
+      if(cont&&!f.elements.contEnd.value)setDT(f,'contEnd',F(o.guard.e))}
     else{cb.innerHTML=o&&o.guard?`<p class="muted" style="margin:0;font-size:13px">Zaintza aurkitu da: ${showMs(o.guard.s)}–${showT(o.guard.e)}</p>`:'';cb.dataset.g=''}
-    if(cont&&!f.elements.contEnd.value&&rec.itzuli){const [,e]=slot(rec.itzuli.slice(0,10),S.baliabideak[rec.baliabidea]?.mota,cfg());let ee=e;if(ee<=P(rec.itzuli))ee+=DAY;f.elements.contEnd.value=F(ee)}
+    if(cont&&!f.elements.contEnd.value&&rec.itzuli){const [,e]=slot(rec.itzuli.slice(0,10),S.baliabideak[rec.baliabidea]?.mota,cfg());let ee=e;if(ee<=P(rec.itzuli))ee+=DAY;setDT(f,'contEnd',F(ee))}
     document.getElementById('calc').innerHTML=o?`<div class="row"><span>Egoera</span><b>${o.og?'Zaintzan zegoen':'Zaintzarik gabe'}</b></div>
     <div class="row"><span>Itzaltzearen hasiera</span><b>${showMs(o.start)} <span class="muted">(${esc(o.startRule||'')})</span></b></div>
     <div class="row"><span>Itzaltzearen amaiera</span><b>${showMs(o.end)} <span class="muted">(${esc(o.endRule||'')})</span></b></div>
@@ -1101,8 +1133,8 @@ async function act(a,el){
     case 'edit-fire':fireForm(id);break;
     case 'new-res':resForm(null);break;
     case 'edit-res':resForm(id);break;
-    case 'std-slot':{const h=fv(f,'hasiera');if(!h){toast('Jarri lehenik hasiera-data');break}const [s,e]=slot(h.slice(0,10),S.baliabideak[fv(f,'baliabidea')]?.mota);
-      f.elements.hasiera.value=F(s);f.elements.amaiera.value=F(e);f.dispatchEvent(new Event('input'));break}
+    case 'std-slot':{const h=f.elements.__d&&f.elements.__d.value;if(!h){toast('Jarri lehenik data');break}const [s,e]=slot(h,S.baliabideak[fv(f,'baliabidea')]?.mota);
+      setDT(f,'hasiera',F(s));setDT(f,'amaiera',F(e));f.dispatchEvent(new Event('input'));break}
     case 'save-guard':{const base=id?clone(S.zaintzak[id]):{};const g={...base,baliabidea:fv(f,'baliabidea'),mota:fv(f,'mota'),hasiera:fv(f,'hasiera'),amaiera:fv(f,'amaiera'),kideak:+fv(f,'kideak')||1,zk:fv(f,'zk'),oharrak:fv(f,'oharrak')};
       if(fv(f,'egiaztatua')===true)delete g.egoera;else g.egoera='planifikatua';
       if(!g.baliabidea||!g.hasiera||!g.amaiera){toast('Baliabidea, sarrera eta irteera behar dira');break}
@@ -1213,10 +1245,10 @@ function exportLiq(){const [from,to]=liqRange();const R=aggregate(MODEL,from,to)
   const rows=[['Baliabidea','Mota','Zaintza h','Zaintza o-p','Praktika h','Praktika o-p','Itzaltze h','Itzaltze o-p','Guztira o-p','Likidazioa €']];
   resList().filter(r=>R[r.id]).forEach(r=>{const x=R[r.id];rows.push([r.izena,r.mota,x.zh,x.zp,x.ph,x.pp,x.ih,x.ip,x.zp+x.pp+x.ip,x.eur])});
   saveXlsx(`likidazioa_${UI.lYear}${UI.lMonth?'_'+String(UI.lMonth).padStart(2,'0'):''}.xlsx`,[{name:'Likidazioa',head:rows[0],rows:rows.slice(1).map(r=>r.map(v=>typeof v==='number'?r2(v):(v==='zisterna'?'Zisterna':v==='taldea'?'Taldea':v)))}])}
-function exportAll(){const rows=[['Mota','Baliabidea','Sutea / Gertakaria','Hasiera','Amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Oharrak']];
-  Object.values(MODEL.G).sort((a,b)=>(a.s||0)-(b.s||0)).forEach(g=>rows.push([g.rec.mota,resName(g.rec.baliabidea),g.rec.zk,g.rec.hasiera,g.rec.amaiera,'','',g.h,g.k,g.hp,g.rec.oharrak]));
-  MODEL.ints.forEach(o=>rows.push(['itzaltzea',resName(o.rec.baliabidea),o.rec.sutea,o.start!=null?F(o.start):'',o.end!=null?F(o.end):'',o.startRule,o.endRule,o.h,o.k,o.hp,o.rec.oharrak]));
-  saveXlsx(`erregistroak_${todayStr()}.xlsx`,[{name:'Erregistroak',head:rows[0],rows:rows.slice(1).map(r=>r.map((v,i)=>typeof v==='number'?r2(v):(i===3||i===4)&&typeof v==='string'&&v.includes('T')?fdt(v):v))}])}
+function exportAll(){const rows=[['Mota','Baliabidea','Sutea / Gertakaria','Data','Hasiera','Amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Oharrak']];
+  Object.values(MODEL.G).sort((a,b)=>(a.s||0)-(b.s||0)).forEach(g=>rows.push([g.rec.mota,resName(g.rec.baliabidea),g.rec.zk,xDate(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),'','',g.h,g.k,g.hp,g.rec.oharrak]));
+  MODEL.ints.forEach(o=>rows.push(['itzaltzea',resName(o.rec.baliabidea),o.rec.sutea,o.start!=null?xDate(F(o.start)):'',tRelMs(o.start),o.start!=null?tRelMs(o.end,F(o.start)):'',o.startRule,o.endRule,o.h,o.k,o.hp,o.rec.oharrak]));
+  saveXlsx(`erregistroak_${todayStr()}.xlsx`,[{name:'Erregistroak',head:rows[0],rows:rows.slice(1).map(r=>r.map(v=>typeof v==='number'?r2(v):v))}])}
 async function importBackup(file){let o;try{o=JSON.parse(await file.text())}catch(e){toast('Fitxategia ez da baliozkoa');return}
   if(!o||!o.zaintzak||!o.baliabideak){toast('Fitxategia ez da babeskopia bat');return}
   const n=Object.keys(o.zaintzak).length+Object.keys(o.eskuhartzeak||{}).length;
