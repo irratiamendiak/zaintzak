@@ -384,7 +384,7 @@ function vFires(){
   if(UI.fRes||UI.fFrom||UI.fTo)arr=arr.filter(x=>x.ints.some(intOk));
   arr.sort((a,b)=>b.last-a.last||String(b.k).localeCompare(String(a.k)));
   let th=0,tp=0;arr.forEach(x=>x.ints.forEach(o=>{if(intOk(o)){th+=o.h;tp+=o.hp}}));
-  return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Ordu guztiak agertzen dira; <b style="color:var(--ember)">gorriz</b> itzaltze-orduak kalkulatzeko erabilitakoak (zaintzarik gabe: ERANTZUNA → ETXERATU; zaintzan: DEIA → ETXERATU edo zaintzara itzultzea).</p>
+  return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Ordu guztiak agertzen dira; <b style="color:var(--ember)">gorriz</b> ERANTZUNA, itzaltze-orduak kontatzen hasten diren ordua (irteera baieztatua eta kide kopurua).</p>
   <div class="tools"><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
   <label class="f">Noiztik<input type="date" data-filter="fFrom" value="${esc(UI.fFrom)}"></label><label class="f">Noiz arte<input type="date" data-filter="fTo" value="${esc(UI.fTo)}"></label>
   <button class="btn" data-act="exp-f" data-k="xlsx">Excel</button><button class="btn" data-act="exp-f" data-k="pdf">PDF</button></div>
@@ -402,9 +402,9 @@ function timeCells(o){const r=o.rec;const st=o.start,en=o.end;
   const c=(s,used,extra)=>{const ms=P(s);const t=s?tRel(s,r.deia):'—';return `<td${used?' class="tused" title="Kalkuluan erabilia"':''}>${t}${extra||''}</td>`};
   const usedStart=k=>st!=null&&P(r[k])===st&&((o.og&&k==='deia')||(!o.og&&k==='erantzuna')||(!o.og&&!r.erantzuna&&k==='deia'));
   const usedEnd=k=>en!=null&&P(r[k])===en&&((k==='etxeratu'&&o.endRule==='ETXERATU'));
-  const itz=r.itzuli?`<div class="muted${en!=null&&P(r.itzuli)===en?' tused':''}" style="font-size:12px">Zaintzara: ${tRel(r.itzuli,r.deia)}</div>`:'';
+  const itz=r.itzuli?`<div class="muted" style="font-size:12px">Zaintzara: ${tRel(r.itzuli,r.deia)}</div>`:'';
   const nxt=o.next&&o.endRule&&o.endRule.startsWith('Hurrengo')?`<div class="muted" style="font-size:12px">${esc(o.endRule)}</div>`:'';
-  return `<td>${fD(r.deia)}</td>`+c(r.deia,usedStart('deia'))+c(r.erantzuna,usedStart('erantzuna'))+c(r.iritsi,false)+c(r.bukatu,false,nxt)+c(r.etxeratu,usedEnd('etxeratu'),itz)}
+  return `<td>${fD(r.deia)}</td>`+c(r.deia,false)+c(r.erantzuna,!!r.erantzuna)+c(r.iritsi,false)+c(r.bukatu,false,nxt)+c(r.etxeratu,false,itz)}
 function ensureProp(){
   if(!UI.prop){const t=todayStr();UI.prop={start:addDays(monday(t),7),days:7,avail:{},result:null}}
   const p=UI.prop;for(const r of resList())if(!p.avail[r.id]||p.avail[r.id].length!==p.days)p.avail[r.id]=Array(p.days).fill(true);return p;
