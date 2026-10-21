@@ -417,7 +417,7 @@ function vLiqSummary(){
   return `<p class="lead">Ordu-pertsonak (orduak × kideak) baliabide eta mota bakoitzeko. Tarte bakoitza hasiera-dataren hilabetean kontatzen da. Planifikatutako zaintzak ez dira kontatzen, egiaztatu arte. Tarifak Arauak atalean aldatzen dira (taldeak: ${eur(t.taldeZaintza)} / ${eur(t.taldeItzaltze)}; zisternak: ${eur(t.zistZaintza)} / ${eur(t.zistItzaltze)} zaintza/itzaltze orduko).</p>
   <div class="tools"><label class="f">Urtea<select data-filter="lYear">${[...years].sort().map(y=>`<option ${y===UI.lYear?'selected':''}>${y}</option>`).join('')}</select></label>
   <label class="f">Epea<select data-filter="lMonth"><option value="">Urte osoa</option>${MONTHS.map((m,i)=>`<option value="${i+1}" ${String(i+1)===String(UI.lMonth)?'selected':''}>${m}</option>`).join('')}</select></label>
-  <span class="grow"></span><button class="btn" data-act="export-liq">Likidazioa CSV</button><button class="btn" data-act="export-all">Erregistro guztiak CSV</button></div>
+  <span class="grow"></span><button class="btn" data-act="export-liq">Likidazioa Excel</button><button class="btn" data-act="export-all">Erregistro guztiak Excel</button></div>
   ${body?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th class="num">Zaintza h</th><th class="num">Zaintza o-p</th><th class="num">Praktika h</th><th class="num">Praktika o-p</th><th class="num">Itzaltze h</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Likidazioa</th></tr></thead>
   <tbody>${body}<tr class="total"><td>Guztira</td><td></td><td class="num">${n2(T.zh)}</td><td class="num">${n2(T.zp)}</td><td class="num">${n2(T.ph)}</td><td class="num">${n2(T.pp)}</td><td class="num">${n2(T.ih)}</td><td class="num">${n2(T.ip)}</td><td class="num">${n2(T.zp+T.pp+T.ip)}</td><td class="num">${eur(T.eur)}</td></tr></tbody></table></div>`:'<div class="empty">Ez dago ordurik epe honetan.</div>'}
   ${monthly}`;
@@ -615,9 +615,9 @@ function vCerts(){
   return `<div class="tools"><label class="f">Baliabidea<select data-filter="cRes">${resOptions(UI.cRes,true)}</select></label><span class="grow"></span>
   ${UI.cRes?`<button class="btn primary" data-act="liq-pdf">Likidazio-agiria PDF (${UI.lMonth?MONTHS[UI.lMonth-1]:'urte osoa'})</button>`:'<span class="muted" style="align-self:center">Aukeratu baliabide bat likidazio-agiria sortzeko.</span>'}</div>
   <div class="sumline"><span><b>${list.length}</b>zerbitzu</span><span><b>${n2(T.zp)}</b>zaintza o-p</span><span><b>${n2(T.ip)}</b>itzaltze o-p</span><span><b>${eur(T.eur)}</b></span></div>
-  ${list.length?`<div class="tbl"><table><thead><tr><th>Data</th><th>Baliabidea</th><th>Zerbitzua</th><th class="num">Zaintza o-p</th><th class="num">Itzaltze o-p</th><th class="num">Zenbatekoa</th><th>Ziurtagiria</th></tr></thead><tbody>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Data</th><th>Baliabidea</th><th>Zerbitzua</th><th class="num">Zaintza o-p</th><th class="num">Itzaltze o-p</th><th class="num">Zenbatekoa</th><th>Ziurtagiria</th><th>Bidalita</th></tr></thead><tbody>
   ${list.map(v=>`<tr><td>${showMs(v.s)}</td><td><b>${esc(resName(v.res))}</b></td><td>${tl[v.type]}${v.open?` <span class="chip warn">${v.items.some(i=>i.open&&i.ref.ongoing)?'Abian':'Amaiera falta'}</span>`:''}</td><td class="num">${n2(v.zp+v.pp)}</td><td class="num">${n2(v.ip)}</td><td class="num">${eur(v.eur)}</td>
-  <td><button class="btn small" data-act="cert-view" data-k="${esc(v.key)}">Ikusi</button> <button class="btn small" data-act="cert-pdf" data-k="${esc(v.key)}">PDF</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Ez dago zerbitzurik epe honetan.</div>'}`;
+  <td><button class="btn small" data-act="cert-view" data-k="${esc(v.key)}">Ikusi</button> <button class="btn small" data-act="cert-pdf" data-k="${esc(v.key)}">PDF</button></td>${sentCell(v.no,{no:v.no,tituloa:CERT_TITLE[v.type].split(' / ')[0],mota:v.type,baliabidea:v.res,key:v.key,hasiera:F(v.s),amaiera:v.open?'':F(v.e),op:v.zp+v.pp+v.ip,eur:v.eur})}</tr>`).join('')}</tbody></table></div>`:'<div class="empty">Ez dago zerbitzurik epe honetan.</div>'}`;
 }
 
 const CERT_TITLE={zaintza:'Zaintza-ziurtagiria / Certificado de guardia',praktika:'Praktika-ziurtagiria / Certificado de prácticas',itzaltze:'Itzaltze-ziurtagiria / Certificado de extinción',mixed:'Zaintza eta itzaltze ziurtagiria / Certificado de guardia y extinción'};
@@ -739,33 +739,43 @@ function vQuery(){
   const Q=UI.q;const rows=qRows();const T={zaintza:[0,0,0],praktika:[0,0,0],itzaltze:[0,0,0]};const byRes={};
   for(const r of rows){T[r.mota][0]+=r.h;T[r.mota][1]+=r.hp;T[r.mota][2]+=r.eur;const b=byRes[r.res]||(byRes[r.res]={zp:0,pp:0,ip:0,eur:0,n:0});b.n++;b.eur+=r.eur;if(r.mota==='itzaltze')b.ip+=r.hp;else if(r.mota==='praktika')b.pp+=r.hp;else b.zp+=r.hp}
   const shown=rows.slice(0,500);
-  return `<p class="lead">Bilatu zaintzak, praktikak eta itzaltzeak baliabidearen, dataren, motaren edo sutearen arabera. Emaitzak CSVra esporta daitezke.</p>
+  return `<p class="lead">Bilatu zaintzak, praktikak eta itzaltzeak baliabidearen, dataren, motaren edo sutearen arabera. Emaitzak Excel edo PDF formatuan deskarga daitezke.</p>
   <div class="tools"><label class="f">Baliabidea<select data-q="res">${resOptions(Q.res,true)}</select></label>
   <label class="f">Baliabide mota<select data-q="mt"><option value="">Guztiak</option><option value="taldea" ${Q.mt==='taldea'?'selected':''}>Taldeak</option><option value="zisterna" ${Q.mt==='zisterna'?'selected':''}>Zisternak</option></select></label>
   <label class="f">Mota<select data-q="mota"><option value="">Guztiak</option><option value="zaintza" ${Q.mota==='zaintza'?'selected':''}>Zaintza</option><option value="praktika" ${Q.mota==='praktika'?'selected':''}>Praktika</option><option value="itzaltze" ${Q.mota==='itzaltze'?'selected':''}>Itzaltzea</option></select></label>
   <label class="f">Noiztik<input type="date" data-q="from" value="${esc(Q.from)}"></label><label class="f">Noiz arte<input type="date" data-q="to" value="${esc(Q.to)}"></label>
   <label class="f">Sute-zk.<input data-q="sute" value="${esc(Q.sute)}" style="width:90px"></label>
   <label class="chk" style="align-self:center"><input type="checkbox" data-q="plan" ${Q.plan?'checked':''}> Planifikatuak barne</label>
-  <span class="grow"></span><button class="btn" data-act="q-clear">Garbitu</button><button class="btn primary" data-act="q-export">CSV esportatu</button></div>
+  <span class="grow"></span><button class="btn" data-act="q-clear">Garbitu</button><button class="btn" data-act="q-export" data-k="xlsx">Excel</button><button class="btn" data-act="q-export" data-k="pdf">PDF</button></div>
   <div class="sumline"><span><b>${rows.length}</b>erregistro</span><span><b>${n2(T.zaintza[1])}</b>zaintza o-p</span><span><b>${n2(T.praktika[1])}</b>praktika o-p</span><span><b>${n2(T.itzaltze[1])}</b>itzaltze o-p</span><span><b>${eur(T.zaintza[2]+T.praktika[2]+T.itzaltze[2])}</b></span></div>
   ${rows.length?`<details style="margin:0 0 14px"><summary style="cursor:pointer;font-weight:600">Laburpena baliabideka</summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Baliabidea</th><th class="num">Erregistroak</th><th class="num">Zaintza o-p</th><th class="num">Praktika o-p</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Zenbatekoa</th></tr></thead><tbody>
   ${resList().filter(r=>byRes[r.id]).map(r=>{const b=byRes[r.id];return `<tr><td><b>${esc(r.izena)}</b></td><td class="num">${b.n}</td><td class="num">${n2(b.zp)}</td><td class="num">${n2(b.pp)}</td><td class="num">${n2(b.ip)}</td><td class="num">${n2(b.zp+b.pp+b.ip)}</td><td class="num">${eur(b.eur)}</td></tr>`}).join('')}</tbody></table></div></details>
   <div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Sutea / zk.</th><th>Oharrak</th></tr></thead><tbody>
   ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}</td><td>${showMs(r.s)}</td><td>${showMs(r.e)}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
-  </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; CSVan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
+  </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; Excel eta PDF fitxategietan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
 }
-function exportQuery(){const rows=qRows();const out=[['Baliabidea','Mota','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak']];
-  for(const r of rows)out.push([resName(r.res),r.mota,F(r.s),r.e!=null?F(r.e):'',r.h,r.k,r.hp,r.eur,r.sutea,r.zk,r.plan?'bai':'',r.ohar]);
-  save(`kontsulta_${todayStr()}.csv`,csv(out))}
+async function exportQuery(fmt){const rows=qRows().sort((a,b)=>a.s-b.s);if(!rows.length){toast('Ez dago daturik iragazki hauekin');return}
+  const Q=UI.q;const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:''].filter(Boolean));
+  const ml={zaintza:'Zaintza',praktika:'Praktika',itzaltze:'Itzaltzea'};const T={h:0,hp:0,e:0};rows.forEach(r=>{T.h+=r.h;T.hp+=r.hp;T.e+=r.eur});
+  const name=ext=>expName('kontsulta',Q.res,Q.from,Q.to,ext);
+  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Hasiera',w:24},{t:'Amaiera',w:24},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Sutea / zk.',w:15},{t:'Oharrak',w:52}];
+    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fms(r.s),r.e!=null?fms(r.e):'—',n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),r.ohar]),['',`${rows.length} erregistro`,'','',n2(T.h),'',n2(T.hp),n2(T.e),'',''],name('pdf'));return}
+  const out=rows.map(r=>[resName(r.res),ml[r.mota],fms(r.s),r.e!=null?fms(r.e):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
+  out.push(['GUZTIRA','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','']);
+  await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
 
 /* ---- Emandako ziurtagiriak ---- */
-async function logCert(id,data){try{await put('ziurtagiriak',id.replace(/[^\w-]/g,''),{...data,emanda:F(nowMs())})}catch(e){}}
+function certId(no){return String(no).replace(/[^\w-]/g,'')}
+async function logCert(id,data){try{const k=certId(id);await put('ziurtagiriak',k,{...(S.ziurtagiriak?.[k]||{}),...data,emanda:F(nowMs())})}catch(e){}}
+function sentCell(no,base){const k=certId(no);const c=(S.ziurtagiriak||{})[k];
+  if(base)UI.sentBase=Object.assign(UI.sentBase||{},{[k]:base});
+  return `<td style="text-align:center"><input type="checkbox" data-sent="${esc(k)}" ${c&&c.bidalita?'checked':''} aria-label="Bidalita" title="${c&&c.bidalita&&c.bidaliData?'Bidalita: '+showDT(c.bidaliData):'Markatu ziurtagiria bidali denean'}"></td>`}
 function vIssued(){
   const list=Object.entries(S.ziurtagiriak||{}).map(([id,c])=>({id,...c})).filter(c=>(!UI.cRes||c.baliabidea===UI.cRes)).sort((a,b)=>String(b.emanda).localeCompare(String(a.emanda)));
   return `<div class="tools"><label class="f">Baliabidea<select data-filter="cRes">${resOptions(UI.cRes,true)}</select></label></div>
-  ${list.length?`<div class="tbl"><table><thead><tr><th>Zk.</th><th>Mota</th><th>Baliabidea</th><th>Zerbitzua / epea</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Emanda</th><th></th></tr></thead><tbody>
+  ${list.length?`<div class="tbl"><table><thead><tr><th>Zk.</th><th>Mota</th><th>Baliabidea</th><th>Zerbitzua / epea</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Emanda</th><th></th><th>Bidalita</th></tr></thead><tbody>
   ${list.map(c=>`<tr><td>${esc(c.no)}</td><td>${esc(c.tituloa||'')}</td><td><b>${esc(resName(c.baliabidea))}</b></td><td>${c.hasiera?showDT(c.hasiera)+(c.amaiera?' – '+showDT(c.amaiera):''):esc(c.epea||'')}</td><td class="num">${n2(c.op)}</td><td class="num">${eur(c.eur)}</td><td>${showDT(c.emanda)}</td>
-  <td><button class="btn small" data-act="cert-regen" data-id="${esc(c.id)}">PDF</button></td></tr>`).join('')}</tbody></table></div>`:'<div class="empty">Oraindik ez da ziurtagiririk eman. PDF bat deskargatzean hemen erregistratzen da.</div>'}`;
+  <td><button class="btn small" data-act="cert-regen" data-id="${esc(c.id)}">PDF</button></td>${sentCell(c.id,null)}</tr>`).join('')}</tbody></table></div>`:'<div class="empty">Oraindik ez da ziurtagiririk eman. PDF bat deskargatzean hemen erregistratzen da.</div>'}`;
 }
 
 /* ---- Arriskua (FWI) ---- */
@@ -1141,7 +1151,7 @@ async function act(a,el){
       if(error){toast('Ezin izan da sartu: '+error.message);break}const s=await SB.auth.getSession();UI.session=s.data.session;UI.loaded=false;render();await supaStart();break}
     case 'logout':await SB.auth.signOut();break;
     case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
-    case 'q-export':exportQuery();break;
+    case 'q-export':await exportQuery(el.dataset.k);break;
     case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
@@ -1202,11 +1212,11 @@ async function save(name,data,type){if(!DL){dlFile(name,data,type||(name.endsWit
 function exportLiq(){const [from,to]=liqRange();const R=aggregate(MODEL,from,to);
   const rows=[['Baliabidea','Mota','Zaintza h','Zaintza o-p','Praktika h','Praktika o-p','Itzaltze h','Itzaltze o-p','Guztira o-p','Likidazioa €']];
   resList().filter(r=>R[r.id]).forEach(r=>{const x=R[r.id];rows.push([r.izena,r.mota,x.zh,x.zp,x.ph,x.pp,x.ih,x.ip,x.zp+x.pp+x.ip,x.eur])});
-  save(`likidazioa_${UI.lYear}${UI.lMonth?'_'+String(UI.lMonth).padStart(2,'0'):''}.csv`,csv(rows))}
+  saveXlsx(`likidazioa_${UI.lYear}${UI.lMonth?'_'+String(UI.lMonth).padStart(2,'0'):''}.xlsx`,[{name:'Likidazioa',head:rows[0],rows:rows.slice(1).map(r=>r.map(v=>typeof v==='number'?r2(v):(v==='zisterna'?'Zisterna':v==='taldea'?'Taldea':v)))}])}
 function exportAll(){const rows=[['Mota','Baliabidea','Sutea / Gertakaria','Hasiera','Amaiera','Hasiera-araua','Amaiera-araua','Orduak','Kideak','Ordu-pertsonak','Oharrak']];
   Object.values(MODEL.G).sort((a,b)=>(a.s||0)-(b.s||0)).forEach(g=>rows.push([g.rec.mota,resName(g.rec.baliabidea),g.rec.zk,g.rec.hasiera,g.rec.amaiera,'','',g.h,g.k,g.hp,g.rec.oharrak]));
   MODEL.ints.forEach(o=>rows.push(['itzaltzea',resName(o.rec.baliabidea),o.rec.sutea,o.start!=null?F(o.start):'',o.end!=null?F(o.end):'',o.startRule,o.endRule,o.h,o.k,o.hp,o.rec.oharrak]));
-  save(`erregistroak_${todayStr()}.csv`,csv(rows))}
+  saveXlsx(`erregistroak_${todayStr()}.xlsx`,[{name:'Erregistroak',head:rows[0],rows:rows.slice(1).map(r=>r.map((v,i)=>typeof v==='number'?r2(v):(i===3||i===4)&&typeof v==='string'&&v.includes('T')?fdt(v):v))}])}
 async function importBackup(file){let o;try{o=JSON.parse(await file.text())}catch(e){toast('Fitxategia ez da baliozkoa');return}
   if(!o||!o.zaintzak||!o.baliabideak){toast('Fitxategia ez da babeskopia bat');return}
   const n=Object.keys(o.zaintzak).length+Object.keys(o.eskuhartzeak||{}).length;
@@ -1224,6 +1234,7 @@ function boot(){
     if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
     if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
     if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
+    if(el.dataset.sent){const k=el.dataset.sent;const cur={...(UI.sentBase?.[k]||{}),...((S.ziurtagiriak||{})[k]||{})};cur.bidalita=el.checked;cur.bidaliData=el.checked?F(nowMs()):'';safe(()=>put('ziurtagiriak',k,cur));return}
     if(el.dataset.pz){const [d,k]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(k==='Z')day.zist=r;else day.slots[+k].res=r;render();return}
     if(el.dataset.risk){const [d,z]=el.dataset.risk.split('|');const cur=clone((S.arriskua||{})[d]||{});cur['z'+z]=el.value===''?null:Math.round(+el.value*10)/10;safe(()=>put('arriskua',d,cur));return}
     if(el.dataset.av){const [rid,i]=el.dataset.av.split('|');ensureProp().avail[rid][+i]=el.checked;return}
