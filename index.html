@@ -442,11 +442,12 @@ function vLiq(){const sb=(k,l)=>`<button aria-pressed="${UI.lView===k}" data-act
 /* ---- Baliabideak ---- */
 function vRes(){
   const y=todayStr().slice(0,4);const cnt={};Object.values(S.zaintzak).forEach(g=>{if(g.mota!=='praktika'&&(g.hasiera||'').startsWith(y))cnt[g.baliabidea]=(cnt[g.baliabidea]||0)+1});
+  const sut={};Object.values(S.eskuhartzeak).forEach(i=>{if((i.deia||'').startsWith(y)){(sut[i.baliabidea]||(sut[i.baliabidea]=new Set())).add(String(i.sutea))}});
   const list=resList();
   return `<h2>Baliabideak</h2><p class="lead">Taldeak (erretenak) eta zisternak. Jatorrizko eremua eta profesional izaera proposamenean erabiltzen dira; kide lehenetsiak zaintza berrietan.</p>
   <div class="tools"><span class="grow"></span><button class="btn primary" data-act="new-res">Baliabide berria</button></div>
-  <div class="tbl"><table><thead><tr><th>Izena</th><th>Mota</th><th>Jatorrizko eremua</th><th>Profesionala</th><th>Aktibo</th><th class="num">Kide lehenetsiak</th><th class="num">Zaintzak ${y}</th></tr></thead><tbody>
-  ${list.map(r=>`<tr class="click" data-act="edit-res" data-id="${esc(r.id)}"><td><b>${esc(r.izena)}</b></td><td>${r.mota==='zisterna'?'Zisterna':'Taldea'}</td><td>${r.mota==='taldea'?(r.eremua?r.eremua+'. eremua':'—'):'Lurralde osoa'}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td><td>${r.aktibo===false?'Ez':'Bai'}</td><td class="num">${r.kideak||1}</td><td class="num">${cnt[r.id]||0}</td></tr>`).join('')}
+  <div class="tbl"><table><thead><tr><th>Izena</th><th>Mota</th><th>Jatorrizko eremua</th><th>Profesionala</th><th>Aktibo</th><th class="num">Kide lehenetsiak</th><th class="num">Zaintzak ${y}</th><th class="num">Suteak ${y}</th></tr></thead><tbody>
+  ${list.map(r=>`<tr class="click" data-act="edit-res" data-id="${esc(r.id)}"><td><b>${esc(r.izena)}</b></td><td>${r.mota==='zisterna'?'Zisterna':'Taldea'}</td><td>${r.mota==='taldea'?(r.eremua?r.eremua+'. eremua':'—'):'Lurralde osoa'}</td><td>${r.mota==='taldea'?(r.profesionala?'Bai':'Ez'):'—'}</td><td>${r.aktibo===false?'Ez':'Bai'}</td><td class="num">${r.kideak||1}</td><td class="num">${cnt[r.id]||0}</td><td class="num">${sut[r.id]?sut[r.id].size:0}</td></tr>`).join('')}
   </tbody></table></div>${vMap()}`;
 }
 
