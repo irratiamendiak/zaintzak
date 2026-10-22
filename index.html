@@ -581,20 +581,27 @@ function guardForm(id,preset){
     document.getElementById('calc').innerHTML=x;
   });
 }
+function nextBoxHTML(sel,zk,dis){
+  return `<div id="nextBox" style="margin-top:10px"><div class="grid"><label class="f">Hurrengo sutea<select name="nsutea" ${dis?'disabled':''}><option value="__new">Sute berria…</option>${fireOptions(sel)}</select></label>
+  <label class="f nnf">Sute-zk.<input name="nfzk" value="${esc(zk)}"></label><label class="f nnf">Herria<input name="nfherria"></label><label class="f nnf">Lekua<input name="nflekua"></label>
+  <p class="muted span2" style="font-size:13px;margin:0">Hurrengo sutearen deia = Bukatu ordua. Etxeratu ordurik ez dago: itzaltzea une horretan amaitzen da eta hurrengo sutea berehala hasten da.</p></div></div>`}
+function nextFireRec(r,nz){return {sutea:nz,baliabidea:r.baliabidea,deia:r.bukatu,erantzuna:'',iritsi:'',bukatu:'',etxeratu:'',itzuli:'',kideak:r.kideak,zaintzan:'auto',oharrak:`Aurreko sutetik (sutea ${r.sutea})`}}
 function finishForm(id){
   const r=clone(S.eskuhartzeak[id]);if(!r)return;const o=MODEL.I[id];const now=F(nowMs());
   const body=`<p style="margin:0 0 12px"><b>${esc(resName(r.baliabidea))}</b>, sutea ${esc(r.sutea)}. Itzaltzea ${showMs(o?.start)}etik kontatzen da (${esc(o?.startRule||'')}), ${esc(r.kideak)} kide.</p>
   <div class="grid">${dtBase((r.deia||now).slice(0,10),'Deiaren data')}${dtF('bukatu','Bukatu',r.bukatu||now,(r.deia||now).slice(0,10),null,r.deia)}<label class="f">Kideak<input type="number" name="kideak" min="1" max="40" value="${esc(r.kideak)}"></label></div>
-  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" checked> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu"> Zaintzan jarraitu</label></div>
+  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" checked> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu"> Zaintzan jarraitu</label><label class="chk"><input type="radio" name="ondoren" value="beste"> Beste sute batera</label></div>
   <div class="grid" id="homeBox" style="margin-top:10px">${dtF('etxeratu','Etxeratu',r.etxeratu,(r.deia||now).slice(0,10),'bukatu')}</div>
-  <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli','',(r.deia||now).slice(0,10),'bukatu')}${dtF('contEnd','Zaintzaren amaiera','',(r.deia||now).slice(0,10),'itzuli')}</div></fieldset>
+  <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli','',(r.deia||now).slice(0,10),'bukatu')}${dtF('contEnd','Zaintzaren amaiera','',(r.deia||now).slice(0,10),'itzuli')}</div>
+  ${nextBoxHTML('',String(+nextFireZk()),false)}</fieldset>
   <div class="calc" id="calc"></div>`;
   openDlg('Itzaltzea amaitu',body,`<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-finish" data-id="${esc(id)}">Gorde</button>`,f=>{
-    const cont=f.querySelector('input[name=ondoren]:checked').value==='jarraitu';
-    document.getElementById('contBox').style.display=cont?'':'none';document.getElementById('homeBox').style.display=cont?'none':'';
+    const mode=f.querySelector('input[name=ondoren]:checked').value,cont=mode==='jarraitu',nxt=mode==='beste';
+    document.getElementById('contBox').style.display=cont?'':'none';document.getElementById('homeBox').style.display=(cont||nxt)?'none':'';
+    document.getElementById('nextBox').style.display=nxt?'':'none';f.querySelectorAll('.nnf').forEach(x=>x.style.display=f.elements.nsutea.value==='__new'?'':'none');
     if(cont&&!f.elements.itzuli.value)setDT(f,'itzuli',fv(f,'bukatu'));
     if(cont&&!f.elements.contEnd.value&&f.elements.itzuli.value)setDT(f,'contEnd',defEnd(f.elements.itzuli.value,S.baliabideak[r.baliabidea]?.mota));
-    const end=P(cont?fv(f,'itzuli'):fv(f,'etxeratu')),k=+fv(f,'kideak')||0;
+    const end=P(nxt?fv(f,'bukatu'):cont?fv(f,'itzuli'):fv(f,'etxeratu')),k=+fv(f,'kideak')||0;
     document.getElementById('calc').innerHTML=o&&end!=null&&end>o.start?`<div class="row"><span>Itzaltze-orduak</span><b>${n2((end-o.start)/H)}</b></div><div class="row"><span>Ordu-pertsonak</span><b>${n2((end-o.start)/H*k)}</b></div>`:'<div class="row"><span>Itzaltze-orduak</span><b>—</b></div>';
   });
 }
@@ -1054,6 +1061,8 @@ function intForm(id,preset){
   const r=id?clone(S.eskuhartzeak[id]):{sutea:preset?.sute||'',baliabidea:resList()[0]?.id||'',deia:'',erantzuna:'',iritsi:'',bukatu:'',etxeratu:'',itzuli:'',kideak:'',zaintzan:'auto',oharrak:''};
   if(!id)r.kideak=S.baliabideak[r.baliabidea]?.kideak||1;
   const ib=(r.deia||todayStr()).slice(0,10);
+  const nx0=id&&MODEL&&MODEL.I[id]?MODEL.I[id].next:null;
+  const hasNext=!!(nx0&&r.bukatu&&!r.etxeratu&&!r.itzuli&&nx0.deia===P(r.bukatu));
   const fireOpts=Object.values(S.suteak).sort((a,b)=>String(b.zk).localeCompare(String(a.zk),undefined,{numeric:true})).map(f=>`<option value="${esc(f.zk)}" ${String(f.zk)===String(r.sutea)?'selected':''}>${esc(f.zk)} ${esc(f.herria||'')}</option>`).join('');
   const body=`<div class="grid">
   <label class="f">Sutea<select name="sutea"><option value="__new" ${!r.sutea?'selected':''}>Sute berria…</option>${fireOpts}</select></label>
@@ -1066,18 +1075,21 @@ function intForm(id,preset){
   <fieldset><legend>Deia jaso zuenean zaintzan zegoen?</legend><div class="radios">
   ${[['auto','Automatikoki'],['bai','Bai'],['ez','Ez']].map(([v,l])=>`<label class="chk"><input type="radio" name="zaintzan" value="${v}" ${r.zaintzan===v||(!r.zaintzan&&v==='auto')?'checked':''}> ${l}</label>`).join('')}</div>
   <div id="cutBox" style="margin-top:8px"></div></fieldset>
-  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" ${r.itzuli?'':'checked'}> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu" ${r.itzuli?'checked':''}> Zaintzan jarraitu</label></div>
+  <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" ${(r.itzuli||hasNext)?'':'checked'}> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu" ${r.itzuli?'checked':''}> Zaintzan jarraitu</label><label class="chk"><input type="radio" name="ondoren" value="beste" ${hasNext?'checked':''}> Beste sute batera</label></div>
   <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli',r.itzuli,ib,'bukatu')}${dtF('contEnd','Zaintza honen amaiera','',ib,'itzuli')}
-  <p class="muted span2" style="font-size:13px;margin:0">Itzaltzea zaintzara itzultzean amaitzen da. Ordu horretan zaintzarik ez badago, tarte berria sortzen da amaiera honekin.</p></div></fieldset>
+  <p class="muted span2" style="font-size:13px;margin:0">Itzaltzea zaintzara itzultzean amaitzen da. Ordu horretan zaintzarik ez badago, tarte berria sortzen da amaiera honekin.</p></div>
+  ${nextBoxHTML(hasNext?nx0.rec.sutea:'',String(+nextFireZk()+(r.sutea?0:1)),hasNext)}</fieldset>
   <label class="f" style="margin-top:12px">Oharrak<textarea name="oharrak">${esc(r.oharrak)}</textarea></label>
   <div class="calc" id="calc"></div>`;
   const foot=`${id?`<button type="button" class="btn danger" data-act="del-int" data-id="${esc(id)}">Ezabatu</button>`:''}<span class="sp"></span><button type="button" class="btn" data-act="close">Utzi</button><button type="button" class="btn primary" data-act="save-int" data-id="${esc(id||'')}">Gorde</button>`;
   let lastRes=r.baliabidea;
   openDlg(id?'Esku-hartzea editatu':'Esku-hartze berria',body,foot,f=>{
     const isNew=fv(f,'sutea')==='__new';document.getElementById('newFire').style.display=isNew?'':'none';
-    const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';document.getElementById('contBox').style.display=cont?'':'none';
+    const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';document.getElementById('contBox').style.display=cont?'':'none';
+    document.getElementById('nextBox').style.display=nxt?'':'none';f.querySelectorAll('.nnf').forEach(x=>x.style.display=(f.elements.nsutea.value==='__new'&&!hasNext)?'':'none');
+    const el0=f.elements.etxeratu&&f.elements.etxeratu.closest('label');if(el0)el0.style.display=nxt?'none':'';
     if(fv(f,'baliabidea')!==lastRes){lastRes=fv(f,'baliabidea');if(!id)f.elements.kideak.value=S.baliabideak[lastRes]?.kideak||1}
-    const tmpId=id||'__tmp';const rec=readInt(f);const st={...S,eskuhartzeak:{...S.eskuhartzeak,[tmpId]:rec}};const M=compute(st);const o=M.I[tmpId];
+    const tmpId=id||'__tmp';const rec=readInt(f);const st={...S,eskuhartzeak:{...S.eskuhartzeak,[tmpId]:rec,...(nxt&&rec.bukatu&&!hasNext?{__nx:{sutea:'?',baliabidea:rec.baliabidea,deia:rec.bukatu,kideak:rec.kideak,zaintzan:'auto'}}:{})}};const M=compute(st);const o=M.I[tmpId];
     const cb=document.getElementById('cutBox');
     if(o&&o.guard&&o.guard.e>o.deia&&o.og){const was=cb.dataset.g===o.guard.id?f.elements.cut?.checked:true;cb.dataset.g=o.guard.id;
       cb.innerHTML=`<label class="chk"><input type="checkbox" name="cut" ${was?'checked':''}> Zaintza (${showMs(o.guard.s)}–${showT(o.guard.e)}) DEIAren orduan moztu</label>`;
@@ -1092,9 +1104,9 @@ function intForm(id,preset){
   });
 }
 function readInt(f){
-  const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';
+  const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';
   const s=fv(f,'sutea');
-  return {sutea:s==='__new'?fv(f,'fzk'):s,baliabidea:fv(f,'baliabidea'),deia:fv(f,'deia'),erantzuna:fv(f,'erantzuna'),iritsi:fv(f,'iritsi'),bukatu:fv(f,'bukatu'),etxeratu:fv(f,'etxeratu'),
+  return {sutea:s==='__new'?fv(f,'fzk'):s,baliabidea:fv(f,'baliabidea'),deia:fv(f,'deia'),erantzuna:fv(f,'erantzuna'),iritsi:fv(f,'iritsi'),bukatu:fv(f,'bukatu'),etxeratu:nxt?'':fv(f,'etxeratu'),
     itzuli:cont?fv(f,'itzuli'):'',kideak:+fv(f,'kideak')||1,zaintzan:f.querySelector('input[name=zaintzan]:checked')?.value||'auto',oharrak:fv(f,'oharrak')};
 }
 function fireForm(id){
@@ -1155,8 +1167,13 @@ async function act(a,el){
       },'Zaintza eta itzaltzea gordeta');if(ok)closeDlg();break}
     case 'fire-from-guard':guardForm(id,{fire:true});break;
     case 'finish-int':finishForm(id);break;
-    case 'save-finish':{const r=clone(S.eskuhartzeak[id]);if(!r)break;const cont=f.querySelector('input[name=ondoren]:checked').value==='jarraitu';
+    case 'save-finish':{const r=clone(S.eskuhartzeak[id]);if(!r)break;const mode=f.querySelector('input[name=ondoren]:checked').value,cont=mode==='jarraitu',nxt=mode==='beste';
       r.bukatu=fv(f,'bukatu');r.kideak=+fv(f,'kideak')||r.kideak;if(!r.bukatu){toast('Bete bukatu ordua');break}
+      if(nxt){const sv=fv(f,'nsutea'),nz=sv==='__new'?fv(f,'nfzk'):sv;if(!nz){toast('Aukeratu hurrengo sutea edo sartu sute-zenbakia');break}
+        if(String(nz)===String(r.sutea)){toast('Hurrengo sutea ezin da hau bera izan');break}
+        r.etxeratu='';r.itzuli='';const nr=nextFireRec(r,nz),sid='s'+String(nz).replace(/[^\w-]/g,'');
+        if(await safe(async()=>{if(sv==='__new'&&!S.suteak[sid])await put('suteak',sid,{zk:nz,herria:fv(f,'nfherria'),lekua:fv(f,'nflekua'),oharrak:''});
+          await put('eskuhartzeak',id,r);await put('eskuhartzeak',intIdFor(nr),nr)},'Itzaltzea amaituta, beste sutera joan da'))closeDlg();break}
       if(cont){const itz=fv(f,'itzuli'),cEnd=fv(f,'contEnd');if(!itz||!cEnd||P(cEnd)<=P(itz)){toast('Bete zaintzara itzultzeko ordua eta zaintzaren amaiera');break}
         r.itzuli=itz;if(await safe(async()=>{await put('eskuhartzeak',id,r);await put('zaintzak',newId('g'),{baliabidea:r.baliabidea,mota:'zaintza',hasiera:itz,amaiera:cEnd,kideak:r.kideak,zk:String(nextGuardZk()),oharrak:`Itzaltzearen ostean zaintzan jarraitu (sutea ${r.sutea})`})},'Itzaltzea amaituta, zaintzan jarraitzen du'))closeDlg()}
       else{r.etxeratu=fv(f,'etxeratu');r.itzuli='';if(!r.etxeratu){toast('Bete etxeratu ordua');break}if(await safe(()=>put('eskuhartzeak',id,r),'Itzaltzea amaituta'))closeDlg()}
@@ -1188,7 +1205,9 @@ async function act(a,el){
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
       if(!rec.sutea){toast('Sute-zenbakia behar da');break}if(!rec.baliabidea||!rec.deia){toast('Baliabidea eta deiaren ordua behar dira');break}
-      const cont=f.querySelector('input[name=ondoren]:checked')?.value==='jarraitu';if(cont&&!rec.itzuli){toast('Bete zaintzara itzultzeko ordua');break}
+      const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';if(cont&&!rec.itzuli){toast('Bete zaintzara itzultzeko ordua');break}
+      const nsv=nxt?fv(f,'nsutea'):'',nz=nxt?(nsv==='__new'?fv(f,'nfzk'):nsv):'';
+      if(nxt){if(!rec.bukatu){toast('Bete bukatu ordua');break}if(!nz){toast('Aukeratu hurrengo sutea edo sartu sute-zenbakia');break}if(String(nz)===String(rec.sutea)){toast('Hurrengo sutea ezin da hau bera izan');break}}
       const iid=id||('i'+rec.sutea.replace(/[^\w-]/g,'')+'-'+rec.baliabidea+'-'+rec.deia.slice(0,10).replace(/-/g,'')+(S.eskuhartzeak['i'+rec.sutea+'-'+rec.baliabidea+'-'+rec.deia.slice(0,10).replace(/-/g,'')]?'-'+Date.now().toString(36):''));
       const st={...S,eskuhartzeak:{...S.eskuhartzeak,[iid]:rec}};const o=compute(st).I[iid];const cut=fv(f,'cut')===true;const contEnd=fv(f,'contEnd');
       const ok=await safe(async()=>{
@@ -1197,6 +1216,9 @@ async function act(a,el){
         if(cut&&o.guard&&o.guard.e>o.deia){const g=clone(S.zaintzak[o.guard.id]);g.amaiera=rec.deia;g.suterik=true;await put('zaintzak',o.guard.id,g)}
         if(cont&&rec.itzuli&&contEnd&&P(contEnd)>P(rec.itzuli)&&!Object.values(S.zaintzak).some(g=>g.baliabidea===rec.baliabidea&&P(g.hasiera)<=P(rec.itzuli)&&P(g.amaiera)>P(rec.itzuli)&&!(o.guard&&cut&&g===S.zaintzak[o.guard.id]))){
           await put('zaintzak',newId('g'),{baliabidea:rec.baliabidea,mota:'zaintza',hasiera:rec.itzuli,amaiera:contEnd,kideak:rec.kideak,zk:String(nextGuardZk()),oharrak:`Itzaltzearen ostean zaintzan jarraitu (sutea ${rec.sutea})`})}
+        if(nxt&&!Object.values(S.eskuhartzeak).some(x=>x.baliabidea===rec.baliabidea&&x.deia===rec.bukatu&&String(x.sutea)===String(nz))){
+          const sid='s'+String(nz).replace(/[^\w-]/g,'');if(nsv==='__new'&&!S.suteak[sid])await put('suteak',sid,{zk:nz,herria:fv(f,'nfherria'),lekua:fv(f,'nflekua'),oharrak:''});
+          const nr=nextFireRec(rec,nz);await put('eskuhartzeak',intIdFor(nr),nr)}
       },'Esku-hartzea gordeta');if(ok)closeDlg();break}
     case 'del-int':if(confirm('Esku-hartze hau ezabatu? Lotutako zaintzak ez dira aldatzen.')&&await safe(()=>del('eskuhartzeak',id),'Esku-hartzea ezabatuta'))closeDlg();break;
     case 'save-fire':{const zk=fv(f,'zk');if(!zk){toast('Sute-zenbakia behar da');break}const fid=id||'s'+zk.replace(/[^\w-]/g,'');
