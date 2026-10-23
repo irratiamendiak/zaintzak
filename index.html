@@ -129,6 +129,7 @@ td.tused,div.tused{font-weight:700;color:var(--ember)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:14px}
 .panel h3{margin-bottom:10px}
+.help .panel{margin-bottom:16px}.help p{margin:0 0 10px;max-width:75ch}.help ul,.help ol{margin:0 0 10px;padding-left:22px;max-width:75ch}.help li{margin:5px 0}.help .idx{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px}.help .idx a{padding:5px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:inherit;text-decoration:none;font-size:14px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px 14px}
 .span2{grid-column:1/-1}
 .okbad.ok{color:var(--pine);font-weight:600}
@@ -331,7 +332,7 @@ function initDefaults(){
 }
 
 /* ===================== Errendatzea ===================== */
-const TABS=[['zaintzak','Zaintzak'],['suteak','Suteak'],['denbora','Denbora-lerroa'],['kontsultak','Kontsultak'],['likidazioa','Likidazioa eta ziurtagiriak'],['baliabideak','Baliabideak'],['arauak','Arauak']];
+const TABS=[['zaintzak','Zaintzak'],['suteak','Suteak'],['denbora','Denbora-lerroa'],['kontsultak','Kontsultak'],['likidazioa','Likidazioa eta ziurtagiriak'],['baliabideak','Baliabideak'],['arauak','Arauak'],['jarraibideak','Jarraibideak']];
 function queueRender(){if(renderQueued)return;renderQueued=true;requestAnimationFrame(()=>{renderQueued=false;render()})}
 function render(){
   MODEL=compute();
@@ -342,8 +343,8 @@ function render(){
   const m=document.getElementById('main');
   if(UI.mode==='supa'&&!UI.session){m.innerHTML=vLogin();return}
   if(!UI.loaded){m.innerHTML='<div class="empty">Datuak kargatzen…</div>';return}
-  const f={denbora:vTimeline,zaintzak:vZaintzak,suteak:vSuteak,likidazioa:vLiq,kontsultak:vKontsultak,baliabideak:vRes,arauak:vRules}[UI.tab];
-  m.innerHTML=(!Object.keys(S.baliabideak).length&&UI.tab!=='arauak'?`<div class="empty" style="margin-bottom:16px">Ez dago daturik oraindik.<br><br>${UI.mode==='supa'?'<button class="btn primary" data-act="seed-supa">Hasierako datuak kargatu (data.json)</button> ':''}<button class="btn" data-act="seed-res">Sortu 12 talde eta 5 zisterna</button></div>`:'')+f();
+  const f={denbora:vTimeline,zaintzak:vZaintzak,suteak:vSuteak,likidazioa:vLiq,kontsultak:vKontsultak,baliabideak:vRes,arauak:vRules,jarraibideak:vHelp}[UI.tab];
+  m.innerHTML=(!Object.keys(S.baliabideak).length&&UI.tab!=='arauak'&&UI.tab!=='jarraibideak'?`<div class="empty" style="margin-bottom:16px">Ez dago daturik oraindik.<br><br>${UI.mode==='supa'?'<button class="btn primary" data-act="seed-supa">Hasierako datuak kargatu (data.json)</button> ':''}<button class="btn" data-act="seed-res">Sortu 12 talde eta 5 zisterna</button></div>`:'')+f();
 }
 
 function chip(t){return `<span class="chip ${t}">${t==='zaintza'?'Zaintza':t==='praktika'?'Praktika':'Itzaltzea'}</span>`}
@@ -472,6 +473,73 @@ function vRules(){
   </div><div class="tools" style="margin-top:16px"><button type="button" class="btn primary" data-act="save-cfg">Arauak gorde</button></div></form>
   <div class="panel" style="margin-top:20px"><h3>Babeskopia</h3><p class="muted" style="margin:0 0 10px;max-width:70ch">Datu guztiak (baliabideak, zaintzak, suteak, esku-hartzeak eta arauak) JSON fitxategi batean gorde edo berreskuratu. Inportatzean, uneko datuak fitxategikoekin ordezkatzen dira.</p>
   <div class="tools" style="margin:0"><button type="button" class="btn" data-act="backup-export">Datuak esportatu (JSON)</button><label class="btn" style="display:inline-flex;align-items:center">Datuak inportatu<input type="file" id="importFile" accept=".json,application/json" hidden></label></div></div>`;
+}
+
+
+/* ---- Jarraibideak ---- */
+function vHelp(){
+  const S1=(id,t,b)=>`<section class="panel" id="h-${id}"><h3>${t}</h3>${b}</section>`;
+  return `<div class="help"><h2>Jarraibideak</h2><p class="lead">Aplikazio honek erreten (taldeen) eta zisternen zaintzak eta sute-irteerak erregistratzen ditu, orduak eta ordu-pertsonak kalkulatzen ditu eta likidazioak eta ziurtagiriak sortzen ditu. Hemen atal bakoitzaren erabilera azaltzen da.</p>
+  <div class="idx"><a href="#h-oinarria">Oinarrizko kontzeptuak</a><a href="#h-egunerokoa">Egunero: zer egin</a><a href="#h-zaintzak">Zaintzak</a><a href="#h-suteak">Suteak</a><a href="#h-denbora">Denbora-lerroa</a><a href="#h-kontsultak">Kontsultak</a><a href="#h-likidazioa">Likidazioa</a><a href="#h-baliabideak">Baliabideak</a><a href="#h-arauak">Arauak</a><a href="#h-abisuak">Abisuak</a><a href="#h-datuak">Datuak eta babeskopia</a></div>
+
+  ${S1('oinarria','Oinarrizko kontzeptuak',`<ul>
+  <li><b>Baliabidea</b>: talde bat (erretena) edo zisterna bat. Bakoitzak kide lehenetsi kopuru bat du.</li>
+  <li><b>Zaintza</b>: baliabide bat prest egotea, ordutegi jakin batean. <b>Praktika</b>: entrenamendu-tartea; zaintza-tarifarekin ordaintzen da.</li>
+  <li><b>Itzaltzea</b> (esku-hartzea): baliabide bat sute batera joatea. Sute bakoitzak zenbaki bat du (<b>Sutea</b>) eta sute berean baliabide bat baino gehiago egon daitezke.</li>
+  <li><b>Orduak</b> eta <b>ordu-pertsonak</b>: ordu-pertsonak = orduak × kideak. Tarifak Arauak atalean daude, zaintzarako eta itzaltzerako bereizita.</li>
+  <li><b>Planifikatua</b>: proposamenetik sortutako zaintza, oraindik berretsi gabea. Ez da likidazioan sartzen benetako orduak eta kideak bete arte.</li>
+  <li><b>Ordu-eremuetan eguna</b>: ordu bakoitzaren ondoan "Egun berean / +1 egun…" hautatzailea dago. Gauez amaitzen diren zaintzak edo suteak sartzeko erabili. Hurrengo orduak normalean automatikoki doitzen dira.</li></ul>`)}
+
+  ${S1('egunerokoa','Egunero: zer egin',`<ol>
+  <li><b>Zaintzak prestatu</b> (Zaintzak atala): sortu eskuz, proposamen automatikoarekin edo BASUGIX arriskuaren arabera.</li>
+  <li><b>Sutea dagoenean</b>: baliabidea zaintzan bazegoen, sakatu <b>Suterik izan da</b>. Zaintzan ez bazegoen, Suteak atalean sakatu <b>Zaintzarik gabeko irteera</b>.</li>
+  <li><b>Sutea amaitzean</b>: Orain panelean sakatu <b>Itzaltzea amaitu</b>, bete <b>Bukatu</b> ordua eta aukeratu zer egin ondoren: etxera, zaintzan jarraitu edo beste sute batera.</li>
+  <li><b>Hilabete amaieran</b>: begiratu Abisuak, konpondu hutsuneak eta atera Likidazioa eta Ziurtagiriak.</li></ol>`)}
+
+  ${S1('zaintzak','Zaintzak atala',`<p><b>Orain</b> panela goian agertzen da zerbait abian dagoenean: zaintzan dauden baliabideak, abian dauden itzaltzeak eta berretsi gabeko zaintza planifikatuak.</p>
+  <ul>
+  <li><b>Zaintza berria: eskuz</b>: baliabidea, sarrera eta irteera orduak, kideak eta oharrak. Mota: zaintza edo praktika.</li>
+  <li><b>Zaintza berria: proposamena</b>: aukeratu hasiera-data eta egun kopurua eta sakatu <i>Proposamena sortu</i>. Aplikazioak eremu bakoitzeko talde bat eta lurralde osorako zisterna bat proposatzen ditu, bertako taldeak lehenetsiz, guardia gutxien dituena aukeratuz, atsedenak errespetatuz eta egunero gutxienez talde profesional bat jarriz. Gelaxka bakoitzean beste talde bat aukera dezakezu, eta gero gorde.</li>
+  <li><b>Zaintza berria: BASUGIX</b>: proposamen berbera, baina eremu eta egun bakoitzeko arrisku-indizearen arabera. Idatzi balioak (edo sakatu <i>BASUGIX kargatu</i>); hutsik uzten bada egun ertaina bezala tratatzen da. Arrisku-mailak Arauak atalean aldatzen dira.</li>
+  <li><b>Suterik izan da</b> (Orain panelean edo zaintzaren fitxan): zaintza-orduak deiaren orduan amaitzen dira eta itzaltze-orduak kontatzen hasten dira. Fitxan sutearen datuak bete behar dira.</li></ul>`)}
+
+  ${S1('suteak','Suteak atala eta esku-hartze fitxa',`<p>Suteak atalean <b>Zaintzarik gabeko irteera</b> erregistratzen da: baliabidea zaintzan egon gabe sute batera deitzen dutenean. Zaintzatik abiatutako irteerak Zaintzak atalean (<b>Suterik izan da</b>) sortzen dira.</p>
+  <p>Esku-hartze fitxako eremuak:</p>
+  <ul>
+  <li><b>Sutea, Baliabidea, Kideak</b>: sute-zenbakia (existitzen den bat edo berria), baliabidea eta irteten diren kideak.</li>
+  <li><b>Deia</b>: deia jaso zuten ordua. <b>Erantzuna</b>: irteera baieztatu zuten ordua. <b>Iritsi</b>: sutera iritsi ziren ordua. <b>Bukatu</b>: sutean amaitu zuten ordua. <b>Etxeratu</b>: etxera itzuli ziren ordua.</li>
+  <li><b>Deia jaso zuenean zaintzan zegoen?</b>
+    <ul><li><b>Automatikoki</b>: aplikazioak berak erabakitzen du. Baliabideak deiaren orduan zaintza erregistratua badu (edo aurreko sute baten segida bada), zaintzan zegoela hartzen du eta itzaltzea <b>Deia</b>tik kontatzen du. Bestela, zaintzarik gabe hartzen du eta <b>Erantzuna</b>tik kontatzen du.</li>
+    <li><b>Bai</b>: derrigorrez zaintzan zegoela hartzen du, zaintzarik erregistratu ez bada ere. <b>Ez</b>: derrigorrez zaintzarik gabe hartzen du.</li></ul></li>
+  <li><b>Itzaltzearen ostean</b>:
+    <ul><li><b>Etxera</b>: sartu <b>Etxeratu</b> ordua. Itzaltzea ordu horretan amaitzen da.</li>
+    <li><b>Zaintzan jarraitu</b>: sartu zaintzara itzultzeko ordua eta zaintzaren amaiera. Itzaltzea zaintzara itzultzean amaitzen da eta zaintza-tarte berri bat sortzen da.</li>
+    <li><b>Beste sute batera</b>: aukeratu hurrengo sutea (lehendik dagoen bat edo sute berria) eta sakatu gorde. Hurrengo sutearen deia lehenengoaren <b>Bukatu</b> orduarekin sortzen da, beraz lehenengoa une horretan amaitzen da eta bigarrena berehala hasten da. Ez dago <b>Etxeratu</b> ordurik. Hurrengo sutea abian geratzen da, eta bere fitxatik amaitu behar duzu (etxera, zaintzan jarraitu edo beste sute batera berriro).</li></ul></li>
+  <li>Behean, fitxak <b>Egoera</b> (zaintzan zegoen ala ez), itzaltzearen hasiera eta amaiera, orduak eta ordu-pertsonak kalkulatzen ditu. Ordu bat falta bada, abisu bat agertzen da (adibidez, <i>Amaiera falta</i>).</li></ul>
+  <p>Esku-hartze bat editatzeko, ireki Kontsultak atalean, Denbora-lerroan edo Orain panelean.</p>`)}
+
+  ${S1('denbora','Denbora-lerroa',`<p>Astebeteko ikuspegia, baliabide bakoitzeko lerro batekin. Zaintzak, praktikak, planifikatuak eta itzaltzeak kolore desberdinez agertzen dira; barra bati sakatuta editatu daiteke. Goiko botoiekin astea aldatu eta <b>Gaur</b> egunera itzul zaitezke; taldeen eta zisternen artean iragaz dezakezu. Ordu hutsuneak edo gainjarriak dituzten barrak nabarmenduta agertzen dira.</p>`)}
+
+  ${S1('kontsultak','Kontsultak',`<ul>
+  <li><b>Zaintzak</b>: zaintza eta praktika tarte guztiak. Iragazi baliabidez, hilabetez, motaz edo datez; Excel edo PDF bezala esportatu. Errenkada bati sakatuta editatzen da.</li>
+  <li><b>Suteak</b>: sute bakoitza eta bertara joan diren baliabideak, orduak eta ordu-pertsonak barne. Hemen ikusten eta editatzen dira esku-hartzeak.</li>
+  <li><b>Bilaketa orokorra</b>: datuetan bilatzeko.</li></ul>`)}
+
+  ${S1('likidazioa','Likidazioa eta ziurtagiriak',`<ul>
+  <li><b>Laburpena</b>: baliabide bakoitzeko zaintza-, praktika- eta itzaltze-orduak eta ordu-pertsonak, eta zenbatekoa (€), aukeratutako aldian.</li>
+  <li><b>Ziurtagiriak</b>: zerbitzu bakoitzak bere ziurtagiria du (zaintza hutsa, zaintza eta itzaltzea, edo zaintzarik gabeko itzaltzea). Elkarren segidako tarteak zerbitzu bakarrean biltzen dira. Planifikatutako zaintzak ez dira sartzen egiaztatu arte.</li>
+  <li><b>Emandakoak</b>: deskargatutako ziurtagiri eta likidazio guztien erregistroa. PDFa uneko datuekin sortzen da berriro.</li></ul>`)}
+
+  ${S1('baliabideak','Baliabideak',`<p>Taldeen eta zisternen zerrenda: izena, mota, jatorrizko eremua, profesionala den, aktibo dagoen, kide lehenetsiak eta aurtengo <b>zaintza</b> eta <b>sute</b> kopurua. Errenkada bati sakatuta editatzen da; <b>Baliabide berria</b> botoiarekin berri bat sortzen da. Baliabide ez-aktiboak ez dira proposamenetan eta denbora-lerroan agertzen.</p>`)}
+
+  ${S1('arauak','Arauak',`<p>Hemen aldatzen dira ordutegi estandarrak, gutxieneko atsedenak, eremu aktiboak, esleipen-irizpidea, laguntza-lehentasunak, tarifak eta BASUGIX arrisku-mailak. Aldaketak proposamen eta kalkulu berrietan aplikatzen dira. Ez ahaztu <b>Arauak gorde</b> sakatzea.</p>`)}
+
+  ${S1('abisuak','Abisuak',`<p>Goiko eskuinean "<i>N abisu</i>" botoia agertzen bada, gainjartzeak edo falta diren datuak daude (adibidez, itzaltzeak amaiera-ordurik ez izatea). Konpondu arte orduak ez dira ondo kalkulatzen. Abisu bakoitzean <b>Ireki</b> botoiarekin dagokion fitxa zuzenean irekitzen da, eta batzuetan konponketa azkarra proposatzen da.</p>`)}
+
+  ${S1('datuak','Datuak eta babeskopia',`<ul>
+  <li>Goiko eskuineko egoerak datuak non gordetzen diren adierazten du: datu-base zentralean (saioa hasi behar da), datu partekatuetan, gailu honetan edo irakurtzeko soilik moduan. Irakurtzeko soilik moduan ezin da editatu.</li>
+  <li>Arauak atalaren behean <b>Datuak esportatu (JSON)</b> eta <b>Datuak inportatu</b> daude. Egin babeskopia aldizka. Inportatzean, uneko datuak fitxategikoekin ordezkatzen dira.</li></ul>`)}
+  </div>`;
 }
 
 /* ---- Denbora-lerroa ---- */
