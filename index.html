@@ -549,8 +549,9 @@ function vSuteak(){
   <div class="tools"><button class="btn primary" data-act="new-int">Zaintzarik gabeko irteera</button></div>
   ${ong?'':'<div class="empty">Ez dago itzaltzerik abian une honetan.</div>'}`}
 function vKontsultak(){
-  return `<h2>Kontsultak</h2><div class="tools"><label class="f">Ikuspegia<select data-filter="qView"><option value="z" ${UI.qView==='z'?'selected':''}>Zaintzak</option><option value="s" ${UI.qView==='s'?'selected':''}>Suteak</option><option value="q" ${UI.qView==='q'?'selected':''}>Bilaketa orokorra</option></select></label></div>
+  return `<h2>Kontsultak</h2><div class="tools"><div class="seg" role="tablist" aria-label="Kontsulten ikuspegiak"><button role="tab" aria-selected="${UI.qView==='z'}" data-act="q-view" data-k="z">Zaintzak</button><button role="tab" aria-selected="${UI.qView==='s'}" data-act="q-view" data-k="s">Suteak</button><button role="tab" aria-selected="${UI.qView==='q'}" data-act="q-view" data-k="q">Bilaketa orokorra</button></div></div>
   ${UI.qView==='s'?vFires():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
+}
 function vZaintzak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.zView===k}" data-act="z-view" data-k="${k}">${l}</button>`;const p=ensureProp();p.risk=UI.zView==='bgx';
   return `${vNow('g')}<h2>Zaintzak</h2><p class="lead">Zaintzak hemen sortzen dira: eskuz, proposamen automatikoarekin edo BASUGIX arriskuaren arabera. Zaintzan dagoen talde bat sutera joaten bada, erabili <b>Suterik izan da</b> (Orain panelean edo zaintzaren fitxan): zaintza-orduak deiaren orduan amaitzen dira eta itzaltze-orduak kontatzen hasten dira. Sortutako zaintzak Kontsultak atalean ikusten eta editatzen dira.</p>
@@ -1239,6 +1240,7 @@ async function act(a,el){
   const id=el.dataset.id;const f=document.getElementById('dlgForm');
   switch(a){
     case 'tab':UI.tab=el.dataset.k;lsSet('zi-tab',UI.tab);render();window.scrollTo(0,0);break;
+    case 'q-view':UI.qView=el.dataset.k;render();break;
     case 'go-warns':UI.tab='denbora';render();setTimeout(()=>document.getElementById('warns')?.scrollIntoView({behavior:'smooth'}),30);break;
     case 'tl-move':UI.tlStart=addDays(UI.tlStart,+el.dataset.n);render();break;
     case 'tl-today':UI.tlStart=monday(todayStr());render();break;
