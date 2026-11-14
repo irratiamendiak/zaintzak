@@ -1309,7 +1309,8 @@ async function act(a,el){
       if(error){toast('Ezin izan da sartu: '+error.message);break}const s=await SB.auth.getSession();UI.session=s.data.session;UI.loaded=false;render();await supaStart();break}
     case 'logout':await SB.auth.signOut();break;
     case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
-    case 'q-export':await exportQuery(el.dataset.k);break;\n    case 'q-fire-export':await exportFireQuery(el.dataset.k);break;
+    case 'q-export':await exportQuery(el.dataset.k);break;
+    case 'q-fire-export':await exportFireQuery(el.dataset.k);break;
     case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
