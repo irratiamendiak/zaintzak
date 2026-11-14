@@ -551,7 +551,6 @@ function vSuteak(){
 function vKontsultak(){
   return `<h2>Kontsultak</h2><div class="tools"><div class="seg" role="tablist" aria-label="Kontsulten ikuspegiak"><button role="tab" aria-selected="${UI.qView==='z'}" data-act="q-view" data-k="z">Zaintzak</button><button role="tab" aria-selected="${UI.qView==='s'}" data-act="q-view" data-k="s">Suteak</button><button role="tab" aria-selected="${UI.qView==='q'}" data-act="q-view" data-k="q">Bilaketa orokorra</button></div></div>
   ${UI.qView==='s'?vFires():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
-}
 function vZaintzak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.zView===k}" data-act="z-view" data-k="${k}">${l}</button>`;const p=ensureProp();p.risk=UI.zView==='bgx';
   return `${vNow('g')}<h2>Zaintzak</h2><p class="lead">Zaintzak hemen sortzen dira: eskuz, proposamen automatikoarekin edo BASUGIX arriskuaren arabera. Zaintzan dagoen talde bat sutera joaten bada, erabili <b>Suterik izan da</b> (Orain panelean edo zaintzaren fitxan): zaintza-orduak deiaren orduan amaitzen dira eta itzaltze-orduak kontatzen hasten dira. Sortutako zaintzak Kontsultak atalean ikusten eta editatzen dira.</p>
