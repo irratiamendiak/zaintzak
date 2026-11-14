@@ -1397,7 +1397,8 @@ function boot(){
     if(el.dataset.filter){UI[el.dataset.filter]=el.value;render();return}
     if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
     if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
-    if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}\n    if(el.dataset.fire==='selected'){UI.qFire=el.value;render();return}
+    if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
+    if(el.dataset.fire==='selected'){UI.qFire=el.value;render();return}
     if(el.dataset.sent){const k=el.dataset.sent;const cur={...(UI.sentBase?.[k]||{}),...((S.ziurtagiriak||{})[k]||{})};cur.bidalita=el.checked;cur.bidaliData=el.checked?F(nowMs()):'';safe(()=>put('ziurtagiriak',k,cur));return}
     if(el.dataset.pz){const [d,k]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(k==='Z')day.zist=r;else day.slots[+k].res=r;render();return}
     if(el.dataset.risk){const [d,z]=el.dataset.risk.split('|');const cur=clone((S.arriskua||{})[d]||{});cur['z'+z]=el.value===''?null:Math.round(+el.value*10)/10;safe(()=>put('arriskua',d,cur));return}
