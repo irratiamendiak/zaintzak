@@ -1095,9 +1095,9 @@ async function exportFires(fmt){
       {name:'Laburpena baliabideka',head:['Baliabidea','Mota','Esku-hartzeak','Suteak','Orduak','Ordu-pertsonak','Zenbatekoa €'],rows:sum},
       {name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}]);
   }else{
-    const cols=[{t:'Sutea',w:10},{t:'Herria',w:20},{t:'Baliabidea',w:16},{t:'Zaint.',w:9},{t:'Data',w:18},{t:'Deia',w:12},{t:'Erantzuna',w:15},{t:'Iritsi',w:13},{t:'Bukatu',w:13},{t:'Etxeratu',w:22},{t:'Orduak',w:10,align:'r'},{t:'Kideak',w:10,align:'r'},{t:'Ordu-pert.',w:13,align:'r'},{t:'EUR',w:12,align:'r'}];
-    pdfReport('Suteak eta itzaltze-orduak',meta,cols,list.map(o=>[o.rec.sutea,fi(o).herria||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fD(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia)+(o.rec.itzuli?' (z. '+tRel(o.rec.itzuli,o.rec.deia)+')':''),n2(o.h),String(o.k),n2(o.hp),n2(eu(o))]),
-      ['',`${list.length} esku-hartze`,'','','','','','','','',n2(T.h),'',n2(T.hp),n2(T.e)],expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'pdf'));
+    const cols=[{t:'Sutea',w:9},{t:'Herria',w:17},{t:'Lekua',w:23},{t:'Baliabidea',w:15},{t:'Zaint.',w:8},{t:'Data',w:17},{t:'Deia',w:11},{t:'Erantzuna',w:13},{t:'Iritsi',w:11},{t:'Bukatu',w:11},{t:'Etxeratu',w:18},{t:'Orduak',w:9,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:12,align:'r'},{t:'EUR',w:11,align:'r'}];
+    pdfReport('Suteak eta itzaltze-orduak',meta,cols,list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fD(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia)+(o.rec.itzuli?' (z. '+tRel(o.rec.itzuli,o.rec.deia)+')':''),n2(o.h),String(o.k),n2(o.hp),n2(eu(o))]),
+      ['',`${list.length} esku-hartze`,'','','','','','','','','',n2(T.h),'',n2(T.hp),n2(T.e)],expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'pdf'));
   }
 }
 
