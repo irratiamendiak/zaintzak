@@ -283,7 +283,7 @@ function aggregate(M,from,to){
 
 /* Proposamen automatikoa (Excel-eko algoritmoa) */
 /* ===================== Datu-biltegia ===================== */
-const UI={tab:'zaintzak',zView:'prop',qView:'z',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',gFrom:'',gTo:'',fFrom:'',fTo:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
+const UI={tab:'zaintzak',zView:'prop',qView:'z',qFire:'',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',gFrom:'',gTo:'',fFrom:'',fTo:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
 let DB=null,DL=null,MODEL=null,renderQueued=false;
 const LS_KEY='zaintzak-itzaltzeak-v1';
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
@@ -550,8 +550,8 @@ function vSuteak(){
   ${ong?'':'<div class="empty">Ez dago itzaltzerik abian une honetan.</div>'}`}
 function vKontsultak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.qView===k}" data-act="q-view" data-k="${k}">${l}</button>`;
-  return `<h2>Kontsultak</h2><div class="tools"><span class="seg">${sb('z','Zaintzak')}${sb('s','Suteak')}${sb('q','Bilaketa orokorra')}</span></div>
-  ${UI.qView==='s'?vFires():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
+  return `<h2>Kontsultak</h2><div class="tools"><span class="seg">${sb('z','Zaintzak')}${sb('s','Suteak')}${sb('f','Sutea')}${sb('q','Bilaketa orokorra')}</span></div>
+  ${UI.qView==='s'?vFires():UI.qView==='f'?vFireQuery():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
 function vZaintzak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.zView===k}" data-act="z-view" data-k="${k}">${l}</button>`;const p=ensureProp();p.risk=UI.zView==='bgx';
   return `${vNow('g')}<h2>Zaintzak</h2><p class="lead">Zaintzak hemen sortzen dira: eskuz, proposamen automatikoarekin edo BASUGIX arriskuaren arabera. Zaintzan dagoen talde bat sutera joaten bada, erabili <b>Suterik izan da</b> (Orain panelean edo zaintzaren fitxan): zaintza-orduak deiaren orduan amaitzen dira eta itzaltze-orduak kontatzen hasten dira. Sortutako zaintzak Kontsultak atalean ikusten eta editatzen dira.</p>
@@ -812,6 +812,46 @@ async function seedFromJson(){const r=await fetch('data.json',{cache:'no-store'}
   await supaBulk(rows);await supaLoadAll();render()}
 
 /* ---- Kontsultak ---- */
+function openFireList(){
+  const open=new Set(MODEL.ints.filter(o=>o.ongoing).map(o=>String(o.rec.sutea)));
+  const fires={};
+  for(const [id,f] of Object.entries(S.suteak)){const k=String(f.zk||id.replace(/^s/,''));if(open.has(k))fires[k]={k,id,f};}
+  for(const o of MODEL.ints){const k=String(o.rec.sutea);if(open.has(k)&&!fires[k])fires[k]={k,id:'s'+k,f:{zk:k,herria:'',lekua:''}};}
+  return Object.values(fires).sort((a,b)=>String(b.k).localeCompare(String(a.k),undefined,{numeric:true}));
+}
+function fireQueryRows(zk){
+  return MODEL.ints.filter(o=>String(o.rec.sutea)===String(zk)&&o.deia!=null).sort((a,b)=>a.deia-b.deia);
+}
+function vFireQuery(){
+  const fires=openFireList(),selected=fires.find(x=>x.k===String(UI.qFire))||null;
+  if(selected&&UI.qFire!==selected.k)UI.qFire=selected.k;
+  const rows=selected?fireQueryRows(selected.k):[];
+  const totalH=rows.reduce((n,o)=>n+o.h,0),totalHP=rows.reduce((n,o)=>n+o.hp,0);
+  return `<p class="lead">Aukeratu irekita dagoen sute bat. Aukeratutako sutera joandako baliabide guztiak eta haien esku-hartze datuak erakutsiko dira; emaitza PDF edo Excel formatuan deskarga daiteke.</p>
+  <div class="tools"><label class="f">Sutea<select data-fire="selected"><option value="">Aukeratu sutea…</option>${fires.map(x=>`<option value="${esc(x.k)}" ${selected&&selected.k===x.k?'selected':''}>Sutea ${esc(x.k)}${x.f.herria?' · '+esc(x.f.herria):''}${x.f.lekua?' · '+esc(x.f.lekua):''}</option>`).join('')}</select></label>
+  <span class="grow"></span><button class="btn" data-act="q-fire-export" data-k="pdf" ${!selected||!rows.length?'disabled':''}>PDF deskargatu</button><button class="btn" data-act="q-fire-export" data-k="xlsx" ${!selected||!rows.length?'disabled':''}>Excel deskargatu (.xlsx)</button></div>
+  ${!fires.length?'<div class="empty">Ez dago une honetan esku-hartze aktiborik duen sutegirik.</div>':!selected?'<div class="empty">Aukeratu goiko zerrendako sute bat.</div>':`<div class="sumline"><span><b>${rows.length}</b>baliabide-esku-hartze</span><span><b>${n2(totalH)}</b>itzaltze ordu</span><span><b>${n2(totalHP)}</b>ordu-pertsona</span></div>
+  <article class="fire"><div class="fire-head"><h3>Sutea ${esc(selected.k)}</h3><span class="place">${esc([selected.f.herria,selected.f.lekua].filter(Boolean).join(', '))||'Kokapenik gabe'}</span></div>
+  ${rows.length?`<div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Baliabide mota</th><th>Deia</th><th>Erantzuna</th><th>Iritsi</th><th>Bukatu</th><th>Etxeratu</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th>Oharrak</th></tr></thead><tbody>
+  ${rows.map(o=>`<tr class="click" data-act="edit-int" data-id="${esc(o.id)}"><td><b>${esc(resName(o.rec.baliabidea))}</b></td><td>${S.baliabideak[o.rec.baliabidea]?.mota==='zisterna'?'Zisterna':'Taldea'}</td><td>${showDT(o.rec.deia)}</td><td>${showDT(o.rec.erantzuna)}</td><td>${showDT(o.rec.iritsi)}</td><td>${showDT(o.rec.bukatu)}</td><td>${showDT(o.rec.etxeratu)}</td><td class="num">${n2(o.h)}</td><td class="num">${o.k}</td><td class="num">${n2(o.hp)}</td><td class="wrap">${esc(o.rec.oharrak||'')}</td></tr>`).join('')}
+  </tbody></table></div>`:'<p class="muted" style="padding:10px 12px">Ez dago esku-hartzerik sute honetan.</p>'}</article>`}`;
+}
+async function exportFireQuery(fmt){
+  const zk=String(UI.qFire||'');const fire=openFireList().find(x=>x.k===zk);
+  const rows=fire?fireQueryRows(zk):[];if(!fire||!rows.length){toast('Aukeratu irekita dagoen sute bat');return}
+  const totalH=rows.reduce((n,o)=>n+o.h,0),totalHP=rows.reduce((n,o)=>n+o.hp,0);
+  const place=[fire.f.herria,fire.f.lekua].filter(Boolean).join(', ');
+  const meta='Sutea '+zk+(place?' · '+place:'')+' · Sortua: '+fdt(F(nowMs()));
+  const filename='sutea_'+zk.replace(/[^a-z0-9_-]/gi,'')+'.';
+  if(fmt==='pdf'){
+    const cols=[{t:'Baliabidea',w:22},{t:'Mota',w:14},{t:'Deia',w:23},{t:'Erantzuna',w:23},{t:'Iritsi',w:23},{t:'Bukatu',w:23},{t:'Etxeratu',w:23},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:16,align:'r'},{t:'Oharrak',w:48}];
+    pdfReport('Sutea '+zk,meta,cols,rows.map(o=>[resName(o.rec.baliabidea),S.baliabideak[o.rec.baliabidea]?.mota==='zisterna'?'Zisterna':'Taldea',showDT(o.rec.deia),showDT(o.rec.erantzuna),showDT(o.rec.iritsi),showDT(o.rec.bukatu),showDT(o.rec.etxeratu),n2(o.h),String(o.k),n2(o.hp),o.rec.oharrak||'']),['',rows.length+' esku-hartze','','','','','',n2(totalH),'',n2(totalHP),''],filename+'pdf');return;
+  }
+  const data=rows.map(o=>[resName(o.rec.baliabidea),S.baliabideak[o.rec.baliabidea]?.mota==='zisterna'?'Zisterna':'Taldea',o.rec.deia||'',o.rec.erantzuna||'',o.rec.iritsi||'',o.rec.bukatu||'',o.rec.etxeratu||'',r2(o.h),o.k,r2(o.hp),o.rec.oharrak||'']);
+  data.push(['GUZTIRA','','','','','','',r2(totalH),'',r2(totalHP),'']);
+  await saveXlsx(filename+'xlsx',[{name:'Sutea '+zk,head:['Baliabidea','Baliabide mota','Deia','Erantzuna','Iritsi','Bukatu','Etxeratu','Orduak','Kideak','Ordu-pertsonak','Oharrak'],rows:data},{name:'Sutearen datuak',head:['Sutea','Herria','Lekua','Esku-hartze kopurua'],rows:[[zk,fire.f.herria||'',fire.f.lekua||'',rows.length]]}]);
+}
+
 function qRows(){
   const Q=UI.q;const from=Q.from?PD(Q.from):-Infinity,to=Q.to?PD(Q.to)+DAY:Infinity;const rows=[];
   for(const g of Object.values(MODEL.G)){if(g.s==null)continue;const mota=g.rec.mota==='praktika'?'praktika':'zaintza';
@@ -1269,7 +1309,7 @@ async function act(a,el){
       if(error){toast('Ezin izan da sartu: '+error.message);break}const s=await SB.auth.getSession();UI.session=s.data.session;UI.loaded=false;render();await supaStart();break}
     case 'logout':await SB.auth.signOut();break;
     case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
-    case 'q-export':await exportQuery(el.dataset.k);break;
+    case 'q-export':await exportQuery(el.dataset.k);break;\n    case 'q-fire-export':await exportFireQuery(el.dataset.k);break;
     case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
@@ -1356,7 +1396,7 @@ function boot(){
     if(el.dataset.filter){UI[el.dataset.filter]=el.value;render();return}
     if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
     if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
-    if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
+    if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}\n    if(el.dataset.fire==='selected'){UI.qFire=el.value;render();return}
     if(el.dataset.sent){const k=el.dataset.sent;const cur={...(UI.sentBase?.[k]||{}),...((S.ziurtagiriak||{})[k]||{})};cur.bidalita=el.checked;cur.bidaliData=el.checked?F(nowMs()):'';safe(()=>put('ziurtagiriak',k,cur));return}
     if(el.dataset.pz){const [d,k]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(k==='Z')day.zist=r;else day.slots[+k].res=r;render();return}
     if(el.dataset.risk){const [d,z]=el.dataset.risk.split('|');const cur=clone((S.arriskua||{})[d]||{});cur['z'+z]=el.value===''?null:Math.round(+el.value*10)/10;safe(()=>put('arriskua',d,cur));return}
