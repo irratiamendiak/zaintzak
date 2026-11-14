@@ -283,7 +283,7 @@ function aggregate(M,from,to){
 
 /* Proposamen automatikoa (Excel-eko algoritmoa) */
 /* ===================== Datu-biltegia ===================== */
-const UI={tab:'zaintzak',zView:'prop',qView:'z',qFire:'',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',gFrom:'',gTo:'',fFrom:'',fTo:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
+const UI={tab:'zaintzak',zView:'prop',qView:'z',fFire:'',tlStart:null,tlFilter:'all',gRes:'',gMonth:'',gMota:'',fRes:'',lYear:'',lMonth:'',lView:'lab',cRes:'',gFrom:'',gTo:'',fFrom:'',fTo:'',session:null,q:{res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false},prop:null,loaded:false,mode:'',canWrite:true};
 let DB=null,DL=null,MODEL=null,renderQueued=false;
 const LS_KEY='zaintzak-itzaltzeak-v1';
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
@@ -382,11 +382,11 @@ function vFires(){
   const fires={};for(const [id,f] of Object.entries(S.suteak))fires[f.zk||id.replace(/^s/,'')]={id,f,ints:[]};
   for(const o of MODEL.ints){const k=o.rec.sutea;if(!fires[k])fires[k]={id:'s'+k,f:{zk:k,herria:'',lekua:''},ints:[],orphan:true};fires[k].ints.push(o)}
   let arr=Object.entries(fires).map(([k,v])=>({k,...v,last:Math.max(0,...v.ints.map(o=>o.deia||0))}));
-  if(UI.fRes||UI.fFrom||UI.fTo)arr=arr.filter(x=>x.ints.some(intOk));
+  if(UI.fFire||UI.fRes||UI.fFrom||UI.fTo)arr=arr.filter(x=>(!UI.fFire||String(x.k).includes(UI.fFire.trim()))&&x.ints.some(intOk));
   arr.sort((a,b)=>b.last-a.last||String(b.k).localeCompare(String(a.k)));
   let th=0,tp=0;arr.forEach(x=>x.ints.forEach(o=>{if(intOk(o)){th+=o.h;tp+=o.hp}}));
   return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Ordu guztiak agertzen dira; <b style="color:var(--ember)">gorriz</b> ERANTZUNA, itzaltze-orduak kontatzen hasten diren ordua (irteera baieztatua eta kide kopurua).</p>
-  <div class="tools"><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
+  <div class="tools"><label class="f">Sute-zk.<input data-filter="fFire" value="${esc(UI.fFire)}" inputmode="numeric" placeholder="Zenbakia" style="width:110px"></label><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
   <label class="f">Noiztik<input type="date" data-filter="fFrom" value="${esc(UI.fFrom)}"></label><label class="f">Noiz arte<input type="date" data-filter="fTo" value="${esc(UI.fTo)}"></label>
   <button class="btn" data-act="exp-f" data-k="xlsx">Excel</button><button class="btn" data-act="exp-f" data-k="pdf">PDF</button></div>
   <div class="sumline"><span><b>${arr.length}</b>sute</span><span><b>${n2(th)}</b>itzaltze ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
@@ -550,8 +550,8 @@ function vSuteak(){
   ${ong?'':'<div class="empty">Ez dago itzaltzerik abian une honetan.</div>'}`}
 function vKontsultak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.qView===k}" data-act="q-view" data-k="${k}">${l}</button>`;
-  return `<h2>Kontsultak</h2><div class="tools"><span class="seg">${sb('z','Zaintzak')}${sb('s','Suteak')}${sb('f','Sutea')}${sb('q','Bilaketa orokorra')}</span></div>
-  ${UI.qView==='s'?vFires():UI.qView==='f'?vFireQuery():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
+  return `<h2>Kontsultak</h2><div class="tools"><span class="seg">${sb('z','Zaintzak')}${sb('s','Suteak')}${sb('q','Bilaketa orokorra')}</span></div>
+  ${UI.qView==='s'?vFires():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
 function vZaintzak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.zView===k}" data-act="z-view" data-k="${k}">${l}</button>`;const p=ensureProp();p.risk=UI.zView==='bgx';
   return `${vNow('g')}<h2>Zaintzak</h2><p class="lead">Zaintzak hemen sortzen dira: eskuz, proposamen automatikoarekin edo BASUGIX arriskuaren arabera. Zaintzan dagoen talde bat sutera joaten bada, erabili <b>Suterik izan da</b> (Orain panelean edo zaintzaren fitxan): zaintza-orduak deiaren orduan amaitzen dira eta itzaltze-orduak kontatzen hasten dira. Sortutako zaintzak Kontsultak atalean ikusten eta editatzen dira.</p>
@@ -1310,7 +1310,6 @@ async function act(a,el){
     case 'logout':await SB.auth.signOut();break;
     case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
     case 'q-export':await exportQuery(el.dataset.k);break;
-    case 'q-fire-export':await exportFireQuery(el.dataset.k);break;
     case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
@@ -1398,7 +1397,6 @@ function boot(){
     if(el.id==='tlDate'&&el.value){UI.tlStart=monday(el.value);render();return}
     if(el.id==='importFile'&&el.files&&el.files[0]){importBackup(el.files[0]);el.value='';return}
     if(el.dataset.q){UI.q[el.dataset.q]=el.type==='checkbox'?el.checked:el.value;render();return}
-    if(el.dataset.fire==='selected'){UI.qFire=el.value;render();return}
     if(el.dataset.sent){const k=el.dataset.sent;const cur={...(UI.sentBase?.[k]||{}),...((S.ziurtagiriak||{})[k]||{})};cur.bidalita=el.checked;cur.bidaliData=el.checked?F(nowMs()):'';safe(()=>put('ziurtagiriak',k,cur));return}
     if(el.dataset.pz){const [d,k]=el.dataset.pz.split('|');const day=UI.prop.result.days[+d];const r=el.value?{id:el.value,...S.baliabideak[el.value]}:null;if(k==='Z')day.zist=r;else day.slots[+k].res=r;render();return}
     if(el.dataset.risk){const [d,z]=el.dataset.risk.split('|');const cur=clone((S.arriskua||{})[d]||{});cur['z'+z]=el.value===''?null:Math.round(+el.value*10)/10;safe(()=>put('arriskua',d,cur));return}
