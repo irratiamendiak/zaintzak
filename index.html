@@ -878,14 +878,14 @@ function vQuery(){
   </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; Excel eta PDF fitxategietan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
 }
 async function exportQuery(fmt){const rows=qRows().sort((a,b)=>a.s-b.s);if(!rows.length){toast('Ez dago daturik iragazki hauekin');return}
-  const Q=UI.q;const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:''].filter(Boolean));
+  const Q=UI.q;const fireFor=zk=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(zk))||{};const placeFor=zk=>{const f=fireFor(zk);return [f.herria,f.lekua].filter(Boolean).join(', ')};const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:'',Q.sute&&placeFor(Q.sute)?'Lekua: '+placeFor(Q.sute):''].filter(Boolean));
   const ml={zaintza:'Zaintza',praktika:'Praktika',itzaltze:'Itzaltzea'};const T={h:0,hp:0,e:0};rows.forEach(r=>{T.h+=r.h;T.hp+=r.hp;T.e+=r.eur});
   const name=ext=>expName('kontsulta',Q.res,Q.from,Q.to,ext);
-  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Data',w:18},{t:'Hasiera',w:13},{t:'Amaiera',w:15},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Sutea / zk.',w:15},{t:'Oharrak',w:54}];
-    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fD(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'—',n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),r.ohar]),['',`${rows.length} erregistro`,'','','',n2(T.h),'',n2(T.hp),n2(T.e),'',''],name('pdf'));return}
-  const out=rows.map(r=>[resName(r.res),ml[r.mota],xDate(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
-  out.push(['GUZTIRA','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','']);
-  await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Data','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
+  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:17},{t:'Mota',w:12},{t:'Data',w:16},{t:'Hasiera',w:11},{t:'Amaiera',w:13},{t:'Orduak',w:10,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:13,align:'r'},{t:'EUR',w:12,align:'r'},{t:'Sutea',w:10},{t:'Herria',w:16},{t:'Lekua',w:20},{t:'Oharrak',w:45}];
+    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fD(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'—',n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.ohar]),['',`${rows.length} erregistro`,'','','',n2(T.h),'',n2(T.hp),n2(T.e),'','','',''],name('pdf'));return}
+  const out=rows.map(r=>[resName(r.res),ml[r.mota],xDate(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
+  out.push(['GUZTIRA','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','','','']);
+  await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Data','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Herria','Lekua','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
 
 /* ---- Emandako ziurtagiriak ---- */
 function certId(no){return String(no).replace(/[^\w-]/g,'')}
@@ -1078,8 +1078,11 @@ async function exportGuards(fmt){
   }
 }
 async function exportFires(fmt){
-  const list=MODEL.ints.filter(intOk).sort((a,b)=>(a.deia||0)-(b.deia||0));if(!list.length){toast('Ez dago daturik iragazki hauekin');return}
-  const meta=filterDesc(UI.fRes,UI.fFrom,UI.fTo);const fi=o=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(o.rec.sutea))||{};const eu=o=>o.hp*rate(o.rec.baliabidea,'itzaltze');
+  const selected=String(UI.fFire||'').trim();
+  const list=MODEL.ints.filter(o=>intOk(o)&&(!selected||String(o.rec.sutea)===selected)).sort((a,b)=>(a.deia||0)-(b.deia||0));if(!list.length){toast('Ez dago daturik iragazki hauekin');return}
+  const fi=o=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(o.rec.sutea))||{};
+  const firePlace=o=>[fi(o).herria,fi(o).lekua].filter(Boolean).join(', ');
+  const meta=filterDesc(UI.fRes,UI.fFrom,UI.fTo,[selected?'Sutea: '+selected:'',selected&&list[0]&&firePlace(list[0])?'Lekua: '+firePlace(list[0]):''].filter(Boolean));const eu=o=>o.hp*rate(o.rec.baliabidea,'itzaltze');
   let T={h:0,hp:0,e:0};list.forEach(o=>{T.h+=o.h;T.hp+=o.hp;T.e+=eu(o)});
   if(fmt==='xlsx'){
     const rows=list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',xDate(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia),o.rec.itzuli?tRel(o.rec.itzuli,o.rec.deia):'',o.start!=null?tRelMs(o.start,o.rec.deia):'',o.end!=null?tRelMs(o.end,o.rec.deia):'',o.startRule||'',o.endRule||'',r2(o.h),o.k,r2(o.hp),r2(eu(o)),o.rec.oharrak||'']);
