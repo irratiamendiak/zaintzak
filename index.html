@@ -386,7 +386,7 @@ function vFires(){
   arr.sort((a,b)=>b.last-a.last||String(b.k).localeCompare(String(a.k)));
   let th=0,tp=0;arr.forEach(x=>x.ints.forEach(o=>{if(intOk(o)){th+=o.h;tp+=o.hp}}));
   return `<p class="lead">Sute bakoitza eta bertara joan diren baliabideak, zaintzatik abiatutako irteerak barne. Ordu guztiak agertzen dira; <b style="color:var(--ember)">gorriz</b> ERANTZUNA, itzaltze-orduak kontatzen hasten diren ordua (irteera baieztatua eta kide kopurua).</p>
-  <div class="tools"><label class="f">Sute-zk.<input data-filter="fFire" value="${esc(UI.fFire)}" inputmode="numeric" placeholder="Zenbakia" style="width:110px"></label><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
+  <div class="tools"><label class="f">Sute-zk.<select data-filter="fFire"><option value="">Sute guztiak</option>${[...new Set(arr.map(x=>String(x.k)))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).map(k=>`<option value="${esc(k)}" ${String(UI.fFire)===k?'selected':''}>${esc(k)}</option>`).join('')}</select></label><label class="f">Baliabidea<select data-filter="fRes">${resOptions(UI.fRes,true)}</select></label>
   <label class="f">Noiztik<input type="date" data-filter="fFrom" value="${esc(UI.fFrom)}"></label><label class="f">Noiz arte<input type="date" data-filter="fTo" value="${esc(UI.fTo)}"></label>
   <button class="btn" data-act="exp-f" data-k="xlsx">Excel</button><button class="btn" data-act="exp-f" data-k="pdf">PDF</button></div>
   <div class="sumline"><span><b>${arr.length}</b>sute</span><span><b>${n2(th)}</b>itzaltze ordu</span><span><b>${n2(tp)}</b>ordu-pertsona</span></div>
@@ -549,8 +549,7 @@ function vSuteak(){
   <div class="tools"><button class="btn primary" data-act="new-int">Zaintzarik gabeko irteera</button></div>
   ${ong?'':'<div class="empty">Ez dago itzaltzerik abian une honetan.</div>'}`}
 function vKontsultak(){
-  const sb=(k,l)=>`<button aria-pressed="${UI.qView===k}" data-act="q-view" data-k="${k}">${l}</button>`;
-  return `<h2>Kontsultak</h2><div class="tools"><span class="seg">${sb('z','Zaintzak')}${sb('s','Suteak')}${sb('q','Bilaketa orokorra')}</span></div>
+  return `<h2>Kontsultak</h2><div class="tools"><label class="f">Ikuspegia<select data-filter="qView"><option value="z" ${UI.qView==='z'?'selected':''}>Zaintzak</option><option value="s" ${UI.qView==='s'?'selected':''}>Suteak</option><option value="q" ${UI.qView==='q'?'selected':''}>Bilaketa orokorra</option></select></label></div>
   ${UI.qView==='s'?vFires():UI.qView==='q'?vQuery():`<p class="lead">Zaintza eta praktika tarte guztiak. Sakatu errenkada bat editatzeko. Talde berean tarte bat baino gehiago egon daitezke aldi berean, kideak ordu desberdinetan sartzen direnean.</p>`+vGuards()}`}
 function vZaintzak(){
   const sb=(k,l)=>`<button aria-pressed="${UI.zView===k}" data-act="z-view" data-k="${k}">${l}</button>`;const p=ensureProp();p.risk=UI.zView==='bgx';
@@ -868,7 +867,7 @@ function vQuery(){
   <label class="f">Baliabide mota<select data-q="mt"><option value="">Guztiak</option><option value="taldea" ${Q.mt==='taldea'?'selected':''}>Taldeak</option><option value="zisterna" ${Q.mt==='zisterna'?'selected':''}>Zisternak</option></select></label>
   <label class="f">Mota<select data-q="mota"><option value="">Guztiak</option><option value="zaintza" ${Q.mota==='zaintza'?'selected':''}>Zaintza</option><option value="praktika" ${Q.mota==='praktika'?'selected':''}>Praktika</option><option value="itzaltze" ${Q.mota==='itzaltze'?'selected':''}>Itzaltzea</option></select></label>
   <label class="f">Noiztik<input type="date" data-q="from" value="${esc(Q.from)}"></label><label class="f">Noiz arte<input type="date" data-q="to" value="${esc(Q.to)}"></label>
-  <label class="f">Sute-zk.<input data-q="sute" value="${esc(Q.sute)}" style="width:90px"></label>
+  <label class="f">Sute-zk.<select data-q="sute"><option value="">Sute guztiak</option>${[...new Set(MODEL.ints.map(o=>String(o.rec.sutea||'' )).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).map(k=>`<option value="${esc(k)}" ${String(Q.sute)===k?'selected':''}>${esc(k)}</option>`).join('')}</select></label>
   <label class="chk" style="align-self:center"><input type="checkbox" data-q="plan" ${Q.plan?'checked':''}> Planifikatuak barne</label>
   <span class="grow"></span><button class="btn" data-act="q-clear">Garbitu</button><button class="btn" data-act="q-export" data-k="xlsx">Excel</button><button class="btn" data-act="q-export" data-k="pdf">PDF</button></div>
   <div class="sumline"><span><b>${rows.length}</b>erregistro</span><span><b>${n2(T.zaintza[1])}</b>zaintza o-p</span><span><b>${n2(T.praktika[1])}</b>praktika o-p</span><span><b>${n2(T.itzaltze[1])}</b>itzaltze o-p</span><span><b>${eur(T.zaintza[2]+T.praktika[2]+T.itzaltze[2])}</b></span></div>
@@ -1080,7 +1079,7 @@ async function exportGuards(fmt){
 }
 async function exportFires(fmt){
   const list=MODEL.ints.filter(intOk).sort((a,b)=>(a.deia||0)-(b.deia||0));if(!list.length){toast('Ez dago daturik iragazki hauekin');return}
-  const meta=filterDesc(UI.fRes,UI.fFrom,UI.fTo);const fi=o=>S.suteak['s'+o.rec.sutea]||{};const eu=o=>o.hp*rate(o.rec.baliabidea,'itzaltze');
+  const meta=filterDesc(UI.fRes,UI.fFrom,UI.fTo);const fi=o=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(o.rec.sutea))||{};const eu=o=>o.hp*rate(o.rec.baliabidea,'itzaltze');
   let T={h:0,hp:0,e:0};list.forEach(o=>{T.h+=o.h;T.hp+=o.hp;T.e+=eu(o)});
   if(fmt==='xlsx'){
     const rows=list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',xDate(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia),o.rec.itzuli?tRel(o.rec.itzuli,o.rec.deia):'',o.start!=null?tRelMs(o.start,o.rec.deia):'',o.end!=null?tRelMs(o.end,o.rec.deia):'',o.startRule||'',o.endRule||'',r2(o.h),o.k,r2(o.hp),r2(eu(o)),o.rec.oharrak||'']);
