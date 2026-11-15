@@ -243,6 +243,10 @@ function compute(st){
     o.guard=gs.find(g=>g.s!=null&&g.e!=null&&g.s<o.deia&&g.e>=o.deia)||null;
     o.og=r.zaintzan==='bai'?true:r.zaintzan==='ez'?false:(!!o.guard||!!o.chained);
     if(o.og){o.start=o.deia;o.startRule=(o.chained&&!o.guard)?'DEIA (aurreko sutetik)':'DEIA (zaintzan)'}
+    else if(r.irteera==='geroratua'){const gd=P(r.irteeraGeroratua);
+      if(gd!=null){o.start=gd;o.startRule='IRTEERA GERORATUA';o.deferred=true;if(gd<o.deia)o.warn.push({t:'Irteera geroratua DEIA baino lehenagokoa da'})}
+      else if(o.er!=null){o.start=o.er;o.startRule='ERANTZUNA';o.warn.push({t:'Irteera geroratuaren ordua falta: ERANTZUNA erabili da'})}
+      else{o.start=o.deia;o.startRule='DEIA';o.warn.push({t:'Irteera geroratuaren ordua falta: DEIA erabili da'})}}
     else if(o.er!=null){o.start=o.er;o.startRule='ERANTZUNA'}
     else{o.start=o.deia;o.startRule='DEIA';o.warn.push({t:'ERANTZUNA falta: DEIA erabili da',info:true})}
     const c=[];if(o.itz!=null)c.push([o.itz,'Zaintzara itzuli']);if(o.next)c.push([o.next.deia,'Hurrengo sutea ('+o.next.rec.sutea+')']);if(o.etx!=null)c.push([o.etx,'ETXERATU']);
@@ -405,7 +409,7 @@ function timeCells(o){const r=o.rec;const st=o.start,en=o.end;
   const usedEnd=k=>en!=null&&P(r[k])===en&&((k==='etxeratu'&&o.endRule==='ETXERATU'));
   const itz=r.itzuli?`<div class="muted" style="font-size:12px">Zaintzara: ${tRel(r.itzuli,r.deia)}</div>`:'';
   const nxt=o.next&&o.endRule&&o.endRule.startsWith('Hurrengo')?`<div class="muted" style="font-size:12px">${esc(o.endRule)}</div>`:'';
-  return `<td>${fD(r.deia)}</td>`+c(r.deia,false)+c(r.erantzuna,!!r.erantzuna)+c(r.iritsi,false)+c(r.bukatu,false,nxt)+c(r.etxeratu,false,itz)}
+  return `<td>${fD(r.deia)}</td>`+c(r.deia,false)+c(r.erantzuna,!!r.erantzuna&&!o.deferred,o.deferred?`<div class="tused" style="font-size:12px">Geroratua: ${showMs(o.start)}</div>`:'')+c(r.iritsi,false)+c(r.bukatu,false,nxt)+c(r.etxeratu,false,itz)}
 function ensureProp(){
   if(!UI.prop){const t=todayStr();UI.prop={start:addDays(monday(t),7),days:7,avail:{},result:null}}
   const p=UI.prop;for(const r of resList())if(!p.avail[r.id]||p.avail[r.id].length!==p.days)p.avail[r.id]=Array(p.days).fill(true);return p;
@@ -508,6 +512,7 @@ function vHelp(){
   <ul>
   <li><b>Sutea, Baliabidea, Kideak</b>: sute-zenbakia (existitzen den bat edo berria), baliabidea eta irteten diren kideak.</li>
   <li><b>Deia</b>: deia jaso zuten ordua. <b>Erantzuna</b>: irteera baieztatu zuten ordua. <b>Iritsi</b>: sutera iritsi ziren ordua. <b>Bukatu</b>: sutean amaitu zuten ordua. <b>Etxeratu</b>: etxera itzuli ziren ordua.</li>
+  <li><b>Irteera mota</b>: <b>Berehalakoa</b> bada, itzaltze-orduak ERANTZUNAtik (irteera baieztatu zuten ordua) kontatzen dira. <b>Geroratua</b> bada (irteera baieztatu dute, baina ordu zehatz batean aterako dira, ordu batzuk geroago), sartu <b>Irteera geroratuaren ordua</b> eta hortik kontatuko dira. Zaintzan zeudela deia jaso bazuten, DEIAtik kontatzen da beti.</li>
   <li><b>Deia jaso zuenean zaintzan zegoen?</b>
     <ul><li><b>Automatikoki</b>: aplikazioak berak erabakitzen du. Baliabideak deiaren orduan zaintza erregistratua badu (edo aurreko sute baten segida bada), zaintzan zegoela hartzen du eta itzaltzea <b>Deia</b>tik kontatzen du. Bestela, zaintzarik gabe hartzen du eta <b>Erantzuna</b>tik kontatzen du.</li>
     <li><b>Bai</b>: derrigorrez zaintzan zegoela hartzen du, zaintzarik erregistratu ez bada ere. <b>Ez</b>: derrigorrez zaintzarik gabe hartzen du.</li></ul></li>
@@ -545,7 +550,7 @@ function vHelp(){
 /* ---- Denbora-lerroa ---- */
 function vSuteak(){
   const ong=MODEL.ints.filter(o=>o.ongoing).length;
-  return `${vNow('f')}<h2>Suteak</h2><p class="lead">Hemen erregistratzen dira zaintzarik gabeko irteerak: erretenak edo uraskak zaintzan egon gabe sute batera deitzen direnean. Itzaltzea ERANTZUNAtik (irteera baieztatua) hasten da kontatzen. Zaintzatik abiatutako irteerak Zaintzak ataletik sortzen dira (<b>Suterik izan da</b>). Erregistratutako suteak eta esku-hartzeak Kontsultak atalean ikusten eta editatzen dira.</p>
+  return `${vNow('f')}<h2>Suteak</h2><p class="lead">Hemen erregistratzen dira zaintzarik gabeko irteerak: erretenak edo uraskak zaintzan egon gabe sute batera deitzen direnean. Itzaltzea ERANTZUNAtik (irteera baieztatua) hasten da kontatzen; irteera geroratua bada, geroratutako irteera-orduatik. Zaintzatik abiatutako irteerak Zaintzak ataletik sortzen dira (<b>Suterik izan da</b>). Erregistratutako suteak eta esku-hartzeak Kontsultak atalean ikusten eta editatzen dira.</p>
   <div class="tools"><button class="btn primary" data-act="new-int">Zaintzarik gabeko irteera</button></div>
   ${ong?'':'<div class="empty">Ez dago itzaltzerik abian une honetan.</div>'}`}
 function vKontsultak(){
@@ -704,7 +709,7 @@ function vCerts(){
 }
 
 const CERT_TITLE={zaintza:'Zaintza-ziurtagiria / Certificado de guardia',praktika:'Praktika-ziurtagiria / Certificado de prácticas',itzaltze:'Itzaltze-ziurtagiria / Certificado de extinción',mixed:'Zaintza eta itzaltze ziurtagiria / Certificado de guardia y extinción'};
-const RULE_ES={'DEIA (zaintzan)':'llamada (de guardia)','DEIA (aurreko sutetik)':'llamada (desde incendio anterior)','ERANTZUNA':'confirmación de salida','DEIA':'llamada','Zaintzara itzuli':'vuelta a guardia','ETXERATU':'regreso a base','abian':'en curso','—':'—'};
+const RULE_ES={'DEIA (zaintzan)':'llamada (de guardia)','DEIA (aurreko sutetik)':'llamada (desde incendio anterior)','ERANTZUNA':'confirmación de salida','IRTEERA GERORATUA':'salida diferida','DEIA':'llamada','Zaintzara itzuli':'vuelta a guardia','ETXERATU':'regreso a base','abian':'en curso','—':'—'};
 function ruleBi(r){if(!r)return '—';const m=/^Hurrengo sutea \((.*)\)$/.exec(r);if(m)return `${r} / siguiente incendio (${m[1]})`;return RULE_ES[r]&&r!=='—'?`${r} / ${RULE_ES[r]}`:r}
 function mResBi(R){return R.mota==='zisterna'?'zisterna / cisterna':'taldea / retén'}
 function endTxt(it){return it.open?(it.ref.ongoing?'abian / en curso':'amaiera falta / sin hora de fin'):showMs(it.e)}
@@ -1186,6 +1191,11 @@ function intForm(id,preset){
   <fieldset><legend>Deia jaso zuenean zaintzan zegoen?</legend><div class="radios">
   ${[['auto','Automatikoki'],['bai','Bai'],['ez','Ez']].map(([v,l])=>`<label class="chk"><input type="radio" name="zaintzan" value="${v}" ${r.zaintzan===v||(!r.zaintzan&&v==='auto')?'checked':''}> ${l}</label>`).join('')}</div>
   <div id="cutBox" style="margin-top:8px"></div></fieldset>
+  <fieldset><legend>Irteera mota</legend><div class="radios">
+  <label class="chk"><input type="radio" name="irteera" value="berehala" ${r.irteera==='geroratua'?'':'checked'}> Berehalakoa</label>
+  <label class="chk"><input type="radio" name="irteera" value="geroratua" ${r.irteera==='geroratua'?'checked':''}> Geroratua</label></div>
+  <div class="grid" id="defBox" style="margin-top:10px">${dtF('irteeraGeroratua','Irteera geroratuaren ordua',r.irteeraGeroratua,ib,'erantzuna')}
+  <p class="muted span2" style="font-size:13px;margin:0">Berehalakoan, itzaltzea ERANTZUNAtik kontatzen da. Geroratuan, erretenak adierazitako irteera-orduan hasten da. Deia zaintzan jaso bazuten, DEIAtik kontatzen da eta hau ez da erabiltzen.</p></div></fieldset>
   <fieldset><legend>Itzaltzearen ostean</legend><div class="radios"><label class="chk"><input type="radio" name="ondoren" value="etxera" ${(r.itzuli||hasNext)?'':'checked'}> Etxera</label><label class="chk"><input type="radio" name="ondoren" value="jarraitu" ${r.itzuli?'checked':''}> Zaintzan jarraitu</label><label class="chk"><input type="radio" name="ondoren" value="beste" ${hasNext?'checked':''}> Beste sute batera</label></div>
   <div class="grid" id="contBox" style="margin-top:10px">${dtF('itzuli','Zaintzara itzuli',r.itzuli,ib,'bukatu')}${dtF('contEnd','Zaintza honen amaiera','',ib,'itzuli')}
   <p class="muted span2" style="font-size:13px;margin:0">Itzaltzea zaintzara itzultzean amaitzen da. Ordu horretan zaintzarik ez badago, tarte berria sortzen da amaiera honekin.</p></div>
@@ -1196,6 +1206,7 @@ function intForm(id,preset){
   let lastRes=r.baliabidea;
   openDlg(id?'Esku-hartzea editatu':'Esku-hartze berria',body,foot,f=>{
     const isNew=fv(f,'sutea')==='__new';document.getElementById('newFire').style.display=isNew?'':'none';
+    document.getElementById('defBox').style.display=f.querySelector('input[name=irteera]:checked')?.value==='geroratua'?'':'none';
     const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';document.getElementById('contBox').style.display=cont?'':'none';
     document.getElementById('nextBox').style.display=nxt?'':'none';f.querySelectorAll('.nnf').forEach(x=>x.style.display=(f.elements.nsutea.value==='__new'&&!hasNext)?'':'none');
     const el0=f.elements.etxeratu&&f.elements.etxeratu.closest('label');if(el0)el0.style.display=nxt?'none':'';
@@ -1217,8 +1228,9 @@ function intForm(id,preset){
 function readInt(f){
   const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';
   const s=fv(f,'sutea');
+  const irt=f.querySelector('input[name=irteera]:checked')?.value==='geroratua'?'geroratua':'berehala';
   return {sutea:s==='__new'?fv(f,'fzk'):s,baliabidea:fv(f,'baliabidea'),deia:fv(f,'deia'),erantzuna:fv(f,'erantzuna'),iritsi:fv(f,'iritsi'),bukatu:fv(f,'bukatu'),etxeratu:nxt?'':fv(f,'etxeratu'),
-    itzuli:cont?fv(f,'itzuli'):'',kideak:+fv(f,'kideak')||1,zaintzan:f.querySelector('input[name=zaintzan]:checked')?.value||'auto',oharrak:fv(f,'oharrak')};
+    itzuli:cont?fv(f,'itzuli'):'',kideak:+fv(f,'kideak')||1,zaintzan:f.querySelector('input[name=zaintzan]:checked')?.value||'auto',irteera:irt,irteeraGeroratua:irt==='geroratua'?fv(f,'irteeraGeroratua'):'',oharrak:fv(f,'oharrak')};
 }
 function fireForm(id){
   const f0=id?clone(S.suteak[id]||{zk:id.replace(/^s/,'')}):{zk:String(nextFireZk()),herria:'',lekua:'',oharrak:''};
@@ -1317,6 +1329,7 @@ async function act(a,el){
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
       if(!rec.sutea){toast('Sute-zenbakia behar da');break}if(!rec.baliabidea||!rec.deia){toast('Baliabidea eta deiaren ordua behar dira');break}
+      if(rec.irteera==='geroratua'&&!rec.irteeraGeroratua){toast('Bete irteera geroratuaren ordua');break}
       const mode=f.querySelector('input[name=ondoren]:checked')?.value,cont=mode==='jarraitu',nxt=mode==='beste';if(cont&&!rec.itzuli){toast('Bete zaintzara itzultzeko ordua');break}
       const nsv=nxt?fv(f,'nsutea'):'',nz=nxt?(nsv==='__new'?fv(f,'nfzk'):nsv):'';
       if(nxt){if(!rec.bukatu){toast('Bete bukatu ordua');break}if(!nz){toast('Aukeratu hurrengo sutea edo sartu sute-zenbakia');break}if(String(nz)===String(rec.sutea)){toast('Hurrengo sutea ezin da hau bera izan');break}}
