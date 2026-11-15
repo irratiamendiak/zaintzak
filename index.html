@@ -526,9 +526,13 @@ function vHelp(){
   ${S1('denbora','Denbora-lerroa',`<p>Astebeteko ikuspegia, baliabide bakoitzeko lerro batekin. Zaintzak, praktikak, planifikatuak eta itzaltzeak kolore desberdinez agertzen dira; barra bati sakatuta editatu daiteke. Goiko botoiekin astea aldatu eta <b>Gaur</b> egunera itzul zaitezke; taldeen eta zisternen artean iragaz dezakezu. Ordu hutsuneak edo gainjarriak dituzten barrak nabarmenduta agertzen dira.</p>`)}
 
   ${S1('kontsultak','Kontsultak',`<ul>
-  <li><b>Zaintzak</b>: zaintza eta praktika tarte guztiak. Iragazi baliabidez, hilabetez, motaz edo datez; Excel edo PDF bezala esportatu. Errenkada bati sakatuta editatzen da.</li>
-  <li><b>Suteak</b>: sute bakoitza eta bertara joan diren baliabideak, orduak eta ordu-pertsonak barne. Hemen ikusten eta editatzen dira esku-hartzeak.</li>
-  <li><b>Bilaketa orokorra</b>: datuetan bilatzeko.</li></ul>`)}
+  <li><b>Zaintzak</b>: zaintza eta praktika tarte guztiak. Iragazi baliabidez, hilabetez, motaz edo datez; Excel edo PDF bezala esportatu. Sutera joan behar izan zuten zaintzek <b>Sutera</b> etiketa dute (PDFan eta Excelean, <b>Sutera</b> zutabea, sute-zenbakiarekin). Errenkada bati sakatuta editatzen da.</li>
+  <li><b>Suteak</b>: sute bakoitza eta bertara joan diren baliabideak, orduak eta ordu-pertsonak barne. Hemen ikusten eta editatzen dira esku-hartzeak. Esku-hartze bakoitzaren <b>irteera mota</b> ere agertzen da: berehalakoa, edo geroratua (kasu horretan, irteera-ordua gorriz).</li>
+  <li><b>Bilaketa orokorra</b>: <b>egun jakin batean</b> edo <b>sute jakin batean</b> gertatu dena batera ikusteko: zaintzak, praktikak eta itzaltzeak, ordena kronologikoan. Zaintzak eta Suteak ikuspegiek gauza bakoitza bereizita erakusten dute; hau, berriz, dena nahastuta, gertakarien segida ikusteko.
+    <ul><li><b>Eguna</b> aukeratuta (edo Noiztik/Noiz arte), egun horretan hasi diren zaintza, praktika eta itzaltze guztiak agertzen dira. Tarteak hasiera-dataren arabera kontatzen dira, likidazioan bezala.</li>
+    <li><b>Sute-zk.</b> aukeratuta, sute horretako itzaltzeak eta sutera joan ziren zaintzak (<b>Sutera</b> etiketarekin) agertzen dira. Irteera geroratua duten esku-hartzeek <b>Geroratua</b> etiketa dute.</li>
+    <li>Baliabidea, baliabide mota eta mota (zaintza, praktika, itzaltzea) iragazkiekin mugatu daiteke; <b>Planifikatuak barne</b> markatuta, egiaztatu gabeko zaintzak ere agertzen dira.</li></ul></li>
+  <li><b>PDF eta Excel</b>: PDF guztietan (ziurtagiriak, likidazio-agiria eta kontsulten PDFak) Gipuzkoako Foru Aldundiaren logotipoa agertzen da. Suteak eta Bilaketa orokorra PDFetan <b>Irteera mota</b> zutabeak esku-hartze bakoitza berehalakoa ala geroratua den adierazten du (geroratua bada, ordua ere bai).</li></ul>`)}
 
   ${S1('likidazioa','Likidazioa eta ziurtagiriak',`<ul>
   <li><b>Laburpena</b>: baliabide bakoitzeko zaintza-, praktika- eta itzaltze-orduak eta ordu-pertsonak, eta zenbatekoa (€), aukeratutako aldian.</li>
@@ -539,7 +543,7 @@ function vHelp(){
 
   ${S1('arauak','Arauak',`<p>Hemen aldatzen dira ordutegi estandarrak, gutxieneko atsedenak, eremu aktiboak, esleipen-irizpidea, laguntza-lehentasunak, tarifak eta BASUGIX arrisku-mailak. Aldaketak proposamen eta kalkulu berrietan aplikatzen dira. Ez ahaztu <b>Arauak gorde</b> sakatzea.</p>`)}
 
-  ${S1('abisuak','Abisuak',`<p>Goiko eskuinean "<i>N abisu</i>" botoia agertzen bada, gainjartzeak edo falta diren datuak daude (adibidez, itzaltzeak amaiera-ordurik ez izatea). Konpondu arte orduak ez dira ondo kalkulatzen. Abisu bakoitzean <b>Ireki</b> botoiarekin dagokion fitxa zuzenean irekitzen da, eta batzuetan konponketa azkarra proposatzen da.</p>`)}
+  ${S1('abisuak','Abisuak',`<p>Goiko eskuinean "<i>N abisu</i>" botoia agertzen bada, gainjartzeak edo falta diren datuak daude (adibidez, itzaltzeak amaiera-ordurik ez izatea, edo irteera geroratuaren ordurik ez izatea). Konpondu arte orduak ez dira ondo kalkulatzen. Abisu bakoitzean <b>Ireki</b> botoiarekin dagokion fitxa zuzenean irekitzen da, eta batzuetan konponketa azkarra proposatzen da.</p>`)}
 
   ${S1('datuak','Datuak eta babeskopia',`<ul>
   <li>Goiko eskuineko egoerak datuak non gordetzen diren adierazten du: datu-base zentralean (saioa hasi behar da), datu partekatuetan, gailu honetan edo irakurtzeko soilik moduan. Irakurtzeko soilik moduan ezin da editatu.</li>
@@ -860,21 +864,21 @@ async function exportFireQuery(fmt){
 }
 
 function qRows(){
-  const Q=UI.q;const from=Q.from?PD(Q.from):-Infinity,to=Q.to?PD(Q.to)+DAY:Infinity;const rows=[];
+  const Q=UI.q;const from=Q.day?PD(Q.day):Q.from?PD(Q.from):-Infinity,to=Q.day?PD(Q.day)+DAY:Q.to?PD(Q.to)+DAY:Infinity;const rows=[];
   for(const g of Object.values(MODEL.G)){if(g.s==null)continue;const mota=g.rec.mota==='praktika'?'praktika':'zaintza';
-    rows.push({kind:'g',id:g.id,res:g.rec.baliabidea,mota,s:g.s,e:g.e,h:g.h,k:g.k,hp:g.hp,eur:g.hp*rate(g.rec.baliabidea,'zaintza'),sutea:'',zk:g.rec.zk||'',ohar:g.rec.oharrak||'',plan:g.plan})}
+    rows.push({kind:'g',id:g.id,res:g.rec.baliabidea,mota,s:g.s,e:g.e,h:g.h,k:g.k,hp:g.hp,eur:g.hp*rate(g.rec.baliabidea,'zaintza'),sutea:(suteLink(g)?suteLink(g).rec.sutea:''),sutera:!!g.rec.suterik,zk:g.rec.zk||'',ohar:g.rec.oharrak||'',plan:g.plan})}
   for(const o of MODEL.ints){if(o.start==null)continue;rows.push({kind:'i',id:o.id,res:o.rec.baliabidea,mota:'itzaltze',s:o.start,e:o.end,h:o.h,k:o.k,hp:o.hp,eur:o.hp*rate(o.rec.baliabidea,'itzaltze'),sutea:o.rec.sutea,zk:'',ohar:o.rec.oharrak||'',open:o.end==null})}
-  return rows.filter(r=>(!Q.res||r.res===Q.res)&&(!Q.mota||r.mota===Q.mota)&&r.s>=from&&r.s<to&&(!Q.sute||String(r.sutea)===Q.sute.trim())&&(!Q.mt||(r.res&&S.baliabideak[r.res]?.mota===Q.mt))&&(Q.plan||!r.plan)).sort((a,b)=>b.s-a.s);
+  return rows.filter(r=>(!Q.res||r.res===Q.res)&&(!Q.mota||r.mota===Q.mota)&&r.s>=from&&r.s<to&&(!Q.sute||String(r.sutea)===Q.sute.trim())&&(!Q.mt||(r.res&&S.baliabideak[r.res]?.mota===Q.mt))&&(Q.plan||!r.plan)).sort((a,b)=>(Q.sute||Q.day||Q.from||Q.to)?a.s-b.s:b.s-a.s);
 }
 function vQuery(){
   const Q=UI.q;const rows=qRows();const T={zaintza:[0,0,0],praktika:[0,0,0],itzaltze:[0,0,0]};const byRes={};
   for(const r of rows){T[r.mota][0]+=r.h;T[r.mota][1]+=r.hp;T[r.mota][2]+=r.eur;const b=byRes[r.res]||(byRes[r.res]={zp:0,pp:0,ip:0,eur:0,n:0});b.n++;b.eur+=r.eur;if(r.mota==='itzaltze')b.ip+=r.hp;else if(r.mota==='praktika')b.pp+=r.hp;else b.zp+=r.hp}
   const shown=rows.slice(0,500);
-  return `<p class="lead">Bilatu zaintzak, praktikak eta itzaltzeak baliabidearen, dataren, motaren edo sutearen arabera. Emaitzak Excel edo PDF formatuan deskarga daitezke.</p>
+  return `<p class="lead">Egun jakin batean edo sute jakin batean gertatu dena batera ikusteko: zaintzak, praktikak eta itzaltzeak, ordena kronologikoan. Aukeratu <b>Eguna</b> (edo Noiztik/Noiz arte tarte bat) edo <b>Sute-zk.</b>; sute bat aukeratzen bada, sutera joan ziren baliabideen itzaltzeak eta irteera egin zuten zaintzak (<i>Sutera</i>) agertzen dira. Tarteak hasiera-dataren arabera kontatzen dira. Emaitzak Excel edo PDF formatuan deskarga daitezke. Zaintzak edo suteak bereizita ikusteko, erabili Zaintzak eta Suteak ikuspegiak.</p>
   <div class="tools"><label class="f">Baliabidea<select data-q="res">${resOptions(Q.res,true)}</select></label>
   <label class="f">Baliabide mota<select data-q="mt"><option value="">Guztiak</option><option value="taldea" ${Q.mt==='taldea'?'selected':''}>Taldeak</option><option value="zisterna" ${Q.mt==='zisterna'?'selected':''}>Zisternak</option></select></label>
   <label class="f">Mota<select data-q="mota"><option value="">Guztiak</option><option value="zaintza" ${Q.mota==='zaintza'?'selected':''}>Zaintza</option><option value="praktika" ${Q.mota==='praktika'?'selected':''}>Praktika</option><option value="itzaltze" ${Q.mota==='itzaltze'?'selected':''}>Itzaltzea</option></select></label>
-  <label class="f">Noiztik<input type="date" data-q="from" value="${esc(Q.from)}"></label><label class="f">Noiz arte<input type="date" data-q="to" value="${esc(Q.to)}"></label>
+  <label class="f">Eguna<input type="date" data-q="day" value="${esc(Q.day)}"></label><label class="f">Noiztik<input type="date" data-q="from" value="${esc(Q.from)}"></label><label class="f">Noiz arte<input type="date" data-q="to" value="${esc(Q.to)}"></label>
   <label class="f">Sute-zk.<select data-q="sute"><option value="">Sute guztiak</option>${[...new Set(MODEL.ints.map(o=>String(o.rec.sutea||'' )).filter(Boolean))].sort((a,b)=>a.localeCompare(b,undefined,{numeric:true})).map(k=>`<option value="${esc(k)}" ${String(Q.sute)===k?'selected':''}>${esc(k)}</option>`).join('')}</select></label>
   <label class="chk" style="align-self:center"><input type="checkbox" data-q="plan" ${Q.plan?'checked':''}> Planifikatuak barne</label>
   <span class="grow"></span><button class="btn" data-act="q-clear">Garbitu</button><button class="btn" data-act="q-export" data-k="xlsx">Excel</button><button class="btn" data-act="q-export" data-k="pdf">PDF</button></div>
@@ -882,16 +886,16 @@ function vQuery(){
   ${rows.length?`<details style="margin:0 0 14px"><summary style="cursor:pointer;font-weight:600">Laburpena baliabideka</summary><div class="tbl" style="margin-top:8px"><table><thead><tr><th>Baliabidea</th><th class="num">Erregistroak</th><th class="num">Zaintza o-p</th><th class="num">Praktika o-p</th><th class="num">Itzaltze o-p</th><th class="num">Guztira o-p</th><th class="num">Zenbatekoa</th></tr></thead><tbody>
   ${resList().filter(r=>byRes[r.id]).map(r=>{const b=byRes[r.id];return `<tr><td><b>${esc(r.izena)}</b></td><td class="num">${b.n}</td><td class="num">${n2(b.zp)}</td><td class="num">${n2(b.pp)}</td><td class="num">${n2(b.ip)}</td><td class="num">${n2(b.zp+b.pp+b.ip)}</td><td class="num">${eur(b.eur)}</td></tr>`}).join('')}</tbody></table></div></details>
   <div class="tbl"><table><thead><tr><th>Baliabidea</th><th>Mota</th><th>Data</th><th>Hasiera</th><th>Amaiera</th><th class="num">Orduak</th><th class="num">Kideak</th><th class="num">Ordu-pertsonak</th><th class="num">Zenbatekoa</th><th>Sutea / zk.</th><th>Oharrak</th></tr></thead><tbody>
-  ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}</td><td>${fD(F(r.s))}</td><td>${tRelMs(r.s)}</td><td>${tRelMs(r.e,F(r.s))}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
+  ${shown.map(r=>`<tr class="click" data-act="${r.kind==='g'?'edit-guard':'edit-int'}" data-id="${esc(r.id)}"><td><b>${esc(resName(r.res))}</b></td><td>${chip(r.mota)}${r.plan?' <span class="chip mute">Planifikatua</span>':''}${r.open?' <span class="chip warn">Amaierarik gabe</span>':''}${r.sutera?' <span class="chip itzaltze">Sutera</span>':''}${r.kind==='i'&&MODEL.I[r.id]&&MODEL.I[r.id].deferred?' <span class="chip warn">Geroratua</span>':''}</td><td>${fD(F(r.s))}</td><td>${tRelMs(r.s)}</td><td>${tRelMs(r.e,F(r.s))}</td><td class="num">${n2(r.h)}</td><td class="num">${r.k}</td><td class="num">${n2(r.hp)}</td><td class="num">${eur(r.eur)}</td><td>${esc(r.sutea||r.zk)}</td><td class="wrap">${esc(r.ohar)}</td></tr>`).join('')}
   </tbody></table></div>${rows.length>500?`<p class="muted">Lehen 500 erregistroak erakusten dira; Excel eta PDF fitxategietan guztiak daude.</p>`:''}`:'<div class="empty">Ez dago emaitzarik iragazki hauekin.</div>'}`;
 }
 async function exportQuery(fmt){const rows=qRows().sort((a,b)=>a.s-b.s);if(!rows.length){toast('Ez dago daturik iragazki hauekin');return}
-  const Q=UI.q;const fireFor=zk=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(zk))||{};const placeFor=zk=>{const f=fireFor(zk);return [f.herria,f.lekua].filter(Boolean).join(', ')};const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:'',Q.sute&&placeFor(Q.sute)?'Lekua: '+placeFor(Q.sute):''].filter(Boolean));
+  const Q0=UI.q;const Q=Q0.day?{...Q0,from:Q0.day,to:Q0.day}:Q0;const fireFor=zk=>Object.values(S.suteak||{}).find(f=>String(f.zk)===String(zk))||{};const placeFor=zk=>{const f=fireFor(zk);return [f.herria,f.lekua].filter(Boolean).join(', ')};const meta=filterDesc(Q.res,Q.from,Q.to,[Q.mota?'Mota: '+Q.mota:'',Q.mt?'Baliabide mota: '+Q.mt:'',Q.sute?'Sutea: '+Q.sute:'',Q.sute&&placeFor(Q.sute)?'Lekua: '+placeFor(Q.sute):''].filter(Boolean));
   const ml={zaintza:'Zaintza',praktika:'Praktika',itzaltze:'Itzaltzea'};const T={h:0,hp:0,e:0};rows.forEach(r=>{T.h+=r.h;T.hp+=r.hp;T.e+=r.eur});
   const name=ext=>expName('kontsulta',Q.res,Q.from,Q.to,ext);
-  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:17},{t:'Mota',w:12},{t:'Data',w:16},{t:'Hasiera',w:11},{t:'Amaiera',w:13},{t:'Irteera',w:22},{t:'Orduak',w:10,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:13,align:'r'},{t:'EUR',w:12,align:'r'},{t:'Sutea',w:10},{t:'Herria',w:16},{t:'Lekua',w:20},{t:'Oharrak',w:45}];
-    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':''),fD(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'—',(r.kind==='i'?irtTxt(MODEL.I[r.id]):''),n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.ohar]),['',`${rows.length} erregistro`,'','','','',n2(T.h),'',n2(T.hp),n2(T.e),'','','',''],name('pdf'));return}
-  const out=rows.map(r=>[resName(r.res),ml[r.mota],xDate(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
+  if(fmt==='pdf'){const cols=[{t:'Baliabidea',w:17},{t:'Mota',w:20},{t:'Data',w:16},{t:'Hasiera',w:11},{t:'Amaiera',w:13},{t:'Irteera mota',w:22},{t:'Orduak',w:10,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:13,align:'r'},{t:'EUR',w:12,align:'r'},{t:'Sutea',w:10},{t:'Herria',w:16},{t:'Lekua',w:20},{t:'Oharrak',w:45}];
+    pdfReport('Kontsulta',meta,cols,rows.map(r=>[resName(r.res),ml[r.mota]+(r.plan?' (plan.)':'')+(r.sutera?' + sutera':''),fD(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'—',(r.kind==='i'?irtTxt(MODEL.I[r.id]):''),n2(r.h),String(r.k),n2(r.hp),n2(r.eur),String(r.sutea||r.zk||''),fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.ohar]),['',`${rows.length} erregistro`,'','','','',n2(T.h),'',n2(T.hp),n2(T.e),'','','',''],name('pdf'));return}
+  const out=rows.map(r=>[resName(r.res),ml[r.mota]+(r.sutera?' + sutera':''),xDate(F(r.s)),tRelMs(r.s),r.e!=null?tRelMs(r.e,F(r.s)):'',r2(r.h),r.k,r2(r.hp),r2(r.eur),r.sutea||'',fireFor(r.sutea).herria||'',fireFor(r.sutea).lekua||'',r.zk||'',r.plan?'Bai':'',r.ohar]);
   out.push(['GUZTIRA','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'','','','','','']);
   await saveXlsx(name('xlsx'),[{name:'Kontsulta',head:['Baliabidea','Mota','Data','Hasiera','Amaiera','Orduak','Kideak','Ordu-pertsonak','Zenbatekoa €','Sutea','Herria','Lekua','Gertakari-zk.','Planifikatua','Oharrak'],rows:out},{name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}])}
 
@@ -1037,6 +1041,8 @@ function inRange(s,from,to){const d=(s||'').slice(0,10);return (!from||d>=from)&
 function guardRows(){return Object.values(MODEL.G).filter(g=>(!UI.gRes||g.rec.baliabidea===UI.gRes)&&(!UI.gMota||g.rec.mota===UI.gMota)&&(!UI.gMonth||(g.rec.hasiera||'').slice(5,7)===String(UI.gMonth).padStart(2,'0'))&&inRange(g.rec.hasiera,UI.gFrom,UI.gTo))}
 function intOk(o){return (!UI.fRes||o.rec.baliabidea===UI.fRes)&&inRange(o.rec.deia,UI.fFrom,UI.fTo)}
 function irtTxt(o){if(!o)return '';const r=o.rec;if(o.deferred)return 'Geroratua '+tRel(r.irteeraGeroratua,r.deia);if(r.irteera==='geroratua')return 'Geroratua (ordurik gabe)';return 'Berehalakoa'}
+function suteLink(g){if(!g.rec.suterik)return null;return ((MODEL.byRes[g.rec.baliabidea]||{i:[]}).i.find(o=>o.deia===g.e))||null}
+function suteraTxt(g){if(!g.rec.suterik)return '';const o=suteLink(g);return o?'Bai ('+o.rec.sutea+')':'Bai'}
 function fdt(s){return s?s.slice(0,10).replace(/-/g,'/')+' '+s.slice(11,16):''}
 function fms(ms){return ms==null?'':fdt(F(ms))}
 function r2(x){return Math.round((x||0)*100)/100}
@@ -1072,7 +1078,7 @@ async function exportGuards(fmt){
   const meta=filterDesc(UI.gRes,UI.gFrom,UI.gTo,[UI.gMonth?'Hilabetea: '+MONTHS[UI.gMonth-1]:'',UI.gMota?'Mota: '+UI.gMota:''].filter(Boolean));
   const eu=g=>g.hp*rate(g.rec.baliabidea,'zaintza');let T={h:0,hp:0,e:0};list.forEach(g=>{T.h+=g.h;T.hp+=g.hp;T.e+=eu(g)});
   if(fmt==='xlsx'){
-    const rows=list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',g.plan?'Planifikatua':'Egiaztatua',g.rec.suterik?'Bai':'',xDate(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),r2(g.h),g.k,r2(g.hp),r2(eu(g)),g.rec.oharrak||'']);
+    const rows=list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',g.plan?'Planifikatua':'Egiaztatua',g.rec.suterik?suteraTxt(g):'',xDate(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),r2(g.h),g.k,r2(g.hp),r2(eu(g)),g.rec.oharrak||'']);
     rows.push(['','GUZTIRA','','','','','','',r2(T.h),'',r2(T.hp),r2(T.e),'']);
     const by={};list.forEach(g=>{const b=by[g.rec.baliabidea]||(by[g.rec.baliabidea]={n:0,zh:0,zp:0,ph:0,pp:0,e:0});b.n++;b.e+=eu(g);if(g.rec.mota==='praktika'){b.ph+=g.h;b.pp+=g.hp}else{b.zh+=g.h;b.zp+=g.hp}});
     const sum=resList().filter(r=>by[r.id]).map(r=>{const b=by[r.id];return [r.izena,r.mota==='zisterna'?'Zisterna':'Taldea',b.n,r2(b.zh),r2(b.zp),r2(b.ph),r2(b.pp),r2(b.e)]});
@@ -1081,9 +1087,9 @@ async function exportGuards(fmt){
       {name:'Laburpena baliabideka',head:['Baliabidea','Mota','Tarteak','Zaintza h','Zaintza o-p','Praktika h','Praktika o-p','Zenbatekoa €'],rows:sum},
       {name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}]);
   }else{
-    const cols=[{t:'Zk.',w:13},{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Egoera',w:16},{t:'Data',w:18},{t:'Sarrera',w:13},{t:'Irteera',w:15},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Oharrak',w:60}];
-    pdfReport('Zaintzak',meta,cols,list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',(g.plan?'Planifik.':'Egiaztatua')+(g.rec.suterik?' / sutera':''),fD(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),n2(g.h),String(g.k),n2(g.hp),n2(eu(g)),g.rec.oharrak||'']),
-      ['',`${list.length} tarte`,'','','','','',n2(T.h),'',n2(T.hp),n2(T.e),''],expName('zaintzak',UI.gRes,UI.gFrom,UI.gTo,'pdf'));
+    const cols=[{t:'Zk.',w:13},{t:'Baliabidea',w:18},{t:'Mota',w:14},{t:'Egoera',w:16},{t:'Sutera',w:19},{t:'Data',w:18},{t:'Sarrera',w:13},{t:'Irteera',w:15},{t:'Orduak',w:12,align:'r'},{t:'Kideak',w:11,align:'r'},{t:'Ordu-pert.',w:15,align:'r'},{t:'EUR',w:15,align:'r'},{t:'Oharrak',w:60}];
+    pdfReport('Zaintzak',meta,cols,list.map(g=>[g.rec.zk||'',resName(g.rec.baliabidea),g.rec.mota==='praktika'?'Praktika':'Zaintza',g.plan?'Planifik.':'Egiaztatua',suteraTxt(g),fD(g.rec.hasiera),tRel(g.rec.hasiera),tRel(g.rec.amaiera,g.rec.hasiera),n2(g.h),String(g.k),n2(g.hp),n2(eu(g)),g.rec.oharrak||'']),
+      ['',`${list.length} tarte`,'','','','','','',n2(T.h),'',n2(T.hp),n2(T.e),''],expName('zaintzak',UI.gRes,UI.gFrom,UI.gTo,'pdf'));
   }
 }
 async function exportFires(fmt){
@@ -1106,7 +1112,7 @@ async function exportFires(fmt){
       {name:'Laburpena baliabideka',head:['Baliabidea','Mota','Esku-hartzeak','Suteak','Orduak','Ordu-pertsonak','Zenbatekoa €'],rows:sum},
       {name:'Iragazkiak',head:['Iragazkiak'],rows:[[meta],['Sortua: '+fdt(F(nowMs()))]]}]);
   }else{
-    const cols=[{t:'Sutea',w:9},{t:'Herria',w:17},{t:'Lekua',w:23},{t:'Baliabidea',w:15},{t:'Zaint.',w:8},{t:'Data',w:17},{t:'Deia',w:11},{t:'Erantzuna',w:13},{t:'Irteera',w:21},{t:'Iritsi',w:11},{t:'Bukatu',w:11},{t:'Etxeratu',w:18},{t:'Orduak',w:9,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:12,align:'r'},{t:'EUR',w:11,align:'r'}];
+    const cols=[{t:'Sutea',w:9},{t:'Herria',w:17},{t:'Lekua',w:23},{t:'Baliabidea',w:15},{t:'Zaint.',w:8},{t:'Data',w:17},{t:'Deia',w:11},{t:'Erantzuna',w:13},{t:'Irteera mota',w:21},{t:'Iritsi',w:11},{t:'Bukatu',w:11},{t:'Etxeratu',w:18},{t:'Orduak',w:9,align:'r'},{t:'Kideak',w:9,align:'r'},{t:'Ordu-pert.',w:12,align:'r'},{t:'EUR',w:11,align:'r'}];
     pdfReport('Suteak eta itzaltze-orduak',meta,cols,list.map(o=>[o.rec.sutea,fi(o).herria||'',fi(o).lekua||'',resName(o.rec.baliabidea),o.og?'Bai':'Ez',fD(o.rec.deia),tRel(o.rec.deia),tRel(o.rec.erantzuna,o.rec.deia),irtTxt(o),tRel(o.rec.iritsi,o.rec.deia),tRel(o.rec.bukatu,o.rec.deia),tRel(o.rec.etxeratu,o.rec.deia)+(o.rec.itzuli?' (z. '+tRel(o.rec.itzuli,o.rec.deia)+')':''),n2(o.h),String(o.k),n2(o.hp),n2(eu(o))]),
       ['',`${list.length} esku-hartze`,'','','','','','','','','','',n2(T.h),'',n2(T.hp),n2(T.e)],expName('suteak',UI.fRes,UI.fFrom,UI.fTo,'pdf'));
   }
@@ -1329,7 +1335,7 @@ async function act(a,el){
     case 'logout':await SB.auth.signOut();break;
     case 'seed-supa':if(confirm('data.json fitxategiko datuak datu-basera kargatu?'))await safe(seedFromJson,'Hasierako datuak kargatuta');break;
     case 'q-export':await exportQuery(el.dataset.k);break;
-    case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false};render();break;
+    case 'q-clear':UI.q={res:'',mt:'',mota:'',from:'',to:'',sute:'',plan:false,day:''};render();break;
     case 'del-guard':if(confirm('Zaintza hau ezabatu?')&&await safe(()=>del('zaintzak',id),'Zaintza ezabatuta'))closeDlg();break;
     case 'save-int':{const rec=readInt(f);
       if(!rec.sutea){toast('Sute-zenbakia behar da');break}if(!rec.baliabidea||!rec.deia){toast('Baliabidea eta deiaren ordua behar dira');break}
